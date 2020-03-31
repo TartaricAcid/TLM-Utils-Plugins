@@ -1,14 +1,9 @@
 import { mkdirs } from "../utils/filesystem";
 import { isEmpty } from "../utils/string";
-import { setMaidPackData, createMaidPackDialog } from "../model/createmaidpack"
+import { createMaidPackDialog } from "./createmaidpack";
+import { TLM_PROJECT_INFO } from "../projectinfo";
 
 var DEFAULT_TLM_PACK_DESC = '{"pack":{"pack_format":3,"description":"Touhou Little Maid Resources Pack"}}';
-
-var packId;
-var packVersion;
-var namespace;
-var packModels;
-var packTextures;
 
 export var createNewPack = new Action('create_new_pack', {
     name: '创建新的资源包',
@@ -44,7 +39,7 @@ var createNewPackDialog = new Dialog({
     onConfirm: function (formData) {
         // 将 ID 中的大写字符全部变成小写字符
         // 空格和 - 字符转换为下划线
-        packId = formData.packId.toLowerCase().replace(/\s|-/g, '_');
+        let packId = formData.packId.toLowerCase().replace(/\s|-/g, '_');
 
         // 必填数据的格式判定
         // ID 字符校验
@@ -58,13 +53,19 @@ var createNewPackDialog = new Dialog({
             return;
         }
 
+        // 数据存储
+        TLM_PROJECT_INFO["namespace"] = packId;
+
         // 包版本信息，如果没有，默认安置一个 1.0.0
+        let packVersion;
         if (isEmpty(formData.packVersion)) {
             packVersion = "1.0.0";
         } else {
             // TODO: 不按要求书写的提醒？纠正？
             packVersion = formData.packVersion;
         }
+        // 数据存储
+        TLM_PROJECT_INFO["version"] = packVersion;
 
         // 选择放置资源包文件夹的窗口
         ElecDialogs.showOpenDialog(currentwindow, {
@@ -76,20 +77,28 @@ var createNewPackDialog = new Dialog({
             mkdirs(root);
 
             // 创建命名空间文件夹            
-            namespace = `${root}/assets/${packId}`;
+            let namespace = `${root}/assets/${packId}`;
             mkdirs(namespace);
+            // 存储数据
+            TLM_PROJECT_INFO["namespace_path"] = namespace;
 
             // 创建各种子文件夹
             mkdirs(`${namespace}/animation`);        // 自定义动画脚本文件夹
             mkdirs(`${namespace}/lang`);             // 语言文件夹
+            // 存储数据
+            TLM_PROJECT_INFO["lang_path"] = `${namespace}/lang`;
 
             // 模型文件夹
-            packModels = `${namespace}/models/entity`;
+            let packModels = `${namespace}/models/entity`;
             mkdirs(packModels);
+            // 存储数据
+            TLM_PROJECT_INFO["models_path"] = packModels;
 
             // 材质文件夹
-            packTextures = `${namespace}/textures/entity`;
+            let packTextures = `${namespace}/textures/entity`;
             mkdirs(packTextures);
+            // 存储数据
+            TLM_PROJECT_INFO["textures_path"] = packTextures;
 
             // 创建 pack.mcmeta 文件
             fs.writeFileSync(`${root}/pack.mcmeta`, DEFAULT_TLM_PACK_DESC);
@@ -121,8 +130,9 @@ var bindPackDialog = new Dialog({
     },
     onConfirm: function (formData) {
         if (formData.bindType == "maid") {
-            setMaidPackData(namespace, packId, packVersion);
             createMaidPackDialog.show();
+            // 存储数据
+            TLM_PROJECT_INFO["type"] = "maid";
         }
     }
 });

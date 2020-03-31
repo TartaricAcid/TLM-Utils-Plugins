@@ -1,14 +1,12 @@
-import { BIND_PACK_INFO } from "../model/createmaidpack";
-
-var modelPath;
-var texturePath;
+import { isEmpty } from "../utils/string";
+import { addLanguageEntry, saveLanguageFile } from "../utils/lang";
+import { TLM_PROJECT_INFO } from "../projectinfo";
 
 export var saveNewModel = new Action('save_new_model', {
     name: '导出模型',
     description: '导出当前模型到资源包',
     icon: 'save',
     click: function () {
-        setPath(BIND_PACK_INFO.modelPath, BIND_PACK_INFO.texturesPath);
         saveNewModelDialog.show();
     }
 });
@@ -27,27 +25,126 @@ var saveNewModelDialog = new Dialog({
             type: "input",
             placeholder: "建议使用英文描述"
         },
-        packDescription: {
+        line1: "_",
+        modelDesc: {
             label: "模型描述（可选）",
             type: "input",
             placeholder: "留空表示不填写任何描述"
         },
-        packIcon: {
+        animation: {
             label: "动画脚本（可选）",
             type: "file",
             extensions: ['js'],
             filetype: 'JS'
+        },
+        renderItemScale: {
+            label: "渲染成物品时的大小",
+            type: Number,
+            value: 1.0,
+            min: 0.1,
+            max: 2,
+            step: 0.05
+        },
+        renderEntityScale: {
+            label: "渲染成实体时的大小",
+            type: Number,
+            value: 1.0,
+            min: 0.7,
+            max: 1.3,
+            step: 0.05
+        },
+        show_hata: {
+            label: "是否显示旗指物",
+            type: "checkbox",
+            value: true
+        },
+        showBackpack: {
+            label: "是否显示背包",
+            type: "checkbox",
+            value: true
+        },
+        canHoldTrolley: {
+            label: "是否能够持有拉杆箱",
+            type: "checkbox",
+            value: true
+        },
+        canHoldVehicle: {
+            label: "是否能够持有载具",
+            type: "checkbox",
+            value: true
+        },
+        canRidingBroom: {
+            label: "是否骑乘扫帚",
+            type: "checkbox",
+            value: true
+        },
+        showCustomHead: {
+            label: "是否显示头颅",
+            type: "checkbox",
+            value: true
         }
     },
     onConfirm: function (formData) {
-        // TODO 相关数据校验
+        // 数据获取
+        let namespace = TLM_PROJECT_INFO["namespace"];
+        let namespacePath = TLM_PROJECT_INFO["namespace_path"];
+        let modelPath = TLM_PROJECT_INFO["models_path"];
+        let texturePath = TLM_PROJECT_INFO["textures_path"];
+
+        // 模型数据
+        let modelData = {};
+
+        // 将 ID 中的大写字符全部变成小写字符
+        // 空格和 - 字符转换为下划线
+        let modelId = formData.modelId.toLowerCase().replace(/\s|-/g, '_');
+
+        // 必填数据的格式判定
+        // ID 字符校验
+        if (!(/^[\w.]+$/.test(modelId))) {
+            Blockbench.notification("模型 ID 不合法！", "模型 ID 仅支持英文字母，下划线和英文点号！");
+            return;
+        }
+
+        // 存储 id 数据
+        TLM_PROJECT_INFO["model_id"] = modelId;
+        saveNewModelDialog.form.modelId.value = modelId;
+        // 存入模型数据
+        modelData["model_id"] = `${namespace}:${modelId}`;
+
+        // 模型名不能为空
+        if (isEmpty(formData.modelName)) {
+            Blockbench.notification("模型名称不能为空", "请输入一个可辨识的英文模型名称！");
+            return;
+        } else {
+            // 往语言文件里面书写名称
+            addLanguageEntry(`model.${namespace}.${modelId}.name`, formData.modelName);
+            saveLanguageFile();
+            saveNewModelDialog.form.modelName.value = formData.modelName;
+        }
+
+        // 模型描述数据存储
+        if (!isEmpty(formData.modelDesc)) {
+            modelData["description"] = [`{model.${namespace}.${modelId}.desc}`];
+            // 往语言文件里面书写描述
+            addLanguageEntry(`model.${namespace}.${modelId}.desc`, formData.modelDesc);
+            saveLanguageFile();
+            saveNewModelDialog.form.modelDesc.value = formData.modelDesc;
+        }
+
+        // 存储 json 文件
+        let modelList = TLM_PROJECT_INFO["pack_data"]["model_list"];
+        modelList.push(modelData);
+
+        // 书写女仆模型包的文件
+        let maidJsonFilePath = `${namespacePath}/maid_model.json`;
+        fs.writeFileSync(maidJsonFilePath, autoStringify(TLM_PROJECT_INFO["pack_data"]));
 
         // 模型改名
         Project.geometry_name = "model";
-        Project.name = formData.modelId;
+        Project.name = modelId;
 
         // 模型保存
-        let modelFilePath = `${modelPath}/${formData.modelId}.json`;
+        let modelFilePath = `${modelPath}/${modelId}.json`;
         fs.writeFile(modelFilePath, Format.codec.compile(), function (err) {
             cl(err)
         })
@@ -67,13 +164,13 @@ var saveNewModelDialog = new Dialog({
                 var image = nativeImage.createFromDataURL(textureFile.source).toPNG()
             }
             // 存储地址构建
-            let textureFilePath = `${texturePath}/${formData.modelId}.png`;
+            let textureFilePath = `${texturePath}/${modelId}.png`;
             // 存储图片文件
             fs.writeFile(textureFilePath, image, function (err) {
                 cl(err)
             })
             // 设置图片的相关属性， 这样后续 Ctrl + S 保存时候会自动覆盖
-            textureFile.name = `${formData.modelId}.png`;
+            textureFile.name = `${modelId}.png`;
             textureFile.folder = texturePath;
             textureFile.path = textureFilePath;
             // 隐藏对话框
@@ -88,8 +185,3 @@ var saveNewModelDialog = new Dialog({
         }
     }
 });
-
-function setPath(model, texture) {
-    modelPath = model;
-    texturePath = texture;
-}

@@ -1,33 +1,7 @@
 import { isEmpty, trim } from "../utils/string";
 import { dateFormat } from "../utils/date";
 import { addLanguageEntry, saveLanguageFile } from "../utils/lang";
-
-var MAID_PACK_DATA = {};
-
-/**
- * 绑定的资源包信息
- */
-export var BIND_PACK_INFO = {
-    namespace: "",
-    texturesPath: "",
-    modelPath: ""
-};
-
-var namespace;
-var packId;
-var packVersion;
-
-/**
-* 设置女仆模型包相关数据
-* @param {String} namespaceIn 命名空间地址
-* @param {String} packIdIn 模型包的命名空间
-* @param {String} packVersionIn 模型包的版本
-*/
-export function setMaidPackData(namespaceIn, packIdIn, packVersionIn) {
-    namespace = namespaceIn;
-    packId = packIdIn;
-    packVersion = packVersionIn;
-}
+import { TLM_PROJECT_INFO } from "../projectinfo";
 
 export var createMaidPackDialog = new Dialog({
     id: "create_maid_pack",
@@ -62,6 +36,13 @@ export var createMaidPackDialog = new Dialog({
         }
     },
     onConfirm: function (formData) {
+        // 获取数据
+        let namespace = TLM_PROJECT_INFO["namespace"];
+        let namespacePath = TLM_PROJECT_INFO["namespace_path"];
+        let langPath = TLM_PROJECT_INFO["lang_path"];
+        let packVersion = TLM_PROJECT_INFO["version"];
+        let packData = TLM_PROJECT_INFO["pack_data"];
+
         // 剔除包名首尾空格
         let packName = trim(formData.packName);
 
@@ -70,10 +51,10 @@ export var createMaidPackDialog = new Dialog({
             Blockbench.notification("资源包名称不能为空", "请输入一个可辨识的英文资源包名称！");
             return;
         } else {
-            MAID_PACK_DATA["pack_name"] = `{maid_pack.${packId}.name}`;
+            packData["pack_name"] = `{maid_pack.${namespace}.name}`;
             // 往语言文件里面书写名称
-            addLanguageEntry(`maid_pack.${packId}.name`, packName);
-            saveLanguageFile(`${namespace}/lang`);
+            addLanguageEntry(`maid_pack.${namespace}.name`, packName);
+            saveLanguageFile(langPath);
         }
 
         // 作者数据
@@ -83,15 +64,15 @@ export var createMaidPackDialog = new Dialog({
             for (let i = 0; i < authorList.length; i++) {
                 authorList[i] = trim(authorList[i]);
             }
-            MAID_PACK_DATA["author"] = authorList;
+            packData["author"] = authorList;
         }
 
         // 包描述
         if (!isEmpty(formData.packDescription)) {
-            MAID_PACK_DATA["description"] = [`{maid_pack.${packId}.desc}`];
+            packData["description"] = [`{maid_pack.${namespace}.desc}`];
             // 往语言文件里面书写描述
-            addLanguageEntry(`maid_pack.${packId}.desc`, formData.packDescription);
-            saveLanguageFile(`${namespace}/lang`);
+            addLanguageEntry(`maid_pack.${namespace}.desc`, formData.packDescription);
+            saveLanguageFile(langPath);
         }
 
         // 包的制作日期
@@ -102,32 +83,27 @@ export var createMaidPackDialog = new Dialog({
         } else {
             packDate = formData.packDate;
         }
-        MAID_PACK_DATA["date"] = packDate;
+        packData["date"] = packDate;
 
         // 包的图标
         if (!isEmpty(formData.packIcon)) {
-            MAID_PACK_DATA["icon"] = `${packId}:textures/maid_icon.png`;
-            let packIconPath = `${namespace}/textures/maid_icon.png`;
+            packData["icon"] = `${namespace}:textures/maid_icon.png`;
+            let packIconPath = `${namespacePath}/textures/maid_icon.png`;
             fs.writeFileSync(packIconPath, fs.readFileSync(formData.packIcon));
         }
 
         // 包的版本
-        MAID_PACK_DATA["version"] = packVersion;
+        packData["version"] = packVersion;
 
         // 模型列表
-        MAID_PACK_DATA["model_list"] = [];
+        packData["model_list"] = [];
 
         // 书写女仆模型包的文件
-        let maidJsonFilePath = `${namespace}/maid_model.json`;
-        fs.writeFileSync(maidJsonFilePath, autoStringify(MAID_PACK_DATA));
-
-        // 记录相关数据
-        BIND_PACK_INFO.namespace = packId;
-        BIND_PACK_INFO.modelPath = `${namespace}/models/entity`;
-        BIND_PACK_INFO.texturesPath = `${namespace}/textures/entity`;
+        let maidJsonFilePath = `${namespacePath}/maid_model.json`;
+        fs.writeFileSync(maidJsonFilePath, autoStringify(packData));
 
         // 状态栏显示        
-        Blockbench.notification('已绑定资源包：', `${packId}`);
+        Blockbench.notification('已绑定资源包：', `${namespace}`);
 
         // 关闭当前窗口
         createMaidPackDialog.hide();
