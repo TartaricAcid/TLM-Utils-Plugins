@@ -3,6 +3,7 @@ export var TLM_PROJECT_INFO = {
     namespace: "",
     namespace_path: "",
     textures_path: "",
+    animation_path: "",
     lang_path: "",
     models_path: "",
     model_id: "",

@@ -1,7 +1,8 @@
 import { createNewPack } from "./pack/createpack";
+import { bindPack } from "./pack/bindpack"
 import { newWorkSpace } from "./model/workspace";
 import { packInfoAction } from "./pack/packinfo";
-import { saveNewModel } from "./model/savemodel";
+import { saveNewModel, saveAsNewModel } from "./model/savemodel";
 
 Plugin.register('tlm-utils', {
     name: '车万女仆模组插件',
@@ -14,10 +15,12 @@ Plugin.register('tlm-utils', {
         // 添加主菜单
         new BarMenu("tlm_bar_menu", [
             'create_new_pack',
+            'bind_pack',
             'tlm_pack_info',
             '_',
             'new_work_space',
-            'save_new_model'
+            'save_new_model',
+            'save_as_new_model'
         ]);
         MenuBar.update();
     },
@@ -28,9 +31,11 @@ Plugin.register('tlm-utils', {
 
         // 删除子菜单按钮
         createNewPack.delete();
+        bindPack.delete();
         newWorkSpace.delete();
         packInfoAction.delete();
         saveNewModel.delete();
+        saveAsNewModel.delete();
     }
 });
 

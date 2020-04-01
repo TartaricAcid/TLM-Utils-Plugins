@@ -1,15 +1,48 @@
 import { isEmpty } from "../utils/string";
 import { addLanguageEntry, saveLanguageFile } from "../utils/lang";
 import { TLM_PROJECT_INFO } from "../projectinfo";
+import { checkDuplicateModelId } from "../utils/checkdata";
 
 export var saveNewModel = new Action('save_new_model', {
-    name: '导出模型',
-    description: '导出当前模型到资源包',
+    name: '存储模型',
+    description: '在当前资源包内存储模型',
     icon: 'save',
     click: function () {
-        saveNewModelDialog.show();
+        // 未绑定资源包的提醒
+        if (isEmpty(TLM_PROJECT_INFO["namespace"])) {
+            Blockbench.showMessageBox({
+                title: "警告！",
+                message: "你没有绑定资源包！<br>请在菜单栏中创建新的资源包，或者绑定已有资源包！",
+                icon: "warning"
+            }, function (result) { });
+            return;
+        }
+        // 已经存储过的提醒
+        if (checkDuplicateModelId()) {
+            Blockbench.showQuickMessage("你已经存储过模型了！");
+        } else {
+            saveNewModelDialog.show();
+        }
     }
 });
+
+export var saveAsNewModel = new Action('save_as_new_model', {
+    name: "另存为模型",
+    description: "将当前模型更改 id 后导出成另一个模型",
+    icon: 'save',
+    click: function () {
+        // 未绑定资源包的提醒
+        if (isEmpty(TLM_PROJECT_INFO["namespace"])) {
+            Blockbench.showMessageBox({
+                title: "警告！",
+                message: "你没有绑定资源包。请在菜单栏中创建新的资源包，或者绑定已有资源包！",
+                icon: "warning"
+            }, function (result) { });
+        } else {
+            saveNewModelDialog.show();
+        }
+    }
+})
 
 var saveNewModelDialog = new Dialog({
     id: "save_new_model_dialog",
@@ -31,15 +64,9 @@ var saveNewModelDialog = new Dialog({
             type: "input",
             placeholder: "留空表示不填写任何描述"
         },
-        animation: {
-            label: "动画脚本（可选）",
-            type: "file",
-            extensions: ['js'],
-            filetype: 'JS'
-        },
         renderItemScale: {
             label: "渲染成物品时的大小",
-            type: Number,
+            type: "number",
             value: 1.0,
             min: 0.1,
             max: 2,
@@ -47,13 +74,13 @@ var saveNewModelDialog = new Dialog({
         },
         renderEntityScale: {
             label: "渲染成实体时的大小",
-            type: Number,
+            type: "number",
             value: 1.0,
             min: 0.7,
             max: 1.3,
             step: 0.05
         },
-        show_hata: {
+        showHata: {
             label: "是否显示旗指物",
             type: "checkbox",
             value: true
@@ -82,7 +109,13 @@ var saveNewModelDialog = new Dialog({
             label: "是否显示头颅",
             type: "checkbox",
             value: true
-        }
+        },
+        animation: {
+            label: "动画脚本（可选）",
+            type: "file",
+            extensions: ['js'],
+            filetype: 'JS'
+        },
     },
     onConfirm: function (formData) {
         // 数据获取
@@ -90,6 +123,7 @@ var saveNewModelDialog = new Dialog({
         let namespacePath = TLM_PROJECT_INFO["namespace_path"];
         let modelPath = TLM_PROJECT_INFO["models_path"];
         let texturePath = TLM_PROJECT_INFO["textures_path"];
+        let animationPath = TLM_PROJECT_INFO["animation_path"];
 
         // 模型数据
         let modelData = {};
@@ -107,7 +141,6 @@ var saveNewModelDialog = new Dialog({
 
         // 存储 id 数据
         TLM_PROJECT_INFO["model_id"] = modelId;
-        saveNewModelDialog.form.modelId.value = modelId;
         // 存入模型数据
         modelData["model_id"] = `${namespace}:${modelId}`;
 
@@ -129,6 +162,47 @@ var saveNewModelDialog = new Dialog({
             addLanguageEntry(`model.${namespace}.${modelId}.desc`, formData.modelDesc);
             saveLanguageFile();
             saveNewModelDialog.form.modelDesc.value = formData.modelDesc;
+        }
+
+        // 兼容性数据书写
+        if (formData.renderItemScale != 1) {
+            modelData["render_item_scale"] = formData.renderItemScale;
+            saveNewModelDialog.form.renderItemScale.value = formData.renderItemScale;
+        }
+        if (formData.renderEntityScale != 1) {
+            modelData["render_entity_scale"] = formData.renderEntityScale;
+            saveNewModelDialog.form.renderEntityScale.value = formData.renderEntityScale;
+        }
+        if (!formData.showHata) {
+            modelData["show_hata"] = false;
+            saveNewModelDialog.form.showHata.value = false;
+        }
+        if (!formData.showBackpack) {
+            modelData["show_backpack"] = false;
+            saveNewModelDialog.form.showBackpack.value = false;
+        }
+        if (!formData.canHoldTrolley) {
+            modelData["can_hold_trolley"] = false;
+            saveNewModelDialog.form.canHoldTrolley.value = false;
+        }
+        if (!formData.canHoldVehicle) {
+            modelData["can_hold_vehicle"] = false;
+            saveNewModelDialog.form.canHoldVehicle.value = false;
+        }
+        if (!formData.canRidingBroom) {
+            modelData["can_riding_broom"] = false;
+            saveNewModelDialog.form.canRidingBroom.value = false;
+        }
+        if (!formData.showCustomHead) {
+            modelData["show_custom_head"] = false;
+            saveNewModelDialog.form.showCustomHead.value = false;
+        }
+        // 动画脚本数据书写
+        if (!isEmpty(formData.animation)) {
+            let animationFilePath = formData.animation;
+            let animationFileName = pathToName(animationFilePath).toLowerCase().replace(/\s|-/g, '_');
+            fs.writeFileSync(`${animationPath}/${animationFileName}.js`, fs.readFileSync(animationFilePath))
+            modelData["animation"] = [`${namespace}:animation/${animationFileName}.js`];
         }
 
         // 存储 json 文件
@@ -173,6 +247,7 @@ var saveNewModelDialog = new Dialog({
             textureFile.name = `${modelId}.png`;
             textureFile.folder = texturePath;
             textureFile.path = textureFilePath;
+            textureFile.saved = true;
             // 隐藏对话框
             saveNewModelDialog.hide();
         } else {

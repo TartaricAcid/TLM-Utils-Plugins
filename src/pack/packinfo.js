@@ -15,9 +15,16 @@ export var packInfoAction = new Action('tlm_pack_info', {
         } else {
             Blockbench.showMessageBox({
                 title: "当前绑定资源包信息：",
-                message: `命名空间为：${TLM_PROJECT_INFO.namespace}`,
+                message: `绑定类型：${getTypeName(TLM_PROJECT_INFO.type)}<br>命名空间：${TLM_PROJECT_INFO.namespace}<br>版本：${TLM_PROJECT_INFO.version}`,
                 icon: "info"
             }, function (result) { })
         }
     }
 });
+
+function getTypeName(type) {
+    if (type == "chair") {
+        return "坐垫模型";
+    }
+    return "女仆模型";
+}

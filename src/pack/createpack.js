@@ -69,8 +69,7 @@ var createNewPackDialog = new Dialog({
 
         // 选择放置资源包文件夹的窗口
         ElecDialogs.showOpenDialog(currentwindow, {
-            properties: ['openDirectory'],
-            defaultPath: formData.value
+            properties: ['openDirectory']
         }, function (path) {
             // 创建资源包根目录
             let root = `${path}/${packId}-${packVersion}`;
@@ -84,8 +83,9 @@ var createNewPackDialog = new Dialog({
 
             // 创建各种子文件夹
             mkdirs(`${namespace}/animation`);        // 自定义动画脚本文件夹
+            TLM_PROJECT_INFO["animation_path"] = `${namespace}/animation`;
+
             mkdirs(`${namespace}/lang`);             // 语言文件夹
-            // 存储数据
             TLM_PROJECT_INFO["lang_path"] = `${namespace}/lang`;
 
             // 模型文件夹
