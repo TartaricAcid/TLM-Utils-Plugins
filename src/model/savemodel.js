@@ -39,7 +39,7 @@ export var saveAsNewModel = new Action('save_as_new_model', {
         if (isEmpty(TLM_PROJECT_INFO["namespace"])) {
             Blockbench.showMessageBox({
                 title: "警告！",
-                message: "你没有绑定资源包。请在菜单栏中创建新的资源包，或者绑定已有资源包！",
+                message: "你没有绑定资源包。<br>请在菜单栏中创建新的资源包，或者绑定已有资源包！",
                 icon: "warning"
             }, function (result) { });
         } else {

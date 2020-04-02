@@ -123,6 +123,31 @@ function checkIsPackFolder(path) {
             }
         });
         select.show();
+        return;
+    }
+
+    // 如果是单个文件夹，直接选择
+    if (namespaceList.length == 1) {
+        namespace = namespaceList[0];
+        namespacePath = `${assetsPath}/${namespaceList[0]}`
+
+        // 检查通过，检查文件夹并进行创建
+        mkdirs(`${namespacePath}/models/entity`);
+        mkdirs(`${namespacePath}/textures/entity`);
+        mkdirs(`${namespacePath}/lang`);
+        mkdirs(`${namespacePath}/animation`);
+
+        TLM_PROJECT_INFO.namespace = namespace;
+        TLM_PROJECT_INFO.namespace_path = namespacePath;
+        TLM_PROJECT_INFO.animation_path = `${namespacePath}/animation`;
+        TLM_PROJECT_INFO.lang_path = `${namespacePath}/lang`;
+        TLM_PROJECT_INFO.models_path = `${namespacePath}/models/entity`;
+        TLM_PROJECT_INFO.textures_path = `${namespacePath}/textures/entity`;
+
+        // 重读语言文件
+        reloadAndReadLanguage();
+
+        bindTypeDialog.show();
     }
 }
 
@@ -157,6 +182,8 @@ var bindTypeDialog = new Dialog({
                     TLM_PROJECT_INFO.version = version;
                 }
                 bindTypeDialog.hide();
+                // 状态栏显示        
+                Blockbench.notification('已绑定资源包：', `${TLM_PROJECT_INFO.namespace}`);
             } else {
                 TLM_PROJECT_INFO.version = "1.0.0";
                 TLM_PROJECT_INFO.pack_data = {};
@@ -179,6 +206,8 @@ var bindTypeDialog = new Dialog({
                     TLM_PROJECT_INFO.version = version;
                 }
                 bindTypeDialog.hide();
+                // 状态栏显示        
+                Blockbench.notification('已绑定资源包：', `${TLM_PROJECT_INFO.namespace}`);
             } else {
                 TLM_PROJECT_INFO.version = "1.0.0";
                 TLM_PROJECT_INFO.pack_data = {};

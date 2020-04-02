@@ -3,6 +3,7 @@ import { bindPack } from "./pack/bindpack"
 import { newWorkSpace } from "./model/workspace";
 import { packInfoAction } from "./pack/packinfo";
 import { saveNewModel, saveAsNewModel } from "./model/savemodel";
+import { registerTextureEvent } from "./event/textureevent"
 
 Plugin.register('tlm-utils', {
     name: '车万女仆模组插件',
@@ -24,6 +25,7 @@ Plugin.register('tlm-utils', {
             'save_as_new_model'
         ]);
         MenuBar.update();
+        registerTextureEvent();
     },
     onunload() {
         // 删除主菜单按钮
