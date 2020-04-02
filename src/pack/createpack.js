@@ -1,6 +1,7 @@
 import { mkdirs } from "../utils/filesystem";
 import { isEmpty } from "../utils/string";
 import { createMaidPackDialog } from "./createmaidpack";
+import { createChairPackDialog } from "./createchairpack";
 import { TLM_PROJECT_INFO } from "../projectinfo";
 
 var DEFAULT_TLM_PACK_DESC = '{"pack":{"pack_format":3,"description":"Touhou Little Maid Resources Pack"}}';
@@ -129,9 +130,11 @@ var bindPackDialog = new Dialog({
         }
     },
     onConfirm: function (formData) {
-        if (formData.bindType == "maid") {
+        if (formData.bindType == "chair") {
+            createChairPackDialog.show();
+            TLM_PROJECT_INFO["type"] = "chair";
+        } else {
             createMaidPackDialog.show();
-            // 存储数据
             TLM_PROJECT_INFO["type"] = "maid";
         }
     }

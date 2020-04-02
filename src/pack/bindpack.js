@@ -1,5 +1,9 @@
 import { mkdirs } from "../utils/filesystem";
-import { TLM_PROJECT_INFO } from "../projectinfo"
+import { TLM_PROJECT_INFO } from "../projectinfo";
+import { isEmpty } from "../utils/string";
+import { createMaidPackDialog } from "./createmaidpack";
+import { createChairPackDialog } from "./createchairpack";
+import { reloadAndReadLanguage } from "../utils/lang";
 
 export var bindPack = new Action('bind_pack', {
     name: '绑定资源包',
@@ -105,6 +109,16 @@ function checkIsPackFolder(path) {
                 mkdirs(`${namespacePath}/lang`);
                 mkdirs(`${namespacePath}/animation`);
 
+                TLM_PROJECT_INFO.namespace = namespace;
+                TLM_PROJECT_INFO.namespace_path = namespacePath;
+                TLM_PROJECT_INFO.animation_path = `${namespacePath}/animation`;
+                TLM_PROJECT_INFO.lang_path = `${namespacePath}/lang`;
+                TLM_PROJECT_INFO.models_path = `${namespacePath}/models/entity`;
+                TLM_PROJECT_INFO.textures_path = `${namespacePath}/textures/entity`;
+
+                // 重读语言文件
+                reloadAndReadLanguage();
+
                 bindTypeDialog.show();
             }
         });
@@ -127,11 +141,49 @@ var bindTypeDialog = new Dialog({
         }
     },
     onConfirm: function (formData) {
+        if (formData.bindType == "chair") {
+            // 存储数据
+            TLM_PROJECT_INFO["type"] = "chair";
+            // 依据绑定类型检查对应文件是否存在
+            let chairModelFile = `${TLM_PROJECT_INFO.namespace_path}/maid_chair.json`
+            if (fs.existsSync(chairModelFile) && fs.statSync(chairModelFile).isFile()) {
+                let text = fs.readFileSync(chairModelFile, 'utf8');
+                TLM_PROJECT_INFO.pack_data = JSON.parse(text);
+                let version = TLM_PROJECT_INFO.pack_data.version;
+                if (isEmpty(version)) {
+                    TLM_PROJECT_INFO.pack_data.version = "1.0.0";
+                    TLM_PROJECT_INFO.version = "1.0.0";
+                } else {
+                    TLM_PROJECT_INFO.version = version;
+                }
+                bindTypeDialog.hide();
+            } else {
+                TLM_PROJECT_INFO.version = "1.0.0";
+                TLM_PROJECT_INFO.pack_data = {};
+                createChairPackDialog.show();
+            }
+        }
         if (formData.bindType == "maid") {
-            // TODO 依据绑定类型检查对应文件是否存在
-            // createMaidPackDialog.show();
             // 存储数据
             TLM_PROJECT_INFO["type"] = "maid";
+            // 依据绑定类型检查对应文件是否存在
+            let maidModelFile = `${TLM_PROJECT_INFO.namespace_path}/maid_model.json`
+            if (fs.existsSync(maidModelFile) && fs.statSync(maidModelFile).isFile()) {
+                let text = fs.readFileSync(maidModelFile, 'utf8');
+                TLM_PROJECT_INFO.pack_data = JSON.parse(text);
+                let version = TLM_PROJECT_INFO.pack_data.version;
+                if (isEmpty(version)) {
+                    TLM_PROJECT_INFO.pack_data.version = "1.0.0";
+                    TLM_PROJECT_INFO.version = "1.0.0";
+                } else {
+                    TLM_PROJECT_INFO.version = version;
+                }
+                bindTypeDialog.hide();
+            } else {
+                TLM_PROJECT_INFO.version = "1.0.0";
+                TLM_PROJECT_INFO.pack_data = {};
+                createMaidPackDialog.show();
+            }
         }
     }
 });
