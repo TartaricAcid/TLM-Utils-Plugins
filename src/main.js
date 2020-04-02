@@ -12,6 +12,7 @@ Plugin.register('tlm-utils', {
     version: '1.0.0',
     variant: 'both',
     onload() {
+        Language.data["menu.tlm_bar_menu"] = "车万女仆";
         // 添加主菜单
         new BarMenu("tlm_bar_menu", [
             'create_new_pack',
