@@ -172,7 +172,7 @@ var bindTypeDialog = new Dialog({
             // 依据绑定类型检查对应文件是否存在
             let chairModelFile = `${TLM_PROJECT_INFO.namespace_path}/maid_chair.json`
             if (fs.existsSync(chairModelFile) && fs.statSync(chairModelFile).isFile()) {
-                let text = fs.readFileSync(chairModelFile, 'utf8');
+                let text = fs.readFileSync(chairModelFile, 'utf8').replace(/^\uFEFF/, "");
                 TLM_PROJECT_INFO.pack_data = JSON.parse(text);
                 let version = TLM_PROJECT_INFO.pack_data.version;
                 if (isEmpty(version)) {
@@ -196,7 +196,7 @@ var bindTypeDialog = new Dialog({
             // 依据绑定类型检查对应文件是否存在
             let maidModelFile = `${TLM_PROJECT_INFO.namespace_path}/maid_model.json`
             if (fs.existsSync(maidModelFile) && fs.statSync(maidModelFile).isFile()) {
-                let text = fs.readFileSync(maidModelFile, 'utf8');
+                let text = fs.readFileSync(maidModelFile, 'utf8').replace(/^\uFEFF/, "");
                 TLM_PROJECT_INFO.pack_data = JSON.parse(text);
                 let version = TLM_PROJECT_INFO.pack_data.version;
                 if (isEmpty(version)) {

@@ -3,7 +3,8 @@ import { bindPack } from "./pack/bindpack"
 import { newWorkSpace } from "./model/workspace";
 import { packInfoAction } from "./pack/packinfo";
 import { saveNewModel, saveAsNewModel } from "./model/savemodel";
-import { registerTextureEvent } from "./event/textureevent"
+import { registerTextureEvent } from "./event/textureevent";
+import { loadPack } from "./pack/loadpack"
 
 Plugin.register('tlm-utils', {
     name: '车万女仆模组插件',
@@ -18,6 +19,7 @@ Plugin.register('tlm-utils', {
         new BarMenu("tlm_bar_menu", [
             'create_new_pack',
             'bind_pack',
+            'load_pack',
             'tlm_pack_info',
             '_',
             'new_work_space',
@@ -39,6 +41,7 @@ Plugin.register('tlm-utils', {
         packInfoAction.delete();
         saveNewModel.delete();
         saveAsNewModel.delete();
+        loadPack.delete();
     }
 });
 

@@ -7,6 +7,7 @@ export var TLM_PROJECT_INFO = {
     lang_path: "",
     models_path: "",
     model_id: "",
+    texture_name: "",
     version: "",
     pack_data: {}
 }

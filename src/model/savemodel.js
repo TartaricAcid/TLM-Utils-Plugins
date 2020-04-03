@@ -149,6 +149,7 @@ var saveNewMaidModelDialog = new Dialog({
 
         // 存储 id 数据
         TLM_PROJECT_INFO["model_id"] = modelId;
+        TLM_PROJECT_INFO["texture_name"] = `${modelId}.png`;
         // 存入模型数据
         modelData["model_id"] = `${namespace}:${modelId}`;
 
@@ -346,6 +347,7 @@ var saveNewChairModelDialog = new Dialog({
 
         // 存储 id 数据
         TLM_PROJECT_INFO["model_id"] = modelId;
+        TLM_PROJECT_INFO["texture_name"] = `${modelId}.png`;
         // 存入模型数据
         modelData["model_id"] = `${namespace}:${modelId}`;
 
