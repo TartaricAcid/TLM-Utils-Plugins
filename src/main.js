@@ -1,8 +1,6 @@
 import { createNewPack } from "./pack/createpack";
-import { bindPack } from "./pack/bindpack"
+import { exportPack } from "./pack/exportpack"
 import { newWorkSpace } from "./model/workspace";
-import { packInfoAction } from "./pack/packinfo";
-import { saveNewModel, saveAsNewModel } from "./model/savemodel";
 import { registerTextureEvent } from "./event/textureevent";
 import { loadPack } from "./pack/loadpack"
 
@@ -16,15 +14,12 @@ Plugin.register('tlm-utils', {
     onload() {
         Language.data["menu.tlm_bar_menu"] = "车万女仆";
         // 添加主菜单
-        new BarMenu("tlm_bar_menu", [
-            'create_new_pack',
-            'bind_pack',
-            'load_pack',
-            'tlm_pack_info',
-            '_',
+        new BarMenu("tlm_bar_menu", [            
             'new_work_space',
-            'save_new_model',
-            'save_as_new_model'
+            '_',
+            'create_new_pack',
+            'export_pack',
+            'load_pack',
         ]);
         MenuBar.update();
         registerTextureEvent();
@@ -36,11 +31,8 @@ Plugin.register('tlm-utils', {
 
         // 删除子菜单按钮
         createNewPack.delete();
-        bindPack.delete();
+        exportPack.delete();
         newWorkSpace.delete();
-        packInfoAction.delete();
-        saveNewModel.delete();
-        saveAsNewModel.delete();
         loadPack.delete();
     }
 });

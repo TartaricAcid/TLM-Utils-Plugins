@@ -1,14 +1,12 @@
 import { mkdirs } from "../utils/filesystem";
 import { isEmpty } from "../utils/string";
-import { createMaidPackDialog } from "./createmaidpack";
-import { createChairPackDialog } from "./createchairpack";
 import { TLM_PROJECT_INFO } from "../projectinfo";
 
 var DEFAULT_TLM_PACK_DESC = '{"pack":{"pack_format":3,"description":"Touhou Little Maid Resources Pack"}}';
 
 export var createNewPack = new Action('create_new_pack', {
-    name: '创建新的资源包',
-    description: '创建一个新的车万女仆资源包',
+    name: '创建资源包',
+    description: '创建一个新的资源包文件夹',
     icon: 'create',
     click: function () {
         createNewPackDialog.show();
@@ -72,6 +70,11 @@ var createNewPackDialog = new Dialog({
         ElecDialogs.showOpenDialog(currentwindow, {
             properties: ['openDirectory']
         }, function (path) {
+            // 取消选择时，path 为空
+            if (path == undefined || path == null) {
+                return;
+            }
+
             // 创建资源包根目录
             let root = `${path}/${packId}-${packVersion}`;
             mkdirs(root);
@@ -82,11 +85,12 @@ var createNewPackDialog = new Dialog({
             // 存储数据
             TLM_PROJECT_INFO["namespace_path"] = namespace;
 
-            // 创建各种子文件夹
-            mkdirs(`${namespace}/animation`);        // 自定义动画脚本文件夹
+            // 自定义动画脚本文件夹
+            mkdirs(`${namespace}/animation`);        
             TLM_PROJECT_INFO["animation_path"] = `${namespace}/animation`;
 
-            mkdirs(`${namespace}/lang`);             // 语言文件夹
+            // 语言文件夹
+            mkdirs(`${namespace}/lang`);             
             TLM_PROJECT_INFO["lang_path"] = `${namespace}/lang`;
 
             // 模型文件夹
@@ -98,7 +102,6 @@ var createNewPackDialog = new Dialog({
             // 材质文件夹
             let packTextures = `${namespace}/textures/entity`;
             mkdirs(packTextures);
-            // 存储数据
             TLM_PROJECT_INFO["textures_path"] = packTextures;
 
             // 创建 pack.mcmeta 文件
@@ -110,32 +113,7 @@ var createNewPackDialog = new Dialog({
             }
 
             createNewPackDialog.hide();
-            bindPackDialog.show();
+            Blockbench.notification("资源包创建成功！", `已经在 ${path} 放置对应资源包`);
         });
-    }
-});
-
-var bindPackDialog = new Dialog({
-    id: "bind_pack_dialog",
-    title: "绑定刚刚创建的资源包？",
-    form: {
-        bindType: {
-            type: "select",
-            label: "绑定类型",
-            default: 'maid',
-            options: {
-                maid: "女仆模型",
-                chair: "坐垫模型",
-            }
-        }
-    },
-    onConfirm: function (formData) {
-        if (formData.bindType == "chair") {
-            createChairPackDialog.show();
-            TLM_PROJECT_INFO["type"] = "chair";
-        } else {
-            createMaidPackDialog.show();
-            TLM_PROJECT_INFO["type"] = "maid";
-        }
     }
 });

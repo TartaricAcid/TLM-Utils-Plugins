@@ -4,15 +4,17 @@ import { isEmpty } from "../utils/string";
 import { reloadAndReadLanguage } from "../utils/lang";
 
 export var loadPack = new Action('load_pack', {
-    name: '导入资源包模型',
+    name: '导入模型',
     description: '从已有资源包中导入模型',
-    icon: 'inbox',
+    icon: 'unarchive',
     click: function () {
         // 选择放置资源包文件夹的窗口
         ElecDialogs.showOpenDialog(currentwindow, {
             properties: ['openDirectory']
         }, function (path) {
-            checkIsPackFolder(path);
+            if (path != undefined && path != null) {
+                checkIsPackFolder(path);
+            }
         });
     }
 });

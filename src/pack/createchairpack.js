@@ -2,6 +2,7 @@ import { isEmpty, trim } from "../utils/string";
 import { dateFormat } from "../utils/date";
 import { addLanguageEntry, saveLanguageFile } from "../utils/lang";
 import { TLM_PROJECT_INFO } from "../projectinfo";
+import { saveNewChairModelDialog } from "../model/savemodel";
 
 export var createChairPackDialog = new Dialog({
     id: "create_chair_pack",
@@ -103,9 +104,12 @@ export var createChairPackDialog = new Dialog({
         fs.writeFileSync(maidJsonFilePath, autoStringify(packData));
 
         // 状态栏显示        
-        Blockbench.notification('已绑定资源包：', `${namespace}`);
+        Blockbench.notification('已创建坐垫模型包！', `位于命名空间：${namespace}`);
 
         // 关闭当前窗口
         createChairPackDialog.hide();
+
+        // 打开模型信息填写页面
+        saveNewChairModelDialog.show();
     }
 });

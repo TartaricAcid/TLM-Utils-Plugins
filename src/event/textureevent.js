@@ -7,7 +7,7 @@ export function registerTextureEvent() {
         let modelId = TLM_PROJECT_INFO.model_id
         let texturePath = TLM_PROJECT_INFO.textures_path;
         let textureName = TLM_PROJECT_INFO.texture_name;
-        if (!isEmpty(modelId) && !isEmpty(texturePath) && isEmpty(textureName)) {
+        if (!isEmpty(modelId) && !isEmpty(texturePath) && !isEmpty(textureName)) {
             // 如果不为空，进行二次判定
             let textureFile = data.texture;
             // 设置图片的相关属性， 这样后续 Ctrl + S 保存时候会自动覆盖

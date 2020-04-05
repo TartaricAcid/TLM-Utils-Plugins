@@ -1,58 +1,9 @@
 import { isEmpty } from "../utils/string";
 import { addLanguageEntry, saveLanguageFile } from "../utils/lang";
 import { TLM_PROJECT_INFO } from "../projectinfo";
-import { checkDuplicateModelId } from "../utils/checkdata";
+import { checkDuplicateModelId, addModelToList } from "../utils/checkdata";
 
-export var saveNewModel = new Action('save_new_model', {
-    name: '存储模型',
-    description: '在当前资源包内存储模型',
-    icon: 'save',
-    click: function () {
-        // 未绑定资源包的提醒
-        if (isEmpty(TLM_PROJECT_INFO["namespace"])) {
-            Blockbench.showMessageBox({
-                title: "警告！",
-                message: "你没有绑定资源包！<br>请在菜单栏中创建新的资源包，或者绑定已有资源包！",
-                icon: "warning"
-            }, function (result) { });
-            return;
-        }
-        // 已经存储过的提醒
-        if (checkDuplicateModelId()) {
-            Blockbench.showQuickMessage("你已经存储过模型了！");
-        } else {
-            if (TLM_PROJECT_INFO.type == "chair") {
-                saveNewChairModelDialog.show();
-            } else {
-                saveNewMaidModelDialog.show();
-            }
-        }
-    }
-});
-
-export var saveAsNewModel = new Action('save_as_new_model', {
-    name: "另存为模型",
-    description: "将当前模型更改 id 后导出成另一个模型",
-    icon: 'save',
-    click: function () {
-        // 未绑定资源包的提醒
-        if (isEmpty(TLM_PROJECT_INFO["namespace"])) {
-            Blockbench.showMessageBox({
-                title: "警告！",
-                message: "你没有绑定资源包。<br>请在菜单栏中创建新的资源包，或者绑定已有资源包！",
-                icon: "warning"
-            }, function (result) { });
-        } else {
-            if (TLM_PROJECT_INFO.type == "chair") {
-                saveNewChairModelDialog.show();
-            } else {
-                saveNewMaidModelDialog.show();
-            }
-        }
-    }
-})
-
-var saveNewMaidModelDialog = new Dialog({
+export var saveNewMaidModelDialog = new Dialog({
     id: "save_new_maid_model_dialog",
     title: "请输入模型相关参数",
     form: {
@@ -128,13 +79,10 @@ var saveNewMaidModelDialog = new Dialog({
     onConfirm: function (formData) {
         // 数据获取
         let namespace = TLM_PROJECT_INFO["namespace"];
-        let namespacePath = TLM_PROJECT_INFO["namespace_path"];
-        let modelPath = TLM_PROJECT_INFO["models_path"];
-        let texturePath = TLM_PROJECT_INFO["textures_path"];
-        let animationPath = TLM_PROJECT_INFO["animation_path"];
 
         // 模型数据
         let modelData = {};
+        let languageMap = {};
 
         // 将 ID 中的大写字符全部变成小写字符
         // 空格和 - 字符转换为下划线
@@ -145,6 +93,8 @@ var saveNewMaidModelDialog = new Dialog({
         if (!(/^[\w.]+$/.test(modelId))) {
             Blockbench.notification("模型 ID 不合法！", "模型 ID 仅支持英文字母，下划线和英文点号！");
             return;
+        } else {
+            saveNewMaidModelDialog.form.modelId.value = formData.modelId;
         }
 
         // 存储 id 数据
@@ -159,8 +109,7 @@ var saveNewMaidModelDialog = new Dialog({
             return;
         } else {
             // 往语言文件里面书写名称
-            addLanguageEntry(`model.${namespace}.${modelId}.name`, formData.modelName);
-            saveLanguageFile();
+            languageMap[`model.${namespace}.${modelId}.name`] = formData.modelName;
             saveNewMaidModelDialog.form.modelName.value = formData.modelName;
         }
 
@@ -168,8 +117,7 @@ var saveNewMaidModelDialog = new Dialog({
         if (!isEmpty(formData.modelDesc)) {
             modelData["description"] = [`{model.${namespace}.${modelId}.desc}`];
             // 往语言文件里面书写描述
-            addLanguageEntry(`model.${namespace}.${modelId}.desc`, formData.modelDesc);
-            saveLanguageFile();
+            languageMap[`model.${namespace}.${modelId}.desc`] = formData.modelDesc;
             saveNewMaidModelDialog.form.modelDesc.value = formData.modelDesc;
         }
 
@@ -210,67 +158,94 @@ var saveNewMaidModelDialog = new Dialog({
         if (!isEmpty(formData.animation)) {
             let animationFilePath = formData.animation;
             let animationFileName = pathToName(animationFilePath).toLowerCase().replace(/\s|-/g, '_');
-            fs.writeFileSync(`${animationPath}/${animationFileName}.js`, fs.readFileSync(animationFilePath))
             modelData["animation"] = [`${namespace}:animation/${animationFileName}.js`];
         }
 
-        // 存储 json 文件
-        let modelList = TLM_PROJECT_INFO["pack_data"]["model_list"];
-        modelList.push(modelData);
-
-        // 书写女仆模型包的文件
-        let maidJsonFilePath = `${namespacePath}/maid_model.json`;
-        fs.writeFileSync(maidJsonFilePath, autoStringify(TLM_PROJECT_INFO["pack_data"]));
-
-        // 模型改名
-        Project.geometry_name = "model";
-        Project.name = modelId;
-
-        // 模型保存
-        let modelFilePath = `${modelPath}/${modelId}.json`;
-        fs.writeFile(modelFilePath, Format.codec.compile(), function (err) {
-            cl(err)
-        })
-        // 将导出路径修改为此路径
-        // 这样后续 Ctrl + S 保存时候会自动覆盖
-        ModelMeta.name = `${modelPath}`;
-        ModelMeta.export_path = modelFilePath;
-
-        // 材质保存
-        if (textures.length > 0) {
-            // 实体模型是单材质，获取第一个即可
-            let textureFile = textures[0];
-            // 来自 Blockbench 的图片二进制文件获取，不太理解
-            if (textureFile.mode === 'link') {
-                var image = nativeImage.createFromPath(textureFile.source.replace(/\?\d+$/, '')).toPNG()
-            } else {
-                var image = nativeImage.createFromDataURL(textureFile.source).toPNG()
-            }
-            // 存储地址构建
-            let textureFilePath = `${texturePath}/${modelId}.png`;
-            // 存储图片文件
-            fs.writeFile(textureFilePath, image, function (err) {
-                cl(err)
+        // 检查重复 ID
+        if (checkDuplicateModelId()) {
+            Blockbench.showMessageBox({
+                title: "检查到当前 ID 和已有模型 ID 重复",
+                message: "是否继续进行保存？<br>这会覆盖掉同名模型的相关数据！",
+                confirm: 0,
+                cancel: 1,
+                buttons: ["确认覆盖", "取消"]
+            }, function (result) {
+                if (result == 0) {
+                    saveModel(modelData, formData.animation, languageMap, "maid_model");
+                    // 隐藏对话框
+                    saveNewMaidModelDialog.hide();
+                }
             })
-            // 设置图片的相关属性， 这样后续 Ctrl + S 保存时候会自动覆盖
-            textureFile.name = `${modelId}.png`;
-            textureFile.folder = texturePath;
-            textureFile.path = textureFilePath;
-            textureFile.saved = true;
+        } else {
+            saveModel(modelData, formData.animation, languageMap, "maid_model");
             // 隐藏对话框
             saveNewMaidModelDialog.hide();
-        } else {
-            // 图片不存在时警告
-            Blockbench.showMessageBox({
-                title: "警告：",
-                message: "当前模型材质为空！",
-                icon: "warning"
-            }, function (result) { })
         }
     }
 });
 
-var saveNewChairModelDialog = new Dialog({
+function saveModel(modelData, animationFilePath, languageMap, jsonFileName) {
+    // 模型包文件地址
+    let jsonFile = `${TLM_PROJECT_INFO.namespace_path}/${jsonFileName}.json`;
+    // 模型文件地址
+    let modelFilePath = `${TLM_PROJECT_INFO.models_path}/${TLM_PROJECT_INFO.model_id}.json`;
+
+    // 模型改名
+    Project.geometry_name = "model";
+    Project.name = TLM_PROJECT_INFO.model_id;
+    // 将导出路径修改为此路径
+    // 这样后续 Ctrl + S 保存时候会自动覆盖
+    ModelMeta.name = TLM_PROJECT_INFO.models_path;
+    ModelMeta.export_path = modelFilePath;
+
+    // 把模型添加到列表中
+    addModelToList(modelData);
+
+    // 各种文件的书写    
+    if (!isEmpty(animationFilePath)) {
+        let animationFileName = pathToName(animationFilePath).toLowerCase().replace(/\s|-/g, '_');
+        fs.writeFileSync(`${TLM_PROJECT_INFO.animation_path}/${animationFileName}.js`, fs.readFileSync(animationFilePath))
+    }
+    fs.writeFileSync(jsonFile, autoStringify(TLM_PROJECT_INFO["pack_data"]));
+    fs.writeFile(modelFilePath, Format.codec.compile(), function (err) {
+    })
+
+    // 语言文件
+    for (let key of Object.keys(languageMap)) {
+        addLanguageEntry(key, languageMap[key]);
+    }
+    saveLanguageFile();
+
+    // 材质保存
+    if (textures.length > 0) {
+        // 实体模型是单材质，获取第一个即可
+        let textureFile = textures[0];
+        // 来自 Blockbench 的图片二进制文件获取，不太理解
+        if (textureFile.mode === 'link') {
+            var image = nativeImage.createFromPath(textureFile.source.replace(/\?\d+$/, '')).toPNG()
+        } else {
+            var image = nativeImage.createFromDataURL(textureFile.source).toPNG()
+        }
+        // 存储地址构建
+        let textureFilePath = `${TLM_PROJECT_INFO.textures_path}/${TLM_PROJECT_INFO.model_id}.png`;
+        // 存储图片文件
+        fs.writeFile(textureFilePath, image, function (err) {
+        })
+        // 设置图片的相关属性， 这样后续 Ctrl + S 保存时候会自动覆盖
+        textureFile.name = `${TLM_PROJECT_INFO.model_id}.png`;
+        textureFile.folder = TLM_PROJECT_INFO.textures_path;
+        textureFile.path = textureFilePath;
+        textureFile.saved = true;
+    } else {
+        // 图片不存在时警告
+        Blockbench.notification("你当前没有创建材质！", "游戏内的该模型将没有材质！");
+    }
+
+    // 保存成功的提醒
+    Blockbench.notification("模型导出成功！", "");
+}
+
+export var saveNewChairModelDialog = new Dialog({
     id: "save_new_chair_model_dialog",
     title: "请输入模型相关参数",
     form: {
@@ -326,13 +301,10 @@ var saveNewChairModelDialog = new Dialog({
     onConfirm: function (formData) {
         // 数据获取
         let namespace = TLM_PROJECT_INFO["namespace"];
-        let namespacePath = TLM_PROJECT_INFO["namespace_path"];
-        let modelPath = TLM_PROJECT_INFO["models_path"];
-        let texturePath = TLM_PROJECT_INFO["textures_path"];
-        let animationPath = TLM_PROJECT_INFO["animation_path"];
 
         // 模型数据
         let modelData = {};
+        let languageMap = {};
 
         // 将 ID 中的大写字符全部变成小写字符
         // 空格和 - 字符转换为下划线
@@ -347,7 +319,6 @@ var saveNewChairModelDialog = new Dialog({
 
         // 存储 id 数据
         TLM_PROJECT_INFO["model_id"] = modelId;
-        TLM_PROJECT_INFO["texture_name"] = `${modelId}.png`;
         // 存入模型数据
         modelData["model_id"] = `${namespace}:${modelId}`;
 
@@ -357,8 +328,7 @@ var saveNewChairModelDialog = new Dialog({
             return;
         } else {
             // 往语言文件里面书写名称
-            addLanguageEntry(`model.${namespace}.${modelId}.name`, formData.modelName);
-            saveLanguageFile();
+            languageMap[`model.${namespace}.${modelId}.name`] = formData.modelName;
             saveNewChairModelDialog.form.modelName.value = formData.modelName;
         }
 
@@ -366,8 +336,7 @@ var saveNewChairModelDialog = new Dialog({
         if (!isEmpty(formData.modelDesc)) {
             modelData["description"] = [`{model.${namespace}.${modelId}.desc}`];
             // 往语言文件里面书写描述
-            addLanguageEntry(`model.${namespace}.${modelId}.desc`, formData.modelDesc);
-            saveLanguageFile();
+            languageMap[`model.${namespace}.${modelId}.desc`] = formData.modelDesc;
             saveNewChairModelDialog.form.modelDesc.value = formData.modelDesc;
         }
 
@@ -392,62 +361,26 @@ var saveNewChairModelDialog = new Dialog({
         if (!isEmpty(formData.animation)) {
             let animationFilePath = formData.animation;
             let animationFileName = pathToName(animationFilePath).toLowerCase().replace(/\s|-/g, '_');
-            fs.writeFileSync(`${animationPath}/${animationFileName}.js`, fs.readFileSync(animationFilePath))
             modelData["animation"] = [`${namespace}:animation/${animationFileName}.js`];
         }
 
-        // 存储 json 文件
-        let modelList = TLM_PROJECT_INFO["pack_data"]["model_list"];
-        modelList.push(modelData);
-
-        // 书写坐垫模型包的文件
-        let chairJsonFilePath = `${namespacePath}/maid_chair.json`;
-        fs.writeFileSync(chairJsonFilePath, autoStringify(TLM_PROJECT_INFO["pack_data"]));
-
-        // 模型改名
-        Project.geometry_name = "model";
-        Project.name = modelId;
-
-        // 模型保存
-        let modelFilePath = `${modelPath}/${modelId}.json`;
-        fs.writeFile(modelFilePath, Format.codec.compile(), function (err) {
-            cl(err)
-        })
-        // 将导出路径修改为此路径
-        // 这样后续 Ctrl + S 保存时候会自动覆盖
-        ModelMeta.name = `${modelPath}`;
-        ModelMeta.export_path = modelFilePath;
-
-        // 材质保存
-        if (textures.length > 0) {
-            // 实体模型是单材质，获取第一个即可
-            let textureFile = textures[0];
-            // 来自 Blockbench 的图片二进制文件获取，不太理解
-            if (textureFile.mode === 'link') {
-                var image = nativeImage.createFromPath(textureFile.source.replace(/\?\d+$/, '')).toPNG()
-            } else {
-                var image = nativeImage.createFromDataURL(textureFile.source).toPNG()
-            }
-            // 存储地址构建
-            let textureFilePath = `${texturePath}/${modelId}.png`;
-            // 存储图片文件
-            fs.writeFile(textureFilePath, image, function (err) {
-                cl(err)
-            })
-            // 设置图片的相关属性， 这样后续 Ctrl + S 保存时候会自动覆盖
-            textureFile.name = `${modelId}.png`;
-            textureFile.folder = texturePath;
-            textureFile.path = textureFilePath;
-            textureFile.saved = true;
-            // 隐藏对话框
-            saveNewChairModelDialog.hide();
-        } else {
-            // 图片不存在时警告
+        // 检查重复 ID
+        if (checkDuplicateModelId()) {
             Blockbench.showMessageBox({
-                title: "警告：",
-                message: "当前模型材质为空！",
-                icon: "warning"
-            }, function (result) { })
+                title: "检查到当前 ID 和已有模型 ID 重复",
+                message: "是否继续进行保存？<br>这会覆盖掉同名模型的相关数据！",
+                confirm: 0,
+                cancel: 1,
+                buttons: ["确认覆盖", "取消"]
+            }, function (result) {
+                if (result == 0) {
+                    saveModel(modelData, formData.animation, languageMap, "maid_chair");
+                    saveNewChairModelDialog.hide();
+                }
+            })
+        } else {
+            saveModel(modelData, formData.animation, languageMap, "maid_chair");
+            saveNewChairModelDialog.hide();
         }
     }
 });
