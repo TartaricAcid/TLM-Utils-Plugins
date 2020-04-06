@@ -14,7 +14,6 @@ export function registerTextureEvent() {
             textureFile.name = textureName;
             textureFile.folder = texturePath;
             textureFile.path = `${texturePath}/${textureName}`;
-            textureFile.saved = true;
             Blockbench.notification("自动材质定位：", "检测到你已经绑定了资源包，并设置了模型数据。自动定位创建的材质！");
         }
     });

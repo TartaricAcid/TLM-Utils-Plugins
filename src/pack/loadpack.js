@@ -2,20 +2,26 @@ import { mkdirs } from "../utils/filesystem";
 import { TLM_PROJECT_INFO } from "../projectinfo";
 import { isEmpty } from "../utils/string";
 import { reloadAndReadLanguage } from "../utils/lang";
+import { dirname as _dirname } from "path";
 
 export var loadPack = new Action('load_pack', {
     name: '导入模型',
     description: '从已有资源包中导入模型',
     icon: 'unarchive',
+    cachePath: "",
     click: function () {
-        // 选择放置资源包文件夹的窗口
-        ElecDialogs.showOpenDialog(currentwindow, {
-            properties: ['openDirectory']
-        }, function (path) {
-            if (path != undefined && path != null) {
-                checkIsPackFolder(path);
-            }
-        });
+        // 新建一个项目
+        if (newProject(Formats['bedrock_old'], false)) {
+            // 选择放置资源包文件夹的窗口
+            ElecDialogs.showOpenDialog(currentwindow, {
+                title: "选择导入的资源包文件夹",
+                properties: ['openDirectory']
+            }, function (path) {
+                if (path != undefined && path != null && path.length > 0) {
+                    checkIsPackFolder(path);
+                }
+            });
+        }
     }
 });
 
@@ -214,14 +220,14 @@ var bindTypeDialog = new Dialog({
             TLM_PROJECT_INFO["type"] = "maid";
             readPackInfo(`${TLM_PROJECT_INFO.namespace_path}/maid_model.json`);
         }
-        // 状态栏显示        
-        Blockbench.notification('已绑定资源包：', `${TLM_PROJECT_INFO.namespace}`);
     }
 });
 
 function readPackInfo(filePath) {
+    // 剔除文件头部的 BOM 字符
     let text = fs.readFileSync(filePath, 'utf8').replace(/^\uFEFF/, "");
     TLM_PROJECT_INFO.pack_data = JSON.parse(text);
+    // 版本的提取
     let version = TLM_PROJECT_INFO.pack_data.version;
     if (isEmpty(version)) {
         TLM_PROJECT_INFO.pack_data.version = "1.0.0";
@@ -230,6 +236,7 @@ function readPackInfo(filePath) {
         TLM_PROJECT_INFO.version = version;
     }
 
+    // 模型列表为空的提示
     let modelList = TLM_PROJECT_INFO.pack_data.model_list;
     if (modelList == undefined || modelList == null || modelList.length < 1) {
         Blockbench.showMessageBox({
@@ -239,7 +246,7 @@ function readPackInfo(filePath) {
         }, function (result) { });
         return;
     }
-    // 获取一个包含 模型名称 -> 模型 ID 的对象
+    // 获取一个包含 模型 ID -> 模型名称 的对象
     let id2Name = {};
     let lang = getChineseLanguage();
 
@@ -287,16 +294,99 @@ function readPackInfo(filePath) {
         id: "select_model_dialog",
         title: "请选择模型",
         form: {
-            bindType: {
+            modelId: {
                 type: "select",
                 label: "选择模型",
                 options: id2Name
             }
         },
         onConfirm: function (formData) {
-            // TODO 已经获取到了指定的模型 ID，后续进行模型数据的导入和定位
-            cl(formData.bindType);
             selectModelDialog.hide();
+
+            // 依据 ID 获取对应条目
+            TLM_PROJECT_INFO.model_id = formData.modelId;
+            let modelId = `${TLM_PROJECT_INFO.namespace}:${formData.modelId}`;
+            let modelData;
+            modelList.forEach(function (model) {
+                if (model.model_id == modelId) {
+                    modelData = model;
+                }
+            });
+
+            if (modelData == undefined || modelData == null) {
+                console.exception("严重错误！选取的模型不在模型列表中！")
+                return;
+            }
+
+            // 默认位置的书写
+            let modelFilePath = `${TLM_PROJECT_INFO.models_path}/${formData.modelId}.json`;
+            let textureFilePath = `${TLM_PROJECT_INFO.textures_path}/${formData.modelId}.png`
+
+            // 如果显示声明了位置，进行覆盖
+            if (!isEmpty(modelData.model)) {
+                // 拆分出 namespace
+                let ns = modelData.model.split(":", 2)[0];
+                let path = modelData.model.split(":", 2)[1];
+                // 检查命名空间
+                if (ns != TLM_PROJECT_INFO.namespace) {
+                    Blockbench.showMessageBox({
+                        title: "异常：",
+                        message: "检测到选择的模型含了其他外部文件，无法进行加载！",
+                        icon: "warning"
+                    }, function (result) { });
+                    return;
+                } else {
+                    modelFilePath = `${TLM_PROJECT_INFO.namespace_path}/${path}`;
+                }
+            }
+
+            // 如果显示声明了位置，进行覆盖
+            if (!isEmpty(modelData.texture)) {
+                // 拆分出 namespace
+                let ns = modelData.texture.split(":", 2)[0];
+                let path = modelData.texture.split(":", 2)[1];
+                // 检查命名空间
+                if (ns != TLM_PROJECT_INFO.namespace) {
+                    Blockbench.showMessageBox({
+                        title: "异常：",
+                        message: "检测到选择的模型材质包含了其他外部文件，无法进行加载！",
+                        icon: "warning"
+                    }, function (result) { });
+                    return;
+                } else {
+                    textureFilePath = `${TLM_PROJECT_INFO.namespace_path}/${path}`;
+                }
+            }
+
+            Blockbench.read([modelFilePath], {
+                errorbox: true
+            }, function (files) {
+                // 加载模型
+                loadModelFile(files[0]);
+                // 模型改名
+                Project.geometry_name = "model";
+                Project.name = TLM_PROJECT_INFO.model_id;
+                // 将导出路径修改为此路径
+                // 这样后续 Ctrl + S 保存时候会自动覆盖
+                ModelMeta.name = _dirname(modelFilePath);
+                ModelMeta.export_path = modelFilePath;
+
+                // 材质加载
+                Blockbench.read([textureFilePath], {
+                    readtype: "image",
+                    errorbox: true
+                }, function (files) {
+                    files.forEach(function (f) {
+                        new Texture({
+                            name: f.name,
+                            folder: _dirname(f.path),
+                            path: f.path,
+                        }).fromFile(f).add(false);                        
+                        TLM_PROJECT_INFO.textures_path = _dirname(f.path);
+                        TLM_PROJECT_INFO.texture_name = f.name;
+                    });
+                })
+            });
         }
     });
     selectModelDialog.show();
