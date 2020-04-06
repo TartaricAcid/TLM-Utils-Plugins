@@ -10,7 +10,19 @@ import { createDefaultMaidModel } from "./tool/defaultmodel";
         title: '车万女仆模组插件',
         author: '酒石酸菌',
         description: '专门为车万女仆模组制作模型包所设计的插件。',
-        // about: `<p align="center"><iframe src="https://player.bilibili.com/player.html?aid=98652305&bvid=BV1h7411m7vh&cid=168399462&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="500" height="400"></iframe><p>`,
+        about: `<hr>
+        <p>感谢你使用 Blockbench 车万女仆模组插件 1.0.0 版本，此插件专为车万女仆模组制作资源包所设计，欢迎您反馈使用过程中的意见和建议。</p>
+        <p>期望大家能够在创作自己喜爱的事物中，收获到更多的快乐。</p>
+        <p>下附一首我很喜欢的一首名为《金木犀》的曲子：</p>
+        <br>
+        <p align="center">
+        <iframe 
+        frameborder="no" border="0" marginwidth="0" 
+        marginheight="0" width=350 height=133 
+        src="https://music.163.com/outchain/player?type=2&id=41554447&auto=0&height=133">
+        </iframe>
+        <p>
+        <br>`,
         icon: 'card_membership',
         version: '1.0.0',
         variant: 'desktop',
