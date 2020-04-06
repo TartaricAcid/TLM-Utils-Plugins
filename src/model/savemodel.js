@@ -40,32 +40,32 @@ export var saveNewMaidModelDialog = new Dialog({
             step: 0.05
         },
         showHata: {
-            label: "是否显示旗指物",
+            label: "显示旗指物",
             type: "checkbox",
             value: true
         },
         showBackpack: {
-            label: "是否显示背包",
+            label: "显示背包",
             type: "checkbox",
             value: true
         },
         canHoldTrolley: {
-            label: "是否能够持有拉杆箱",
+            label: "持有拉杆箱",
             type: "checkbox",
             value: true
         },
         canHoldVehicle: {
-            label: "是否能够持有载具",
+            label: "持有载具",
             type: "checkbox",
             value: true
         },
         canRidingBroom: {
-            label: "是否骑乘扫帚",
+            label: "骑乘扫帚",
             type: "checkbox",
             value: true
         },
         showCustomHead: {
-            label: "是否显示头颅",
+            label: "显示头颅",
             type: "checkbox",
             value: true
         },
@@ -282,14 +282,14 @@ export var saveNewChairModelDialog = new Dialog({
             step: 1
         },
         tameableCanRide: {
-            label: "女仆是否能主动坐上去",
+            label: "女仆能否能主动坐上去",
             type: "checkbox",
             value: true
         },
         noGravity: {
-            label: "坐垫是否受重力影响",
+            label: "坐垫可以浮空",
             type: "checkbox",
-            value: true
+            value: false
         },
         animation: {
             label: "动画脚本（可选）",
@@ -353,9 +353,9 @@ export var saveNewChairModelDialog = new Dialog({
             modelData["tameable_can_ride"] = false;
             saveNewChairModelDialog.form.tameableCanRide.value = false;
         }
-        if (!formData.noGravity) {
-            modelData["no_gravity"] = false;
-            saveNewChairModelDialog.form.noGravity.value = false;
+        if (formData.noGravity) {
+            modelData["no_gravity"] = true;
+            saveNewChairModelDialog.form.noGravity.value = true;
         }
         // 动画脚本数据书写
         if (!isEmpty(formData.animation)) {
