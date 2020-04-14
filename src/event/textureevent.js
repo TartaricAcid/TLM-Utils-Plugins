@@ -4,7 +4,7 @@ import { isEmpty } from "../utils/string"
 export function registerTextureEvent() {
     Blockbench.on("add_texture", function (data) {
         // 如果 modelId 为空，不进行修改
-        let modelId = TLM_PROJECT_INFO.model_id
+        let modelId = TLM_PROJECT_INFO.model_id;
         let texturePath = TLM_PROJECT_INFO.textures_path;
         let textureName = TLM_PROJECT_INFO.texture_name;
         if (!isEmpty(modelId) && !isEmpty(texturePath) && !isEmpty(textureName)) {

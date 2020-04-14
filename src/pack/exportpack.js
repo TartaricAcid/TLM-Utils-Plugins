@@ -1,10 +1,10 @@
-import { mkdirs } from "../utils/filesystem";
-import { TLM_PROJECT_INFO } from "../projectinfo";
-import { isEmpty } from "../utils/string";
-import { createMaidPackDialog } from "./createmaidpack";
-import { createChairPackDialog } from "./createchairpack";
-import { saveNewMaidModelDialog, saveNewChairModelDialog } from "../model/savemodel";
-import { reloadAndReadLanguage } from "../utils/lang";
+import {mkdirs} from "../utils/filesystem";
+import {TLM_PROJECT_INFO} from "../projectinfo";
+import {isEmpty} from "../utils/string";
+import {createMaidPackDialog} from "./createmaidpack";
+import {createChairPackDialog} from "./createchairpack";
+import {saveNewMaidModelDialog, saveNewChairModelDialog} from "../model/savemodel";
+import {reloadAndReadLanguage} from "../utils/lang";
 
 export var exportPack = new Action('export_pack', {
     name: '导出模型',
@@ -14,23 +14,25 @@ export var exportPack = new Action('export_pack', {
         // 先检查当前是否处于正确的导出状态
         // 工作区正确，而且模型材质不为空
         if (Format) {
-            if (Format.id != "bedrock_old") {
+            if (Format.id !== "bedrock_old") {
                 Blockbench.showMessageBox({
                     title: "当前模型格式不正确！",
                     message: '模型格式只支持 <font color="red">旧版基岩版</font> 模型！<br>你可以通过 <font color="orange">文件/转换工程</font> 菜单进行格式转换！',
                     icon: "warning"
-                }, function (result) { })
+                }, function (result) {
+                })
             } else {
                 // 模型为空
-                if (Outliner.root.length == 0) {
+                if (Outliner.root.length === 0) {
                     Blockbench.showMessageBox({
                         title: "当前模型为空！",
                         message: '请先创建模型，然后再进行导出！',
                         icon: "warning"
-                    }, function (result) { })
+                    }, function (result) {
+                    })
                 } else {
                     // 材质为空，提醒
-                    if (textures.length == 0) {
+                    if (textures.length === 0) {
                         Blockbench.notification("你当前没有创建材质！", "你仍旧可以导出模型，但游戏内的该模型将没有材质！");
                     }
                     // 延迟打开，因为和前面的通知会存在冲突
@@ -40,7 +42,7 @@ export var exportPack = new Action('export_pack', {
                             title: "选择资源包文件夹",
                             properties: ['openDirectory']
                         }, function (path) {
-                            if (path != undefined && path != null) {
+                            if (path !== undefined && path !== null) {
                                 checkIsPackFolder(path);
                             }
                         });
@@ -52,7 +54,8 @@ export var exportPack = new Action('export_pack', {
                 title: "当前没有模型",
                 message: '请先创建模型，然后再进行模型导出！',
                 icon: "warning"
-            }, function (result) { })
+            }, function (result) {
+            })
         }
     }
 });
@@ -70,15 +73,17 @@ function checkIsPackFolder(path) {
                 title: "提示：",
                 message: "选择的文件夹不是资源包，pack.mcmeta 应该是文件！",
                 icon: "warning"
-            }, function (result) { });
+            }, function (result) {
+            });
             return;
-        };
+        }
     } else {
         Blockbench.showMessageBox({
             title: "提示：",
             message: "选择的文件夹不是资源包，缺少 pack.mcmeta 文件！",
             icon: "warning"
-        }, function (result) { });
+        }, function (result) {
+        });
         return;
     }
 
@@ -90,20 +95,22 @@ function checkIsPackFolder(path) {
                 title: "提示：",
                 message: "选择的文件夹不是资源包，assets 应该是文件夹！",
                 icon: "warning"
-            }, function (result) { });
+            }, function (result) {
+            });
             return;
-        };
+        }
     } else {
         Blockbench.showMessageBox({
             title: "提示：",
             message: "选择的文件夹不是资源包，缺少 assets 文件！",
             icon: "warning"
-        }, function (result) { });
+        }, function (result) {
+        });
         return;
     }
 
     // 检查命名空间    
-    let namespaceList = []
+    let namespaceList = [];
     let namespaceFiles = fs.readdirSync(assetsPath);
     for (let file of namespaceFiles) {
         let stats = fs.statSync(`${assetsPath}/${file}`);
@@ -112,12 +119,13 @@ function checkIsPackFolder(path) {
         }
     }
     // 如果不存在命名空间
-    if (namespaceList.length == 0) {
+    if (namespaceList.length === 0) {
         Blockbench.showMessageBox({
             title: "提示：",
             message: "选择的文件夹不是资源包，缺少命名空间文件夹！",
             icon: "warning"
-        }, function (result) { });
+        }, function (result) {
+        });
         return;
     }
     // 如果存在多个命名空间，弹出选择框
@@ -139,7 +147,7 @@ function checkIsPackFolder(path) {
             onConfirm: function (formData) {
                 select.hide();
                 namespace = formData.folder;
-                namespacePath = `${assetsPath}/${formData.folder}`
+                namespacePath = `${assetsPath}/${formData.folder}`;
 
                 // 检查通过，检查文件夹并进行创建
                 mkdirs(`${namespacePath}/models/entity`);
@@ -166,9 +174,9 @@ function checkIsPackFolder(path) {
     }
 
     // 如果是单个文件夹，直接选择
-    if (namespaceList.length == 1) {
+    if (namespaceList.length === 1) {
         namespace = namespaceList[0];
-        namespacePath = `${assetsPath}/${namespaceList[0]}`
+        namespacePath = `${assetsPath}/${namespaceList[0]}`;
 
         // 检查通过，检查文件夹并进行创建
         mkdirs(`${namespacePath}/models/entity`);
@@ -191,7 +199,7 @@ function checkIsPackFolder(path) {
     }
 }
 
-var exportTypeDialog = new Dialog({
+let exportTypeDialog = new Dialog({
     id: "export_type_dialog",
     title: "选择导出类型",
     form: {
@@ -206,11 +214,11 @@ var exportTypeDialog = new Dialog({
         }
     },
     onConfirm: function (formData) {
-        if (formData.bindType == "chair") {
+        if (formData.bindType === "chair") {
             // 存储数据
             TLM_PROJECT_INFO["type"] = "chair";
             // 依据绑定类型检查对应文件是否存在
-            let chairModelFile = `${TLM_PROJECT_INFO.namespace_path}/maid_chair.json`
+            let chairModelFile = `${TLM_PROJECT_INFO.namespace_path}/maid_chair.json`;
             if (fs.existsSync(chairModelFile) && fs.statSync(chairModelFile).isFile()) {
                 // 剔除 JSON 开头的 BOM 标记
                 let text = fs.readFileSync(chairModelFile, 'utf8').replace(/^\uFEFF/, "");
@@ -233,11 +241,11 @@ var exportTypeDialog = new Dialog({
                 createChairPackDialog.show();
             }
         }
-        if (formData.bindType == "maid") {
+        if (formData.bindType === "maid") {
             // 存储数据
             TLM_PROJECT_INFO["type"] = "maid";
             // 依据绑定类型检查对应文件是否存在
-            let maidModelFile = `${TLM_PROJECT_INFO.namespace_path}/maid_model.json`
+            let maidModelFile = `${TLM_PROJECT_INFO.namespace_path}/maid_model.json`;
             if (fs.existsSync(maidModelFile) && fs.statSync(maidModelFile).isFile()) {
                 // 剔除 JSON 开头的 BOM 标记
                 let text = fs.readFileSync(maidModelFile, 'utf8').replace(/^\uFEFF/, "");

@@ -1,0 +1,27 @@
+{
+  "name": "tlm_utils_plugins",
+  "version": "1.1.0",
+  "author": "tartaric_acid",
+  "description": "Touhou Little Maid Mod Blockbench Plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TartaricAcid/TLM-Utils-Plugins"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "12.13.0",
+    "electron": "8.0.2",
+    "blockbench": "3.4.2"
+  },
+  "bugs": {
+    "url": "https://github.com/TartaricAcid/TLM-Utils-Plugins/issues",
+    "email": "baka943@qq.com"
+  },
+  "dependencies": {
+    "rollup": "2.3.3",
+    "@rollup/plugin-json": "latest"
+  },
+  "scripts": {
+    "start": "rollup -c"
+  }
+}

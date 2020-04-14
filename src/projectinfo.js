@@ -10,4 +10,4 @@ export var TLM_PROJECT_INFO = {
     texture_name: "",
     version: "",
     pack_data: {}
-}
+};

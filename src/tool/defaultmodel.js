@@ -71,14 +71,14 @@ export var createDefaultMaidModel = new Action('create_default_maid_model', {
                     let bones = copyModel["geometry.model"]["bones"];
                     for (let i in formData) {
                         for (let j = 0; j < bones.length; j++) {
-                            if (bones[j].name == i && !formData[i]) {
+                            if (bones[j].name === i && !formData[i]) {
                                 bones.splice(j, 1);
                                 break;
                             }
                         }
                     }
                     exportDefaultModelDialog.hide();
-                    Codecs.bedrock_old.parse(copyModel, null);
+                    Codecs["bedrock_old"].parse(copyModel, null);
                 }
             });
             exportDefaultModelDialog.show();

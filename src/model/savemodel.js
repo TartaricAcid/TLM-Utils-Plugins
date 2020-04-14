@@ -1,7 +1,7 @@
-import { isEmpty } from "../utils/string";
-import { addLanguageEntry, saveLanguageFile } from "../utils/lang";
-import { TLM_PROJECT_INFO } from "../projectinfo";
-import { checkDuplicateModelId, addModelToList } from "../utils/checkdata";
+import {isEmpty} from "../utils/string";
+import {addLanguageEntry, saveLanguageFile} from "../utils/lang";
+import {TLM_PROJECT_INFO} from "../projectinfo";
+import {checkDuplicateModelId, addModelToList} from "../utils/checkdata";
 
 export var saveNewMaidModelDialog = new Dialog({
     id: "save_new_maid_model_dialog",
@@ -72,7 +72,7 @@ export var saveNewMaidModelDialog = new Dialog({
         animation: {
             label: "动画脚本（可选）",
             type: "file",
-            extensions: ['js'],
+            extensions: ['blockbench'],
             filetype: 'JS'
         },
     },
@@ -122,11 +122,11 @@ export var saveNewMaidModelDialog = new Dialog({
         }
 
         // 兼容性数据书写
-        if (formData.renderItemScale != 1) {
+        if (formData.renderItemScale !== 1) {
             modelData["render_item_scale"] = formData.renderItemScale;
             saveNewMaidModelDialog.form.renderItemScale.value = formData.renderItemScale;
         }
-        if (formData.renderEntityScale != 1) {
+        if (formData.renderEntityScale !== 1) {
             modelData["render_entity_scale"] = formData.renderEntityScale;
             saveNewMaidModelDialog.form.renderEntityScale.value = formData.renderEntityScale;
         }
@@ -170,7 +170,7 @@ export var saveNewMaidModelDialog = new Dialog({
                 cancel: 1,
                 buttons: ["确认覆盖", "取消"]
             }, function (result) {
-                if (result == 0) {
+                if (result === 0) {
                     saveModel(modelData, formData.animation, languageMap, "maid_model");
                     // 隐藏对话框
                     saveNewMaidModelDialog.hide();
@@ -208,7 +208,7 @@ function saveModel(modelData, animationFilePath, languageMap, jsonFileName) {
     }
     fs.writeFileSync(jsonFile, autoStringify(TLM_PROJECT_INFO["pack_data"]));
     fs.writeFile(modelFilePath, Format.codec.compile(), function (err) {
-    })
+    });
 
     // 语言文件
     for (let key of Object.keys(languageMap)) {
@@ -221,16 +221,17 @@ function saveModel(modelData, animationFilePath, languageMap, jsonFileName) {
         // 实体模型是单材质，获取第一个即可
         let textureFile = textures[0];
         // 来自 Blockbench 的图片二进制文件获取，不太理解
+        let image;
         if (textureFile.mode === 'link') {
-            var image = nativeImage.createFromPath(textureFile.source.replace(/\?\d+$/, '')).toPNG()
+            image = nativeImage.createFromPath(textureFile.source.replace(/\?\d+$/, '')).toPNG()
         } else {
-            var image = nativeImage.createFromDataURL(textureFile.source).toPNG()
+            image = nativeImage.createFromDataURL(textureFile.source).toPNG()
         }
         // 存储地址构建
         let textureFilePath = `${TLM_PROJECT_INFO.textures_path}/${TLM_PROJECT_INFO.model_id}.png`;
         // 存储图片文件
         fs.writeFile(textureFilePath, image, function (err) {
-        })
+        });
         // 设置图片的相关属性， 这样后续 Ctrl + S 保存时候会自动覆盖
         textureFile.name = `${TLM_PROJECT_INFO.model_id}.png`;
         textureFile.folder = TLM_PROJECT_INFO.textures_path;
@@ -294,7 +295,7 @@ export var saveNewChairModelDialog = new Dialog({
         animation: {
             label: "动画脚本（可选）",
             type: "file",
-            extensions: ['js'],
+            extensions: ['blockbench'],
             filetype: 'JS'
         },
     },
@@ -341,7 +342,7 @@ export var saveNewChairModelDialog = new Dialog({
         }
 
         // 其他数据书写
-        if (formData.renderItemScale != 1) {
+        if (formData.renderItemScale !== 1) {
             modelData["render_item_scale"] = formData.renderItemScale;
             saveNewChairModelDialog.form.renderItemScale.value = formData.renderItemScale;
         }
@@ -373,7 +374,7 @@ export var saveNewChairModelDialog = new Dialog({
                 cancel: 1,
                 buttons: ["确认覆盖", "取消"]
             }, function (result) {
-                if (result == 0) {
+                if (result === 0) {
                     saveModel(modelData, formData.animation, languageMap, "maid_chair");
                     saveNewChairModelDialog.hide();
                 }

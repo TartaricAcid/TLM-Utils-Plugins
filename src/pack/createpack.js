@@ -1,8 +1,8 @@
-import { mkdirs } from "../utils/filesystem";
-import { isEmpty } from "../utils/string";
-import { TLM_PROJECT_INFO } from "../projectinfo";
+import {mkdirs} from "../utils/filesystem";
+import {isEmpty} from "../utils/string";
+import {TLM_PROJECT_INFO} from "../projectinfo";
 
-var DEFAULT_TLM_PACK_DESC = '{"pack":{"pack_format":3,"description":"Touhou Little Maid Resources Pack"}}';
+let DEFAULT_TLM_PACK_DESC = '{"pack":{"pack_format":3,"description":"Touhou Little Maid Resources Pack"}}';
 
 export var createNewPack = new Action('create_new_pack', {
     name: '创建资源包',
@@ -13,7 +13,7 @@ export var createNewPack = new Action('create_new_pack', {
     }
 });
 
-var createNewPackDialog = new Dialog({
+let createNewPackDialog = new Dialog({
     id: "create_new_pack",
     title: "请输入资源包相关参数",
     form: {
@@ -48,7 +48,7 @@ var createNewPackDialog = new Dialog({
         }
         // ID 长度校验
         if (packId.length < 6) {
-            Blockbench.notification("资源包 ID 过短！", "为避免冲突，资源包 ID 至少应为 6 个字符！");
+            Blockbench.notification('资源包 ID 过短！', "为避免冲突，资源包 ID 至少应为 6 个字符！");
             return;
         }
 
@@ -71,7 +71,7 @@ var createNewPackDialog = new Dialog({
             properties: ['openDirectory']
         }, function (path) {
             // 取消选择时，path 为空
-            if (path == undefined || path == null) {
+            if (path === undefined || path === null) {
                 return;
             }
 
@@ -86,11 +86,11 @@ var createNewPackDialog = new Dialog({
             TLM_PROJECT_INFO["namespace_path"] = namespace;
 
             // 自定义动画脚本文件夹
-            mkdirs(`${namespace}/animation`);        
+            mkdirs(`${namespace}/animation`);
             TLM_PROJECT_INFO["animation_path"] = `${namespace}/animation`;
 
             // 语言文件夹
-            mkdirs(`${namespace}/lang`);             
+            mkdirs(`${namespace}/lang`);
             TLM_PROJECT_INFO["lang_path"] = `${namespace}/lang`;
 
             // 模型文件夹

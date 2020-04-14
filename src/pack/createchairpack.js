@@ -1,5 +1,5 @@
-import { isEmpty, trim } from "../utils/string";
-import { dateFormat } from "../utils/date";
+import {isEmpty} from "../utils/string";
+import {dateFormat} from "../utils/date";
 import { addLanguageEntry, saveLanguageFile } from "../utils/lang";
 import { TLM_PROJECT_INFO } from "../projectinfo";
 import { saveNewChairModelDialog } from "../model/savemodel";
@@ -45,7 +45,7 @@ export var createChairPackDialog = new Dialog({
         let packData = TLM_PROJECT_INFO["pack_data"];
 
         // 剔除包名首尾空格
-        let packName = trim(formData.packName);
+        let packName = formData.packName.trim();
 
         // 包名不能为空
         if (isEmpty(packName)) {
@@ -63,7 +63,7 @@ export var createChairPackDialog = new Dialog({
             // 依据逗号分隔作者名称
             let authorList = formData.author.split(/[,|，]/);
             for (let i = 0; i < authorList.length; i++) {
-                authorList[i] = trim(authorList[i]);
+                authorList[i] = authorList[i].trim();
             }
             packData["author"] = authorList;
         }

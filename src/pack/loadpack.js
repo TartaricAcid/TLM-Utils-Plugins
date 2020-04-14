@@ -1,8 +1,8 @@
-import { mkdirs } from "../utils/filesystem";
-import { TLM_PROJECT_INFO } from "../projectinfo";
-import { isEmpty } from "../utils/string";
-import { reloadAndReadLanguage } from "../utils/lang";
-import { dirname as _dirname } from "path";
+import {mkdirs} from "../utils/filesystem";
+import {TLM_PROJECT_INFO} from "../projectinfo";
+import {isEmpty} from "../utils/string";
+import {reloadAndReadLanguage} from "../utils/lang";
+import {dirname as _dirname} from "path";
 
 export var loadPack = new Action('load_pack', {
     name: '导入模型',
@@ -17,7 +17,7 @@ export var loadPack = new Action('load_pack', {
                 title: "选择导入的资源包文件夹",
                 properties: ['openDirectory']
             }, function (path) {
-                if (path != undefined && path != null && path.length > 0) {
+                if (path !== undefined && path !== null && path.length > 0) {
                     checkIsPackFolder(path);
                 }
             });
@@ -39,15 +39,17 @@ function checkIsPackFolder(path) {
                 title: "提示：",
                 message: "选择的文件夹不是资源包，pack.mcmeta 应该是文件！",
                 icon: "warning"
-            }, function (result) { });
+            }, function (result) {
+            });
             return;
-        };
+        }
     } else {
         Blockbench.showMessageBox({
             title: "提示：",
             message: "选择的文件夹不是资源包，缺少 pack.mcmeta 文件！",
             icon: "warning"
-        }, function (result) { });
+        }, function (result) {
+        });
         return;
     }
 
@@ -59,20 +61,22 @@ function checkIsPackFolder(path) {
                 title: "提示：",
                 message: "选择的文件夹不是资源包，assets 应该是文件夹！",
                 icon: "warning"
-            }, function (result) { });
+            }, function (result) {
+            });
             return;
-        };
+        }
     } else {
         Blockbench.showMessageBox({
             title: "提示：",
             message: "选择的文件夹不是资源包，缺少 assets 文件！",
             icon: "warning"
-        }, function (result) { });
+        }, function (result) {
+        });
         return;
     }
 
     // 检查命名空间    
-    let namespaceList = []
+    let namespaceList = [];
     let namespaceFiles = fs.readdirSync(assetsPath);
     for (let file of namespaceFiles) {
         let stats = fs.statSync(`${assetsPath}/${file}`);
@@ -81,12 +85,13 @@ function checkIsPackFolder(path) {
         }
     }
     // 如果不存在命名空间
-    if (namespaceList.length == 0) {
+    if (namespaceList.length === 0) {
         Blockbench.showMessageBox({
             title: "提示：",
             message: "选择的文件夹不是资源包，缺少命名空间文件夹！",
             icon: "warning"
-        }, function (result) { });
+        }, function (result) {
+        });
         return;
     }
     // 如果存在多个命名空间，弹出选择框
@@ -108,7 +113,7 @@ function checkIsPackFolder(path) {
             onConfirm: function (formData) {
                 select.hide();
                 namespace = formData.folder;
-                namespacePath = `${assetsPath}/${formData.folder}`
+                namespacePath = `${assetsPath}/${formData.folder}`;
 
                 // 检查通过，检查文件夹并进行创建
                 mkdirs(`${namespacePath}/models/entity`);
@@ -135,9 +140,9 @@ function checkIsPackFolder(path) {
     }
 
     // 如果是单个文件夹，直接选择
-    if (namespaceList.length == 1) {
+    if (namespaceList.length === 1) {
         namespace = namespaceList[0];
-        namespacePath = `${assetsPath}/${namespaceList[0]}`
+        namespacePath = `${assetsPath}/${namespaceList[0]}`;
 
         // 检查通过，检查文件夹并进行创建
         mkdirs(`${namespacePath}/models/entity`);
@@ -171,7 +176,8 @@ function chooseMaidOrChair(namespacePath) {
             title: "提示：",
             message: "该资源包不包含模型描述文件，请确认选择了正确的资源包！",
             icon: "warning"
-        }, function (result) { });
+        }, function (result) {
+        });
         return;
     }
 
@@ -195,7 +201,7 @@ function chooseMaidOrChair(namespacePath) {
     }
 }
 
-var bindTypeDialog = new Dialog({
+let bindTypeDialog = new Dialog({
     id: "bind_type_dialog",
     title: "选择绑定类型",
     form: {
@@ -210,12 +216,12 @@ var bindTypeDialog = new Dialog({
         }
     },
     onConfirm: function (formData) {
-        if (formData.bindType == "chair") {
+        if (formData.bindType === "chair") {
             // 存储数据
             TLM_PROJECT_INFO["type"] = "chair";
             readPackInfo(`${TLM_PROJECT_INFO.namespace_path}/maid_chair.json`);
         }
-        if (formData.bindType == "maid") {
+        if (formData.bindType === "maid") {
             // 存储数据
             TLM_PROJECT_INFO["type"] = "maid";
             readPackInfo(`${TLM_PROJECT_INFO.namespace_path}/maid_model.json`);
@@ -238,12 +244,13 @@ function readPackInfo(filePath) {
 
     // 模型列表为空的提示
     let modelList = TLM_PROJECT_INFO.pack_data.model_list;
-    if (modelList == undefined || modelList == null || modelList.length < 1) {
+    if (modelList === undefined || modelList === null || modelList.length < 1) {
         Blockbench.showMessageBox({
             title: "提示：",
             message: "检测到该包不包含模型，请确认你选择了正确的资源包！",
             icon: "warning"
-        }, function (result) { });
+        }, function (result) {
+        });
         return;
     }
     // 获取一个包含 模型 ID -> 模型名称 的对象
@@ -271,7 +278,7 @@ function readPackInfo(filePath) {
         // 模型有名称字段
         else {
             // 模型使用的是本地化方式
-            if (name.indexOf("{") == 0 && name.indexOf("}") == (name.length - 1)) {
+            if (name.indexOf("{") === 0 && name.indexOf("}") === (name.length - 1)) {
                 // 获取对应的 key
                 let key = name.replace(/^{/, "").replace(/}$/, "");
                 // 如果语言文件不包含该 key，直接以模型 id 作为名称
@@ -290,7 +297,7 @@ function readPackInfo(filePath) {
         }
     });
 
-    var selectModelDialog = new Dialog({
+    let selectModelDialog = new Dialog({
         id: "select_model_dialog",
         title: "请选择模型",
         form: {
@@ -308,19 +315,19 @@ function readPackInfo(filePath) {
             let modelId = `${TLM_PROJECT_INFO.namespace}:${formData.modelId}`;
             let modelData;
             modelList.forEach(function (model) {
-                if (model.model_id == modelId) {
+                if (model.model_id === modelId) {
                     modelData = model;
                 }
             });
 
-            if (modelData == undefined || modelData == null) {
-                console.exception("严重错误！选取的模型不在模型列表中！")
+            if (modelData === undefined || modelData === null) {
+                console.exception("严重错误！选取的模型不在模型列表中！");
                 return;
             }
 
             // 默认位置的书写
             let modelFilePath = `${TLM_PROJECT_INFO.models_path}/${formData.modelId}.json`;
-            let textureFilePath = `${TLM_PROJECT_INFO.textures_path}/${formData.modelId}.png`
+            let textureFilePath = `${TLM_PROJECT_INFO.textures_path}/${formData.modelId}.png`;
 
             // 如果显示声明了位置，进行覆盖
             if (!isEmpty(modelData.model)) {
@@ -328,12 +335,13 @@ function readPackInfo(filePath) {
                 let ns = modelData.model.split(":", 2)[0];
                 let path = modelData.model.split(":", 2)[1];
                 // 检查命名空间
-                if (ns != TLM_PROJECT_INFO.namespace) {
+                if (ns !== TLM_PROJECT_INFO.namespace) {
                     Blockbench.showMessageBox({
                         title: "异常：",
                         message: "检测到选择的模型含了其他外部文件，无法进行加载！",
                         icon: "warning"
-                    }, function (result) { });
+                    }, function (result) {
+                    });
                     return;
                 } else {
                     modelFilePath = `${TLM_PROJECT_INFO.namespace_path}/${path}`;
@@ -346,12 +354,13 @@ function readPackInfo(filePath) {
                 let ns = modelData.texture.split(":", 2)[0];
                 let path = modelData.texture.split(":", 2)[1];
                 // 检查命名空间
-                if (ns != TLM_PROJECT_INFO.namespace) {
+                if (ns !== TLM_PROJECT_INFO.namespace) {
                     Blockbench.showMessageBox({
                         title: "异常：",
                         message: "检测到选择的模型材质包含了其他外部文件，无法进行加载！",
                         icon: "warning"
-                    }, function (result) { });
+                    }, function (result) {
+                    });
                     return;
                 } else {
                     textureFilePath = `${TLM_PROJECT_INFO.namespace_path}/${path}`;
@@ -381,7 +390,7 @@ function readPackInfo(filePath) {
                             name: f.name,
                             folder: _dirname(f.path),
                             path: f.path,
-                        }).fromFile(f).add(false);                        
+                        }).fromFile(f).add(false);
                         TLM_PROJECT_INFO.textures_path = _dirname(f.path);
                         TLM_PROJECT_INFO.texture_name = f.name;
                     });
@@ -400,7 +409,7 @@ function getChineseLanguage() {
         let allText = fs.readFileSync(englishFile, 'utf8');
         allText.split(/\r?\n/).forEach(function (line) {
             // 排除 # 开头的注释
-            if (line.indexOf("#") != 0) {
+            if (line.indexOf("#") !== 0) {
                 let text = line.split("=", 2);
                 if (!isEmpty(text[0]) && !isEmpty(text[1])) {
                     output[text[0]] = text[1];
@@ -412,7 +421,7 @@ function getChineseLanguage() {
         let allText = fs.readFileSync(chineseFile, 'utf8');
         allText.split(/\r?\n/).forEach(function (line) {
             // 排除 # 开头的注释
-            if (line.indexOf("#") != 0) {
+            if (line.indexOf("#") !== 0) {
                 let text = line.split("=", 2);
                 if (!isEmpty(text[0]) && !isEmpty(text[1])) {
                     output[text[0]] = text[1];
