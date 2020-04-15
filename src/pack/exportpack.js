@@ -199,7 +199,7 @@ function checkIsPackFolder(path) {
     }
 }
 
-let exportTypeDialog = new Dialog({
+var exportTypeDialog = new Dialog({
     id: "export_type_dialog",
     title: "选择导出类型",
     form: {

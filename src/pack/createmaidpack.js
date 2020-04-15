@@ -1,8 +1,8 @@
 import {isEmpty} from "../utils/string";
 import {dateFormat} from "../utils/date";
-import { addLanguageEntry, saveLanguageFile } from "../utils/lang";
-import { TLM_PROJECT_INFO } from "../projectinfo";
-import { saveNewMaidModelDialog } from "../model/savemodel";
+import {addLanguageEntry, saveLanguageFile} from "../utils/lang";
+import {TLM_PROJECT_INFO} from "../projectinfo";
+import {saveNewMaidModelDialog} from "../model/savemodel";
 
 export var createMaidPackDialog = new Dialog({
     id: "create_maid_pack",

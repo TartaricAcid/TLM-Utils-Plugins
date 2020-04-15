@@ -1,7 +1,7 @@
 import {TLM_PROJECT_INFO} from "../projectinfo";
 import {isEmpty} from "./string"
 
-let english = {};
+var english = {};
 
 export function addLanguageEntry(key, value) {
     english[key] = value;

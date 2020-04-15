@@ -201,7 +201,7 @@ function chooseMaidOrChair(namespacePath) {
     }
 }
 
-let bindTypeDialog = new Dialog({
+var bindTypeDialog = new Dialog({
     id: "bind_type_dialog",
     title: "选择绑定类型",
     form: {

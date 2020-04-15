@@ -2,8 +2,6 @@ import {mkdirs} from "../utils/filesystem";
 import {isEmpty} from "../utils/string";
 import {TLM_PROJECT_INFO} from "../projectinfo";
 
-let DEFAULT_TLM_PACK_DESC = '{"pack":{"pack_format":3,"description":"Touhou Little Maid Resources Pack"}}';
-
 export var createNewPack = new Action('create_new_pack', {
     name: '创建资源包',
     description: '创建一个新的资源包文件夹',
@@ -13,7 +11,7 @@ export var createNewPack = new Action('create_new_pack', {
     }
 });
 
-let createNewPackDialog = new Dialog({
+var createNewPackDialog = new Dialog({
     id: "create_new_pack",
     title: "请输入资源包相关参数",
     form: {
@@ -105,6 +103,7 @@ let createNewPackDialog = new Dialog({
             TLM_PROJECT_INFO["textures_path"] = packTextures;
 
             // 创建 pack.mcmeta 文件
+            let DEFAULT_TLM_PACK_DESC = '{"pack":{"pack_format":3,"description":"Touhou Little Maid Resources Pack"}}';
             fs.writeFileSync(`${root}/pack.mcmeta`, DEFAULT_TLM_PACK_DESC);
 
             // 如果图标不为空，复制图标

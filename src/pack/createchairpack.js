@@ -1,8 +1,8 @@
 import {isEmpty} from "../utils/string";
 import {dateFormat} from "../utils/date";
-import { addLanguageEntry, saveLanguageFile } from "../utils/lang";
-import { TLM_PROJECT_INFO } from "../projectinfo";
-import { saveNewChairModelDialog } from "../model/savemodel";
+import {addLanguageEntry, saveLanguageFile} from "../utils/lang";
+import {TLM_PROJECT_INFO} from "../projectinfo";
+import {saveNewChairModelDialog} from "../model/savemodel";
 
 export var createChairPackDialog = new Dialog({
     id: "create_chair_pack",

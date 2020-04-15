@@ -1,5 +1,5 @@
-import { TLM_PROJECT_INFO } from "../projectinfo";
-import { isEmpty } from "../utils/string"
+import {TLM_PROJECT_INFO} from "../projectinfo";
+import {isEmpty} from "../utils/string"
 
 export function registerTextureEvent() {
     Blockbench.on("add_texture", function (data) {

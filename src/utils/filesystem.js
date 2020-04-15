@@ -1,4 +1,4 @@
-import { dirname as _dirname } from "path";
+import {dirname as _dirname} from "path";
 
 /**
  * 递归创建文件夹

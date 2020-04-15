@@ -1,9 +1,11 @@
-import { createNewPack } from "./pack/createpack";
-import { exportPack } from "./pack/exportpack"
-import { newWorkSpace } from "./model/workspace";
-import { registerTextureEvent } from "./event/textureevent";
-import { loadPack } from "./pack/loadpack";
-import { createDefaultMaidModel } from "./tool/defaultmodel";
+import {createNewPack} from "./pack/createpack";
+import {exportPack} from "./pack/exportpack"
+import {newWorkSpace} from "./model/workspace";
+import {registerTextureEvent} from "./event/textureevent";
+import {loadPack} from "./pack/loadpack";
+import {createDefaultMaidModel} from "./tool/defaultmodel";
+import {addSkirtMenu} from "./tool/genskirt";
+
 
 (function () {
     Plugin.register('tlm-utils', {
@@ -41,12 +43,14 @@ import { createDefaultMaidModel } from "./tool/defaultmodel";
                     id: 'tlm_tool',
                     icon: 'fa-tools',
                     children: [
-                        'create_default_maid_model'
+                        'create_default_maid_model',
                     ]
                 }
             ]);
             MenuBar.update();
             registerTextureEvent();
+            Group.prototype.menu.structure.push('_');
+            Group.prototype.menu.structure.push(addSkirtMenu);
         },
         onunload() {
             // 删除主菜单按钮
@@ -59,6 +63,13 @@ import { createDefaultMaidModel } from "./tool/defaultmodel";
             newWorkSpace.delete();
             loadPack.delete();
             createDefaultMaidModel.delete();
+
+            let structure = Group.prototype.menu.structure;
+            for (let i = 0; i < structure.length; i++) {
+                if (structure[i] && structure[i]["is_tlm_add_menu"]) {
+                    delete structure[i];
+                }
+            }
         }
     });
 })();
