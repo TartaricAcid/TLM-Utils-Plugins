@@ -1,6 +1,6 @@
 export var addSkirtMenu = {
     is_tlm_add_menu: true,
-    icon: 'fa-chevron-circle-right',
+    icon: 'fa-female',
     name: '生成裙子',
     condition: {modes: ['edit']},
     click: function (group) {
@@ -19,12 +19,17 @@ function addSkirt(rootGroup) {
             },
             width: {
                 type: "number",
-                label: "裙褶宽度",
+                label: "裙褶长度",
                 value: 2, min: 1, max: 10, step: 1
             },
             length: {
                 type: "number",
-                label: "裙褶长度",
+                label: "裙褶宽度",
+                value: 2, min: 1, max: 10, step: 1
+            },
+            height: {
+                type: "number",
+                label: "裙褶高度",
                 value: 6, min: 1, max: 100, step: 1
             },
             deg: {
@@ -36,22 +41,20 @@ function addSkirt(rootGroup) {
         onConfirm: function (formData) {
             let count = formData.count;
             let width = formData.width;
+            let height = formData.height;
             let length = formData.length;
             let deg = formData.deg;
             let selectedGroup = rootGroup;
-
             if (!selectedGroup && selectedGroup.length) {
                 Blockbench.notification("当前所选组不正确", "请选择或创建一个空组");
                 return;
             }
-
             for (let i = 0; i < count; i++) {
-                let z1 = Math.SQRT2 / 2 * (1 / Math.tan(Math.PI / count) - 1) * width;
-                let z2 = Math.SQRT2 / 2 * width / Math.tan(Math.PI / count);
+                let z2 = Math.sqrt(length ** 2 + width ** 2) / 2 / Math.tan(Math.PI / count);
                 selectedGroup = addSkirtGroup(selectedGroup, [0, 0, 0], [0, 360 / count * i, 0]);
                 selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z2], [-deg, 0, 0]);
-                selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z1], [0, -45, 0]);
-                addSkirtCube(selectedGroup, width, length);
+                selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z2], [0, Math.radToDeg(Math.atan(length / width)), 0]);
+                addSkirtCube(selectedGroup, [-width / 2, 0, z2 - length / 2], [width, height, length]);
                 selectedGroup = rootGroup;
             }
             Canvas.updateAll();
@@ -60,7 +63,7 @@ function addSkirt(rootGroup) {
     }).show();
 }
 
-function addSkirtCube(selectedGroup, width, length) {
+function addSkirtCube(selectedGroup, start, size) {
     // 方块构建
     let baseCube = new Cube({
         autouv: (settings.autouv.value ? 1 : 0)
@@ -71,10 +74,10 @@ function addSkirtCube(selectedGroup, width, length) {
         if (selectedGroup) {
             let originPos = selectedGroup.origin.slice();
             baseCube.extend({
-                from: [originPos[0], originPos[1], originPos[2]],
-                to: [originPos[0] + width, originPos[1] + length, originPos[2] + width],
+                from: [start[0], start[1], start[2]],
+                to: [start[0] + size[0], start[1] + size[1], start[2] + size[2]],
                 origin: originPos.slice()
-            })
+            });
         }
     }
 }

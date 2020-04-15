@@ -5,12 +5,14 @@ import {registerTextureEvent} from "./event/textureevent";
 import {loadPack} from "./pack/loadpack";
 import {createDefaultMaidModel} from "./tool/defaultmodel";
 import {addSkirtMenu} from "./tool/genskirt";
+import {addBoneMenu} from "./tool/genbone";
+import packageJsonInfo from "../package.json";
 
 
 (function () {
-    Plugin.register('tlm-utils', {
+    Plugin.register(packageJsonInfo.name, {
         title: '车万女仆模组插件',
-        author: '酒石酸菌',
+        author: packageJsonInfo.author,
         description: '专门为车万女仆模组制作模型包所设计的插件。',
         about: `<hr>
         <p>感谢你使用 Blockbench 车万女仆模组插件 1.0.0 版本，此插件专为车万女仆模组制作资源包所设计，欢迎您反馈使用过程中的意见和建议。</p>
@@ -26,7 +28,7 @@ import {addSkirtMenu} from "./tool/genskirt";
         <p>
         <br>`,
         icon: 'card_membership',
-        version: '1.0.0',
+        version: packageJsonInfo.version,
         variant: 'desktop',
         onload() {
             Language.data["menu.tlm_bar_menu"] = "车万女仆";
@@ -51,6 +53,10 @@ import {addSkirtMenu} from "./tool/genskirt";
             registerTextureEvent();
             Group.prototype.menu.structure.push('_');
             Group.prototype.menu.structure.push(addSkirtMenu);
+            Group.prototype.menu.structure.push(addBoneMenu);
+
+            Interface.Panels.outliner.menu.structure.push('_');
+            Interface.Panels.outliner.menu.structure.push(addBoneMenu);
         },
         onunload() {
             // 删除主菜单按钮
@@ -64,15 +70,20 @@ import {addSkirtMenu} from "./tool/genskirt";
             loadPack.delete();
             createDefaultMaidModel.delete();
 
-            let structure = Group.prototype.menu.structure;
-            for (let i = 0; i < structure.length; i++) {
-                if (structure[i] && structure[i]["is_tlm_add_menu"]) {
-                    delete structure[i];
-                }
-            }
+            // 删除所有本插件添加的菜单
+            deleteMenu(Group.prototype.menu.structure);
+            deleteMenu(Interface.Panels.outliner.menu.structure);
         }
     });
 })();
+
+function deleteMenu(structure) {
+    for (let i = 0; i < structure.length; i++) {
+        if (structure[i] && structure[i]["is_tlm_add_menu"]) {
+            delete structure[i];
+        }
+    }
+}
 
 
 
