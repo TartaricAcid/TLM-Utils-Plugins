@@ -71,20 +71,20 @@ import tlmUtilsPackageJsonInfo from "../package.json";
             loadPack.delete();
             createDefaultMaidModel.delete();
 
+            function deleteMenu(structure) {
+                for (let i = 0; i < structure.length; i++) {
+                    if (structure[i] && structure[i]["is_tlm_add_menu"]) {
+                        delete structure[i];
+                    }
+                }
+            }
+
             // 删除所有本插件添加的菜单
             deleteMenu(Group.prototype.menu.structure);
             deleteMenu(Interface.Panels.outliner.menu.structure);
         }
     });
 })();
-
-function deleteMenu(structure) {
-    for (let i = 0; i < structure.length; i++) {
-        if (structure[i] && structure[i]["is_tlm_add_menu"]) {
-            delete structure[i];
-        }
-    }
-}
 
 
 
