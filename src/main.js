@@ -6,13 +6,13 @@ import {loadPack} from "./pack/loadpack";
 import {createDefaultMaidModel} from "./tool/defaultmodel";
 import {addPartMenu} from "./part/genmodel";
 import {addBoneMenu} from "./part/genbone";
-import packageJsonInfo from "../package.json";
+import tlmUtilsPackageJsonInfo from "../package.json";
 
 
 (function () {
-    Plugin.register(packageJsonInfo.name, {
+    Plugin.register(tlmUtilsPackageJsonInfo.name, {
         title: '车万女仆模组插件',
-        author: packageJsonInfo.author,
+        author: tlmUtilsPackageJsonInfo.author,
         description: '专门为车万女仆模组制作模型包所设计的插件。',
         about: `<hr>
         <p>感谢你使用 Blockbench 车万女仆模组插件 1.0.0 版本，此插件专为车万女仆模组制作资源包所设计，欢迎您反馈使用过程中的意见和建议。</p>
@@ -28,7 +28,7 @@ import packageJsonInfo from "../package.json";
         <p>
         <br>`,
         icon: 'card_membership',
-        version: packageJsonInfo.version,
+        version: tlmUtilsPackageJsonInfo.version,
         variant: 'desktop',
         onload() {
             Language.data["menu.tlm_bar_menu"] = "车万女仆";
