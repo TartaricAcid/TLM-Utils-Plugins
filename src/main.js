@@ -4,8 +4,8 @@ import {newWorkSpace} from "./model/workspace";
 import {registerTextureEvent} from "./event/textureevent";
 import {loadPack} from "./pack/loadpack";
 import {createDefaultMaidModel} from "./tool/defaultmodel";
-import {addSkirtMenu} from "./tool/genskirt";
-import {addBoneMenu} from "./tool/genbone";
+import {addPartMenu} from "./part/genmodel";
+import {addBoneMenu} from "./part/genbone";
 import packageJsonInfo from "../package.json";
 
 
@@ -52,10 +52,11 @@ import packageJsonInfo from "../package.json";
             MenuBar.update();
             registerTextureEvent();
             Group.prototype.menu.structure.push('_');
-            Group.prototype.menu.structure.push(addSkirtMenu);
+            Group.prototype.menu.structure.push(addPartMenu);
             Group.prototype.menu.structure.push(addBoneMenu);
 
             Interface.Panels.outliner.menu.structure.push('_');
+            Interface.Panels.outliner.menu.structure.push(addPartMenu);
             Interface.Panels.outliner.menu.structure.push(addBoneMenu);
         },
         onunload() {

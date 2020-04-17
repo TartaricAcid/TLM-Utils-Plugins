@@ -2,7 +2,7 @@ export var addSkirtMenu = {
     is_tlm_add_menu: true,
     icon: 'fa-female',
     name: '生成裙子',
-    condition: {modes: ['edit']},
+    condition: {modes: ['edit'], method: () => (Format.id === "bedrock_old")},
     click: function (group) {
         addSkirt(group);
     }
@@ -44,6 +44,18 @@ function addSkirt(rootGroup) {
             let height = formData.height;
             let length = formData.length;
             let deg = formData.deg;
+
+            // 如果没有选择任何组，那就创建一个组
+            if (!rootGroup) {
+                rootGroup = new Group({});
+                // 检查骨骼命名
+                if (Format.bone_rig) {
+                    rootGroup.createUniqueName()
+                }
+                rootGroup.init();
+            }
+
+            // 创建裙子
             let selectedGroup = rootGroup;
             if (!selectedGroup && selectedGroup.length) {
                 Blockbench.notification("当前所选组不正确", "请选择或创建一个空组");
@@ -88,8 +100,6 @@ function addSkirtGroup(selectedGroup, pivot, rotation) {
         rotation: [rotation[0], rotation[1], rotation[2]]
     });
     baseGroup.addTo(selectedGroup);
-    // 不明白的参数
-    baseGroup.isOpen = true;
     // 检查骨骼命名
     if (Format.bone_rig) {
         baseGroup.createUniqueName()
