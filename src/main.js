@@ -7,6 +7,7 @@ import {createDefaultMaidModel} from "./tool/defaultmodel";
 import {addPartMenu} from "./part/genmodel";
 import {addBoneMenu} from "./part/genbone";
 import tlmUtilsPackageJsonInfo from "../package.json";
+import {openMcbbsUrl, openWikiUrl} from "./utils/urlopen";
 
 
 (function () {
@@ -47,6 +48,15 @@ import tlmUtilsPackageJsonInfo from "../package.json";
                     children: [
                         'create_default_maid_model',
                     ]
+                },
+                {
+                    name: '帮助',
+                    id: 'tlm_help',
+                    icon: 'help',
+                    children: [
+                        'open_wiki_url',
+                        'open_mcbbs_url'
+                    ]
                 }
             ]);
             MenuBar.update();
@@ -70,6 +80,8 @@ import tlmUtilsPackageJsonInfo from "../package.json";
             newWorkSpace.delete();
             loadPack.delete();
             createDefaultMaidModel.delete();
+            openWikiUrl.delete();
+            openMcbbsUrl.delete();
 
             function deleteMenu(structure) {
                 for (let i = 0; i < structure.length; i++) {

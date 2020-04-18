@@ -1,4 +1,5 @@
 import {addSkirtMenu} from "./genskirt";
+import {addRibbonMenu} from "./genribbon";
 
 export var addPartMenu = {
     is_tlm_add_menu: true,
@@ -7,6 +8,7 @@ export var addPartMenu = {
     description: "生成一些规则的几何图形，方便制作一些特殊部件",
     condition: {modes: ['edit'], method: () => (Format.id === "bedrock_old")},
     children: [
-        addSkirtMenu
+        addSkirtMenu,
+        addRibbonMenu
     ]
 };

@@ -20,12 +20,12 @@ function addSkirt(rootGroup) {
             width: {
                 type: "number",
                 label: "裙褶长度",
-                value: 2, min: 1, max: 10, step: 1
+                value: 2, min: 0, max: 10, step: 1
             },
             length: {
                 type: "number",
                 label: "裙褶宽度",
-                value: 2, min: 1, max: 10, step: 1
+                value: 2, min: 0, max: 10, step: 1
             },
             height: {
                 type: "number",
@@ -35,7 +35,7 @@ function addSkirt(rootGroup) {
             deg: {
                 type: "number",
                 label: "裙褶倾角",
-                value: 23, min: 0, max: 180, step: 1
+                value: 23, min: 1, max: 180, step: 1
             }
         },
         onConfirm: function (formData) {
