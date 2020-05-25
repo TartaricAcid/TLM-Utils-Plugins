@@ -41,7 +41,7 @@ export var addSkirtMenu = {
                 genSkirt(formData, group);
             }
         }, {
-            icon: 'fa-female',
+            icon: 'fa-cogs',
             name: '自定义裙子',
             click: function (group) {
                 addSkirt(group);

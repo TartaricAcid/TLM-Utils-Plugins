@@ -101,7 +101,7 @@ export var addRibbonMenu = {
             ]
         },
         {
-            icon: 'fa-chart-line',
+            icon: 'fa-cogs',
             name: '自定义飘带',
             click: customRibbonMenu
         }

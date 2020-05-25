@@ -9,6 +9,7 @@ import tlmUtilsPackageJsonInfo from "../package.json";
 import {openMcbbsUrl, openWikiUrl} from "./utils/urlopen";
 import {addSkirtMenu} from "./part/genskirt";
 import {addRibbonMenu} from "./part/genribbon";
+import {addPolygonMenu} from "./part/genpolygon";
 
 
 (function () {
@@ -65,11 +66,13 @@ import {addRibbonMenu} from "./part/genribbon";
             Group.prototype.menu.structure.push('_');
             Group.prototype.menu.structure.push(addSkirtMenu);
             Group.prototype.menu.structure.push(addRibbonMenu);
+            Group.prototype.menu.structure.push(addPolygonMenu);
             Group.prototype.menu.structure.push(addBoneMenu);
 
             Interface.Panels.outliner.menu.structure.push('_');
             Interface.Panels.outliner.menu.structure.push(addSkirtMenu);
             Interface.Panels.outliner.menu.structure.push(addRibbonMenu);
+            Interface.Panels.outliner.menu.structure.push(addPolygonMenu);
             Interface.Panels.outliner.menu.structure.push(addBoneMenu);
         },
         onunload() {
