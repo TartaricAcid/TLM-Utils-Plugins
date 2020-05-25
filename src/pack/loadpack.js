@@ -386,13 +386,13 @@ function readPackInfo(filePath) {
                     errorbox: true
                 }, function (files) {
                     files.forEach(function (f) {
+                        TLM_PROJECT_INFO.textures_path = _dirname(f.path);
+                        TLM_PROJECT_INFO.texture_name = f.name;
                         new Texture({
                             name: f.name,
                             folder: _dirname(f.path),
                             path: f.path,
                         }).fromFile(f).add(false);
-                        TLM_PROJECT_INFO.textures_path = _dirname(f.path);
-                        TLM_PROJECT_INFO.texture_name = f.name;
                     });
                 })
             });

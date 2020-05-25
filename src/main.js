@@ -1,7 +1,7 @@
 import {createNewPack} from "./pack/createpack";
 import {exportPack} from "./pack/exportpack"
 import {newWorkSpace} from "./model/workspace";
-import {registerTextureEvent} from "./event/textureevent";
+import {registerTextureEvent, removeTextureEvent} from "./event/textureevent";
 import {loadPack} from "./pack/loadpack";
 import {createDefaultMaidModel} from "./tool/defaultmodel";
 import {addPartMenu} from "./part/genmodel";
@@ -73,6 +73,7 @@ import {openMcbbsUrl, openWikiUrl} from "./utils/urlopen";
             // 删除主菜单按钮
             delete MenuBar.menues["tlm_bar_menu"];
             MenuBar.update();
+            removeTextureEvent();
 
             // 删除子菜单按钮
             createNewPack.delete();

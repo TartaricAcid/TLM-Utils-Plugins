@@ -1,14 +1,14 @@
-export var addSkirtMenu = {
+export var addRingMenu = {
     is_tlm_add_menu: true,
     icon: 'fa-female',
     name: '生成裙子',
     condition: {modes: ['edit'], method: () => (Format.id === "bedrock_old")},
     click: function (group) {
-        addSkirt(group);
+        addRing(group);
     }
 };
 
-function addSkirt(rootGroup) {
+function addRing(rootGroup) {
     new Dialog({
         title: "输入裙子参数",
         form: {
@@ -64,9 +64,9 @@ function addSkirt(rootGroup) {
             for (let i = 0; i < count; i++) {
                 let z2 = Math.sqrt(length ** 2 + width ** 2) / 2 / Math.tan(Math.PI / count);
                 selectedGroup = addSkirtGroup(selectedGroup, [0, 0, 0], [0, 360 / count * i, 0]);
-                selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z2], [-deg, 0, 0]);
-                selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z2], [0, Math.radToDeg(Math.atan(length / width)), 0]);
-                addSkirtCube(selectedGroup, [-width / 2, 0, z2 - length / 2], [width, height, length]);
+                selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z2], [0, 0, 0]);
+                selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z2], [0, 0, 0]);
+                addSkirtCube(selectedGroup, [-width / 2, 0, z2], [width, height, length]);
                 selectedGroup = rootGroup;
             }
             rootGroup.select();

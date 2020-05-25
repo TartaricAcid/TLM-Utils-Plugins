@@ -14,7 +14,7 @@ export var addRibbonMenu = {
                 "cos 函数：<font color='#ff7f50'>Math.cos(x)</font> ",
                 "tan 函数：<font color='#ff7f50'>Math.tan(x)</font><br> ",
                 "二次函数：<font color='#ff7f50'>x*x+2*x+1</font> ",
-                "反 cos 函数：<font color='#ff7f50'>Math.acos(x)</font> ",
+                "指数函数：<font color='#ff7f50'>x**(1/2)</font> ",
                 "对数函数：<font color='#ff7f50'>Math.log(x)</font><br> "
             ],
             form: {
@@ -96,7 +96,8 @@ function addRibbon(rootGroup, func, start, end, width) {
         rootGroup = addRibbonGroup(undefined, [0, 0, 0], [0, 0, 0])
     }
     genNodeGroup(rootGroup, func, startPos, end, width);
-    Canvas.updateAll();
+    rootGroup.select();
+    Canvas.updateSelected();
 }
 
 function genNodeGroup(rootGroup, func, startPos, end, width) {
