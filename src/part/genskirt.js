@@ -3,9 +3,51 @@ export var addSkirtMenu = {
     icon: 'fa-female',
     name: '生成裙子',
     condition: {modes: ['edit'], method: () => (Format.id === "bedrock_old")},
-    click: function (group) {
-        addSkirt(group);
-    }
+    children: [
+        {
+            icon: 'fa-female',
+            name: '下垂的长裙',
+            click: function (group) {
+                let formData = {
+                    count: 14, width: 2, height: 12, length: 2, deg: 23
+                }
+                genSkirt(formData, group);
+            }
+        }, {
+            icon: 'fa-female',
+            name: '适中的裙子',
+            click: function (group) {
+                let formData = {
+                    count: 12, width: 2, height: 8, length: 2, deg: 23
+                }
+                genSkirt(formData, group);
+            }
+        }, {
+            icon: 'fa-female',
+            name: '撑开的圆裙',
+            click: function (group) {
+                let formData = {
+                    count: 16, width: 2, height: 8, length: 2, deg: 45
+                }
+                genSkirt(formData, group);
+            }
+        }, {
+            icon: 'fa-female',
+            name: '短裙',
+            click: function (group) {
+                let formData = {
+                    count: 12, width: 2, height: 6, length: 2, deg: 45
+                }
+                genSkirt(formData, group);
+            }
+        }, {
+            icon: 'fa-female',
+            name: '自定义裙子',
+            click: function (group) {
+                addSkirt(group);
+            }
+        }
+    ]
 };
 
 function addSkirt(rootGroup) {
@@ -39,41 +81,46 @@ function addSkirt(rootGroup) {
             }
         },
         onConfirm: function (formData) {
-            let count = formData.count;
-            let width = formData.width;
-            let height = formData.height;
-            let length = formData.length;
-            let deg = formData.deg;
-
-            // 如果没有选择任何组，那就创建一个组
-            if (!rootGroup) {
-                rootGroup = new Group({});
-                // 检查骨骼命名
-                if (Format.bone_rig) {
-                    rootGroup.createUniqueName()
-                }
-                rootGroup.init();
-            }
-
-            // 创建裙子
-            let selectedGroup = rootGroup;
-            if (!selectedGroup && selectedGroup.length) {
-                Blockbench.notification("当前所选组不正确", "请选择或创建一个空组");
-                return;
-            }
-            for (let i = 0; i < count; i++) {
-                let z2 = Math.sqrt(length ** 2 + width ** 2) / 2 / Math.tan(Math.PI / count);
-                selectedGroup = addSkirtGroup(selectedGroup, [0, 0, 0], [0, 360 / count * i, 0]);
-                selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z2], [-deg, 0, 0]);
-                selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z2], [0, Math.radToDeg(Math.atan(length / width)), 0]);
-                addSkirtCube(selectedGroup, [-width / 2, 0, z2 - length / 2], [width, height, length]);
-                selectedGroup = rootGroup;
-            }
-            rootGroup.select();
-            Canvas.updateSelected();
-            this.hide();
+            genSkirt(formData, rootGroup)
+            this.hide()
         }
     }).show();
+}
+
+function genSkirt(formData, rootGroup) {
+    let count = formData.count;
+    let width = formData.width;
+    let height = formData.height;
+    let length = formData.length;
+    let deg = formData.deg;
+
+    // 如果没有选择任何组，那就创建一个组
+    if (!rootGroup) {
+        rootGroup = new Group({});
+        // 检查骨骼命名
+        if (Format.bone_rig) {
+            rootGroup.createUniqueName()
+        }
+        rootGroup.init();
+    }
+
+    // 创建裙子
+    let selectedGroup = rootGroup;
+    if (!selectedGroup && selectedGroup.length) {
+        Blockbench.notification("当前所选组不正确", "请选择或创建一个空组");
+        return;
+    }
+    for (let i = 0; i < count; i++) {
+        let z2 = Math.sqrt(length ** 2 + width ** 2) / 2 / Math.tan(Math.PI / count);
+        selectedGroup = addSkirtGroup(selectedGroup, [0, 0, 0], [0, 360 / count * i, 0]);
+        selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z2], [-deg, 0, 0]);
+        selectedGroup = addSkirtGroup(selectedGroup, [0, 0, z2], [0, Math.radToDeg(Math.atan(length / width)), 0]);
+        addSkirtCube(selectedGroup, [-width / 2, 0, z2 - length / 2], [width, height, length]);
+        selectedGroup = rootGroup;
+    }
+    rootGroup.select();
+    Canvas.updateSelected();
+
 }
 
 function addSkirtCube(selectedGroup, start, size) {
