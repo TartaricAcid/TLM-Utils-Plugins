@@ -1,4 +1,6 @@
 import json from '@rollup/plugin-json';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
 
 export default {
     input: 'src/main.js',
@@ -6,6 +8,10 @@ export default {
         file: 'tlm-utils.js',
         format: 'cjs'
     },
-    plugins: [json()],
+    plugins: [
+        json(),
+        resolve(),
+        commonjs()
+    ],
     external: ['path']
 };

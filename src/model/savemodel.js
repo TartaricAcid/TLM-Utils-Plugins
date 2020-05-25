@@ -2,6 +2,7 @@ import {isEmpty} from "../utils/string";
 import {addLanguageEntry, saveLanguageFile} from "../utils/lang";
 import {TLM_PROJECT_INFO} from "../projectinfo";
 import {checkDuplicateModelId, addModelToList} from "../utils/checkdata";
+import sha1 from 'sha1';
 
 export var saveNewMaidModelDialog = new Dialog({
     id: "save_new_maid_model_dialog",
@@ -68,6 +69,16 @@ export var saveNewMaidModelDialog = new Dialog({
             label: "显示头颅",
             type: "checkbox",
             value: true
+        },
+        egg: {
+            label: "彩蛋（可选）",
+            type: "input",
+            placeholder: "留空表示不设置彩蛋"
+        },
+        encryption: {
+            label: "彩蛋是否加密",
+            type: "checkbox",
+            value: false
         },
         animation: {
             label: "动画脚本（可选）",
@@ -154,6 +165,19 @@ export var saveNewMaidModelDialog = new Dialog({
             modelData["show_custom_head"] = false;
             saveNewMaidModelDialog.form.showCustomHead.value = false;
         }
+
+        // 彩蛋
+        if (!isEmpty(formData.egg)) {
+            let tag = formData.egg;
+            if (formData.encryption) {
+                tag = sha1(formData.egg);
+            }
+            modelData["easter_egg"] = {
+                encrypt: formData.encryption,
+                tag: tag
+            };
+        }
+
         // 动画脚本数据书写
         if (!isEmpty(formData.animation)) {
             let animationFilePath = formData.animation;
