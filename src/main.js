@@ -1,6 +1,5 @@
 import {createNewPack} from "./pack/createpack";
 import {exportPack} from "./pack/exportpack"
-import {newWorkSpace} from "./model/workspace";
 import {registerTextureEvent, removeTextureEvent} from "./event/textureevent";
 import {loadPack} from "./pack/loadpack";
 import {createDefaultMaidModel} from "./tool/defaultmodel";
@@ -10,6 +9,7 @@ import {openMcbbsUrl, openWikiUrl} from "./utils/urlopen";
 import {addSkirtMenu} from "./part/genskirt";
 import {addRibbonMenu} from "./part/genribbon";
 import {addPolygonMenu} from "./part/genpolygon";
+import {addSkirt2Menu} from "./part/genskirt2";
 
 
 (function () {
@@ -37,20 +37,20 @@ import {addPolygonMenu} from "./part/genpolygon";
             Language.data["menu.tlm_bar_menu"] = "车万女仆";
             // 添加主菜单
             new BarMenu("tlm_bar_menu", [
-                'new_work_space',
+                'create_default_maid_model',
                 '_',
                 'create_new_pack',
                 'export_pack',
                 'load_pack',
                 '_',
-                {
+                /*{
                     name: '工具',
                     id: 'tlm_tool',
                     icon: 'fa-tools',
                     children: [
                         'create_default_maid_model',
                     ]
-                },
+                },*/
                 {
                     name: '帮助',
                     id: 'tlm_help',
@@ -65,12 +65,14 @@ import {addPolygonMenu} from "./part/genpolygon";
             registerTextureEvent();
             Group.prototype.menu.structure.push('_');
             Group.prototype.menu.structure.push(addSkirtMenu);
+            Group.prototype.menu.structure.push(addSkirt2Menu);
             Group.prototype.menu.structure.push(addRibbonMenu);
             Group.prototype.menu.structure.push(addPolygonMenu);
             Group.prototype.menu.structure.push(addBoneMenu);
 
             Interface.Panels.outliner.menu.structure.push('_');
             Interface.Panels.outliner.menu.structure.push(addSkirtMenu);
+            Interface.Panels.outliner.menu.structure.push(addSkirt2Menu);
             Interface.Panels.outliner.menu.structure.push(addRibbonMenu);
             Interface.Panels.outliner.menu.structure.push(addPolygonMenu);
             Interface.Panels.outliner.menu.structure.push(addBoneMenu);
@@ -84,7 +86,6 @@ import {addPolygonMenu} from "./part/genpolygon";
             // 删除子菜单按钮
             createNewPack.delete();
             exportPack.delete();
-            newWorkSpace.delete();
             loadPack.delete();
             createDefaultMaidModel.delete();
             openWikiUrl.delete();

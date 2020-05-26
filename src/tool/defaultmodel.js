@@ -1,7 +1,8 @@
 import defaultMaidModel from "../json/default.json";
+import {clearAll} from "../projectinfo";
 
 export var createDefaultMaidModel = new Action('create_default_maid_model', {
-    name: '创建默认女仆模型',
+    name: '新建工作区',
     description: '创建一个默认标准格式的女仆模型',
     icon: 'fa-file-alt',
     click: function () {
@@ -79,6 +80,7 @@ export var createDefaultMaidModel = new Action('create_default_maid_model', {
                     }
                     exportDefaultModelDialog.hide();
                     Codecs["bedrock_old"].parse(copyModel, null);
+                    clearAll()
                 }
             });
             exportDefaultModelDialog.show();

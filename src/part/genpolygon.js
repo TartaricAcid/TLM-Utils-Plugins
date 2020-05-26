@@ -6,7 +6,7 @@ export var addPolygonMenu = {
     children: [
         {
             icon: 'fa-draw-polygon',
-            name: '三角形',
+            name: '正三边形',
             click: function (group) {
                 let data = {
                     count: 3, width: 2, flip: 0
@@ -15,7 +15,7 @@ export var addPolygonMenu = {
             }
         }, {
             icon: 'fa-draw-polygon',
-            name: '五边形',
+            name: '正五边形',
             click: function (group) {
                 let data = {
                     count: 5, width: 2, flip: 0
@@ -24,7 +24,7 @@ export var addPolygonMenu = {
             }
         }, {
             icon: 'fa-draw-polygon',
-            name: '六边形',
+            name: '正六边形',
             click: function (group) {
                 let data = {
                     count: 6, width: 2, flip: 0
@@ -33,7 +33,7 @@ export var addPolygonMenu = {
             }
         }, {
             icon: 'fa-draw-polygon',
-            name: '八边形',
+            name: '正八边形',
             click: function (group) {
                 let data = {
                     count: 8, width: 2, flip: 0
@@ -51,7 +51,7 @@ export var addPolygonMenu = {
             }
         }, {
             icon: 'fa-cogs',
-            name: '自定义多边形',
+            name: '自定义正多边形',
             click: function (group) {
                 addPolygon(group);
             }
