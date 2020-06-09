@@ -6,10 +6,28 @@ export var addSkirt2Menu = {
     children: [
         {
             icon: 'fa-vector-square',
-            name: '默认预设',
+            name: '四方裙',
             click: function (group) {
                 let formData = {
-                    length: 6, deg: 10
+                    length: 5, deg: 10, number: 4, side: 2
+                }
+                genSkirt2(formData, group);
+            }
+        }, {
+            icon: 'fa-vector-square',
+            name: '六方裙',
+            click: function (group) {
+                let formData = {
+                    length: 2, deg: 15, number: 6, side: 2
+                }
+                genSkirt2(formData, group);
+            }
+        }, {
+            icon: 'fa-vector-square',
+            name: '八方裙',
+            click: function (group) {
+                let formData = {
+                    length: 1, deg: 18, number: 8, side: 2
                 }
                 genSkirt2(formData, group);
             }
@@ -36,6 +54,16 @@ function addSkirt2(rootGroup) {
                 type: "number",
                 label: "方裙倾角",
                 value: 10, min: 0, max: 90, step: 1
+            },
+            number: {
+                type: "number",
+                label: "方裙边数",
+                value: 6, min: 3, max: 64, step: 1
+            },
+            side: {
+                type: "number",
+                label: "衔接边宽度",
+                value: 2, min: 1, max: 16, step: 1
             }
         },
         onConfirm: function (formData) {
@@ -48,6 +76,8 @@ function addSkirt2(rootGroup) {
 function genSkirt2(formData, rootGroup) {
     let length = formData.length;
     let deg = formData.deg;
+    let number = formData.number;
+    let side = formData.side;
 
     // 如果没有选择任何组，那就创建一个组
     if (!rootGroup) {
@@ -66,17 +96,18 @@ function genSkirt2(formData, rootGroup) {
         return;
     }
     let y = 6
-    for (let i = 0; i < 4; i++) {
+    let beta = Math.atan(Math.sin(Math.degToRad(deg) * Math.tan(Math.PI / number)))
+    for (let i = 0; i < number; i++) {
         let box1;
-        selectedGroup = addSkirtGroup(selectedGroup, [0, 0, 0], [0, 90 * i, 0])
-        selectedGroup = addSkirtGroup(selectedGroup, [0, 0, Math.cos(Math.degToRad(deg)) + (length / 2)],
-            [-Math.radToDeg(Math.asin(Math.tan(Math.degToRad(deg)))), 0, 0])
-        addSkirtCube(selectedGroup, [-length / 2, -Math.sin(Math.degToRad(deg)), Math.cos(Math.degToRad(deg)) + (length / 2)],
+        selectedGroup = addSkirtGroup(selectedGroup, [0, 0, 0], [0, (360 / number) * i, 0])
+        selectedGroup = addSkirtGroup(selectedGroup, [0, 0, side * Math.cos(beta) + (length / 2)],
+            [-deg, 0, 0])
+        addSkirtCube(selectedGroup, [-length / 2, -side * Math.sin(beta), (side * Math.cos(beta) + length / 2) / Math.tan(Math.PI / number)],
             [length, y, 0])
-        box1 = addSkirtGroup(selectedGroup, [length / 2, -Math.sin(Math.degToRad(deg)), Math.cos(Math.degToRad(deg)) + (length / 2)], [0, 0, deg])
-        addSkirtCube(box1, [length / 2, -Math.sin(Math.degToRad(deg)), Math.cos(Math.degToRad(deg)) + (length / 2)], [1, y, 0])
-        box1 = addSkirtGroup(selectedGroup, [-length / 2, -Math.sin(Math.degToRad(deg)), Math.cos(Math.degToRad(deg)) + (length / 2)], [0, 0, -deg])
-        addSkirtCube(box1, [-length / 2 - 1, -Math.sin(Math.degToRad(deg)), Math.cos(Math.degToRad(deg)) + (length / 2)], [1, y, 0])
+        box1 = addSkirtGroup(selectedGroup, [length / 2, -side * Math.sin(beta), side * Math.cos(beta) + length / 2], [0, 0, Math.radToDeg(beta)])
+        addSkirtCube(box1, [length / 2, -side * Math.sin(beta), (side * Math.cos(beta) + length / 2) / Math.tan(Math.PI / number) - 0.001], [side, y, 0])
+        box1 = addSkirtGroup(selectedGroup, [-length / 2, -side * Math.sin(beta), side * Math.cos(beta) + length / 2], [0, 0, -Math.radToDeg(beta)])
+        addSkirtCube(box1, [-length / 2 - side, -side * Math.sin(beta), (side * Math.cos(beta) + length / 2) / Math.tan(Math.PI / number) + 0.001], [side, y, 0])
         selectedGroup = rootGroup;
     }
     rootGroup.select();
