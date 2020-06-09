@@ -10,6 +10,7 @@ import {addSkirtMenu} from "./part/genskirt";
 import {addRibbonMenu} from "./part/genribbon";
 import {addPolygonMenu} from "./part/genpolygon";
 import {addSkirt2Menu} from "./part/genskirt2";
+import {hideArmor} from "./tool/hidearmor";
 
 
 (function () {
@@ -43,14 +44,6 @@ import {addSkirt2Menu} from "./part/genskirt2";
                 'export_pack',
                 'load_pack',
                 '_',
-                /*{
-                    name: '工具',
-                    id: 'tlm_tool',
-                    icon: 'fa-tools',
-                    children: [
-                        'create_default_maid_model',
-                    ]
-                },*/
                 {
                     name: '帮助',
                     id: 'tlm_help',
@@ -76,6 +69,8 @@ import {addSkirt2Menu} from "./part/genskirt2";
             Interface.Panels.outliner.menu.structure.push(addRibbonMenu);
             Interface.Panels.outliner.menu.structure.push(addPolygonMenu);
             Interface.Panels.outliner.menu.structure.push(addBoneMenu);
+
+            Toolbars.outliner.add(hideArmor, -1)
         },
         onunload() {
             // 删除主菜单按钮
@@ -90,6 +85,7 @@ import {addSkirt2Menu} from "./part/genskirt2";
             createDefaultMaidModel.delete();
             openWikiUrl.delete();
             openMcbbsUrl.delete();
+            hideArmor.delete()
 
             function deleteMenu(structure) {
                 for (let i = 0; i < structure.length; i++) {
