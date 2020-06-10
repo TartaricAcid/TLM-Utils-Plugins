@@ -80,7 +80,6 @@ export var createDefaultMaidModel = new Action('create_default_maid_model', {
                     }
                     exportDefaultModelDialog.hide();
                     Codecs["bedrock_old"].parse(copyModel, null);
-                    clearAll()
                 }
             });
             exportDefaultModelDialog.show();

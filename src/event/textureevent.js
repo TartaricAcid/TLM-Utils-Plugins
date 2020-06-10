@@ -1,12 +1,14 @@
-import {TLM_PROJECT_INFO} from "../projectinfo";
+import {clearAll, TLM_PROJECT_INFO} from "../projectinfo";
 import {isEmpty} from "../utils/string"
 
 export function registerTextureEvent() {
     Blockbench.on("add_texture", changeTextureName);
+    Blockbench.on("new_project", removeAllInfo);
 }
 
 export function removeTextureEvent() {
     Blockbench.removeListener("add_texture", changeTextureName);
+    Blockbench.removeListener("new_project", removeAllInfo);
 }
 
 function changeTextureName(data) {
@@ -23,4 +25,8 @@ function changeTextureName(data) {
         textureFile.path = `${texturePath}/${textureName}`;
         Blockbench.notification("自动材质定位：", "检测到你已经绑定了资源包，并设置了模型数据。自动定位创建的材质！");
     }
+}
+
+function removeAllInfo() {
+    clearAll()
 }
