@@ -196,10 +196,17 @@ function round(x, y) {
 
 function addRibbon(rootGroup, func, start, end, width) {
     let startPos = [start, customFunction(start, func)];
+    Undo.initEdit({outliner: true, elements: [], selection: true});
+    let cubesBefore = elements.length;
     if (!rootGroup) {
         rootGroup = addRibbonGroup(undefined, [0, 0, 0], [0, 0, 0])
     }
     genNodeGroup(rootGroup, func, startPos, end, width);
+    Undo.finishEdit('add_ribbon_bone', {
+        outliner: true,
+        elements: elements.slice().slice(cubesBefore),
+        selection: true
+    })
     rootGroup.select();
     Canvas.updateSelected();
 }

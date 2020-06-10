@@ -110,6 +110,8 @@ function getMenu(menu) {
                 }
             }
 
+            Undo.initEdit({outliner: true, elements: [], selection: true});
+            let cubesBefore = elements.length;
             // 生成骨骼
             let baseGroup = new Group({
                 name: boneName,
@@ -119,6 +121,11 @@ function getMenu(menu) {
             // 不明白的参数
             baseGroup.isOpen = true;
             baseGroup.init().select();
+            Undo.finishEdit('add_bone', {
+                outliner: true,
+                elements: elements.slice().slice(cubesBefore),
+                selection: true
+            })
         }
     };
 }

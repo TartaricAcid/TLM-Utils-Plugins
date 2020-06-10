@@ -11,6 +11,7 @@ import {addRibbonMenu} from "./part/genribbon";
 import {addPolygonMenu} from "./part/genpolygon";
 import {addSkirt2Menu} from "./part/genskirt2";
 import {hideArmor} from "./tool/hidearmor";
+import {rotateArray} from "./tool/rotatearray";
 
 
 (function () {
@@ -57,6 +58,8 @@ import {hideArmor} from "./tool/hidearmor";
             MenuBar.update();
             registerTextureEvent();
             Group.prototype.menu.structure.push('_');
+            Group.prototype.menu.structure.push(rotateArray)
+            Group.prototype.menu.structure.push('_');
             Group.prototype.menu.structure.push(addSkirtMenu);
             Group.prototype.menu.structure.push(addSkirt2Menu);
             Group.prototype.menu.structure.push(addRibbonMenu);
@@ -85,11 +88,12 @@ import {hideArmor} from "./tool/hidearmor";
             createDefaultMaidModel.delete();
             openWikiUrl.delete();
             openMcbbsUrl.delete();
-            hideArmor.delete()
+            hideArmor.delete();
+            rotateArray.delete();
 
             function deleteMenu(structure) {
                 for (let i = 0; i < structure.length; i++) {
-                    if (structure[i] && structure[i]["is_tlm_add_menu"]) {
+                    if (structure[i] && (structure[i]["is_tlm_add_menu"] || (structure[i].id && structure[i].id.endsWith("tlm_delete")))) {
                         delete structure[i];
                     }
                 }

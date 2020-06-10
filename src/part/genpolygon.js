@@ -90,6 +90,9 @@ function genPolygon(formData, rootGroup) {
     let count = formData.count;
     let width = formData.width;
 
+    Undo.initEdit({outliner: true, elements: [], selection: true});
+    let cubesBefore = elements.length;
+
     // 如果没有选择任何组，那就创建一个组
     if (!rootGroup) {
         rootGroup = new Group({});
@@ -113,6 +116,11 @@ function genPolygon(formData, rootGroup) {
         addPolygonCube(selectedGroup, [-width / 2, 0, z], [width, 1, 0])
         selectedGroup = rootGroup;
     }
+    Undo.finishEdit('add_polygon_bone', {
+        outliner: true,
+        elements: elements.slice().slice(cubesBefore),
+        selection: true
+    })
     rootGroup.select();
     Canvas.updateSelected();
 }

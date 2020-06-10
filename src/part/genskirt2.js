@@ -79,6 +79,9 @@ function genSkirt2(formData, rootGroup) {
     let number = formData.number;
     let side = formData.side;
 
+    Undo.initEdit({outliner: true, elements: [], selection: true});
+    let cubesBefore = elements.length;
+
     // 如果没有选择任何组，那就创建一个组
     if (!rootGroup) {
         rootGroup = new Group({});
@@ -110,6 +113,13 @@ function genSkirt2(formData, rootGroup) {
         addSkirtCube(box1, [-length / 2 - side, -side * Math.sin(beta), (side * Math.cos(beta) + length / 2) / Math.tan(Math.PI / number) + 0.001], [side, y, 0])
         selectedGroup = rootGroup;
     }
+
+    Undo.finishEdit('add_skirt2_bone', {
+        outliner: true,
+        elements: elements.slice().slice(cubesBefore),
+        selection: true
+    })
+
     rootGroup.select();
     Canvas.updateSelected();
 
