@@ -2,7 +2,7 @@ import {createNewPack} from "./pack/createpack";
 import {exportPack} from "./pack/exportpack"
 import {registerTextureEvent, removeTextureEvent} from "./event/textureevent";
 import {loadPack} from "./pack/loadpack";
-import {createDefaultMaidModel} from "./tool/defaultmodel";
+import {createDefaultModel} from "./tool/defaultmodel";
 import {addBoneMenu} from "./part/genbone";
 import tlmUtilsPackageJsonInfo from "../package.json";
 import {openMcbbsUrl, openWikiUrl} from "./utils/urlopen";
@@ -20,7 +20,7 @@ import {rotateArray} from "./tool/rotatearray";
         author: tlmUtilsPackageJsonInfo.author,
         description: '专门为车万女仆模组制作模型包所设计的插件。',
         about: `<hr>
-        <p>感谢你使用 Blockbench 车万女仆模组插件 1.0.2 版本，此插件专为车万女仆模组制作资源包所设计，欢迎您反馈使用过程中的意见和建议。</p>
+        <p>感谢你使用 Blockbench 车万女仆模组插件 1.0.3 版本，此插件专为车万女仆模组制作资源包所设计，欢迎您反馈使用过程中的意见和建议。</p>
         <p>期望大家能够在创作自己喜爱的事物中，收获到更多的快乐。</p>
         <p>下附一首我很喜欢的一首名为《金木犀》的曲子：</p>
         <br>
@@ -39,7 +39,7 @@ import {rotateArray} from "./tool/rotatearray";
             Language.data["menu.tlm_bar_menu"] = "车万女仆";
             // 添加主菜单
             new BarMenu("tlm_bar_menu", [
-                'create_default_maid_model',
+                'create_default_model',
                 '_',
                 'create_new_pack',
                 'export_pack',
@@ -85,7 +85,7 @@ import {rotateArray} from "./tool/rotatearray";
             createNewPack.delete();
             exportPack.delete();
             loadPack.delete();
-            createDefaultMaidModel.delete();
+            createDefaultModel.delete();
             openWikiUrl.delete();
             openMcbbsUrl.delete();
             hideArmor.delete();
