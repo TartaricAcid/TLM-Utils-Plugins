@@ -1,5 +1,6 @@
 import defaultMaidModel from "../json/default.json";
 import playerMaidModel from "../json/player_maid.json";
+import {TLM_PROJECT_INFO} from "../projectinfo";
 
 export var createDefaultModel = new Action('create_default_model', {
     name: '创建模型工作区',
@@ -23,8 +24,10 @@ export var createDefaultModel = new Action('create_default_model', {
                 onConfirm: function (formData) {
                     let type = formData.type;
                     if (type === "chair") {
+                        TLM_PROJECT_INFO.type = "chair"
                         this.hide();
                     } else {
+                        TLM_PROJECT_INFO.type = "maid"
                         selectDiffMaidModelDialog.show();
                     }
                 }

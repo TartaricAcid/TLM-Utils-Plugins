@@ -1,0 +1,512 @@
+[
+  {
+    "bone": "head",
+    "name": "头部",
+    "description": "头部旋转，祈求动作",
+    "color": "#718c00",
+    "parents": [],
+    "group": "head",
+    "path": [
+      "touhou_little_maid:animation/maid/default/head/default.js",
+      "touhou_little_maid:animation/maid/default/head/beg.js",
+      "touhou_little_maid:animation/maid/default/head/music_shake.js"
+    ]
+  },
+  {
+    "bone": [
+      "headExtraA",
+      "headExtraB",
+      "headExtraC"
+    ],
+    "name": "额外头部",
+    "description": "有正常摆头等动作，但没有祈求、音乐摆头等效果",
+    "color": "#718c00",
+    "parents": [],
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/extra.js"
+  },
+  {
+    "bone": "armLeft",
+    "name": "左臂",
+    "description": "行走时手臂动画效果，手臂末端持有物品的显示，待命时手臂合拢效果",
+    "color": "#718c00",
+    "parents": [],
+    "group": "arm",
+    "path": [
+      "touhou_little_maid:animation/maid/default/arm/default.js",
+      "touhou_little_maid:animation/maid/default/arm/swing.js",
+      "touhou_little_maid:animation/maid/default/sit/default.js"
+    ]
+  },
+  {
+    "bone": "armLeftVertical",
+    "name": "左臂垂直",
+    "description": "行走时，该骨骼始终与左臂垂直",
+    "color": "#718c00",
+    "parents": [
+      "armLeft"
+    ],
+    "group": "arm",
+    "path": "touhou_little_maid:animation/maid/default/arm/vertical.js"
+  },
+  {
+    "bone": "armLeftExtraA",
+    "name": "额外左臂",
+    "description": "和普通左臂一致，但是不显示手持物品效果",
+    "color": "#718c00",
+    "parents": [],
+    "group": "arm",
+    "path": "touhou_little_maid:animation/maid/default/arm/extra.js"
+  },
+  {
+    "bone": "armRight",
+    "name": "右臂",
+    "description": "行走时手臂动画效果，手臂末端持有物品的显示，待命时手臂合拢效果",
+    "color": "#30A9DE",
+    "parents": [],
+    "group": "arm",
+    "path": [
+      "touhou_little_maid:animation/maid/default/arm/default.js",
+      "touhou_little_maid:animation/maid/default/arm/swing.js",
+      "touhou_little_maid:animation/maid/default/sit/default.js"
+    ]
+  },
+  {
+    "bone": "armRightVertical",
+    "name": "右臂垂直",
+    "description": "行走时，该骨骼始终与右臂垂直",
+    "color": "#30A9DE",
+    "parents": [
+      "armRight"
+    ],
+    "group": "arm",
+    "path": "touhou_little_maid:animation/maid/default/arm/vertical.js"
+  },
+  {
+    "bone": "armRightExtraA",
+    "name": "额外右臂",
+    "description": "和普通右臂一致，但是不显示手持物品效果",
+    "color": "#30A9DE",
+    "parents": [],
+    "group": "arm",
+    "path": "touhou_little_maid:animation/maid/default/arm/extra.js"
+  },
+  {
+    "bone": "legLeft",
+    "name": "左腿",
+    "description": "行走时腿部动画效果，待命骑行时腿部坐下效果",
+    "color": "#718c00",
+    "parents": [],
+    "group": "leg",
+    "path": [
+      "touhou_little_maid:animation/maid/default/leg/default.js",
+      "touhou_little_maid:animation/maid/default/sit/default.js"
+    ]
+  },
+  {
+    "bone": "legLeftVertical",
+    "name": "左腿垂直",
+    "description": "行走时，该骨骼始终与左腿垂直",
+    "color": "#718c00",
+    "parents": [
+      "legLeft"
+    ],
+    "group": "leg",
+    "path": "touhou_little_maid:animation/maid/default/leg/vertical.js"
+  },
+  {
+    "bone": "legLeftExtraA",
+    "name": "额外左腿",
+    "description": "和普通左腿基本一致，但是没有坐下的效果",
+    "color": "#718c00",
+    "parents": [],
+    "group": "leg",
+    "path": "touhou_little_maid:animation/maid/default/leg/extra.js"
+  },
+  {
+    "bone": "legRight",
+    "name": "右腿",
+    "description": "行走时腿部动画效果，待命骑行时腿部坐下效果",
+    "color": "#30A9DE",
+    "parents": [],
+    "group": "leg",
+    "path": [
+      "touhou_little_maid:animation/maid/default/leg/default.js",
+      "touhou_little_maid:animation/maid/default/sit/default.js"
+    ]
+  },
+  {
+    "bone": "legRightVertical",
+    "name": "右腿垂直",
+    "description": "行走时，该骨骼始终与右腿垂直",
+    "color": "#30A9DE",
+    "parents": [
+      "legRight"
+    ],
+    "group": "leg",
+    "path": "touhou_little_maid:animation/maid/default/leg/vertical.js"
+  },
+  {
+    "bone": "legRightExtraA",
+    "name": "额外右腿",
+    "description": "和普通右腿基本一致，但是没有坐下的效果",
+    "color": "#30A9DE",
+    "parents": [],
+    "group": "leg",
+    "path": "touhou_little_maid:animation/maid/default/leg/extra.js"
+  },
+  {
+    "bone": "wingLeft",
+    "name": "左翅膀",
+    "description": "翅膀往复摆动画",
+    "color": "#fe9750",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/wing/default.js"
+  },
+  {
+    "bone": "wingRight",
+    "name": "右翅膀",
+    "description": "翅膀往复摆动画",
+    "color": "#fe9750",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/wing/default.js"
+  },
+  {
+    "bone": "ahoge",
+    "name": "呆毛",
+    "description": "祈求状态下的呆毛圆锥摆动画",
+    "color": "#A593E0",
+    "parents": [
+      "head"
+    ],
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/beg.js"
+  },
+  {
+    "bone": "blink",
+    "name": "眨眼",
+    "description": "日常的眨眼动画",
+    "color": "#fe9750",
+    "parents": [
+      "head"
+    ],
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/blink.js"
+  },
+  {
+    "bone": "_bink",
+    "name": "反向眨眼",
+    "description": "与日常的眨眼动画正好相反的动画",
+    "color": "#fe9750",
+    "parents": [
+      "head"
+    ],
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/reverse_blink.js"
+  },
+  {
+    "bone": "hurtBlink",
+    "name": "受伤眨眼",
+    "description": "在受伤时才会显示的眨眼动画",
+    "color": "#fe9750",
+    "parents": [
+      "head"
+    ],
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/hurt.js"
+  },
+  {
+    "bone": "tail",
+    "name": "尾巴",
+    "description": "以旋转点为中心，Z 方向的小幅度圆锥摆",
+    "color": "#D499B9",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/tail/default.js"
+  },
+  {
+    "bone": "sittingRotationSkirt",
+    "name": "坐下时的旋转裙",
+    "description": "坐下状态下给这个骨骼一个旋转角度",
+    "color": "#58C9B9",
+    "group": "sit",
+    "path": "touhou_little_maid:animation/maid/default/sit/skirt_rotation.js"
+  },
+  {
+    "bone": "sittingHiddenSkirt",
+    "name": "坐下时的隐藏裙",
+    "description": "坐下状态下隐藏这个骨骼",
+    "color": "#fe9750",
+    "group": "sit",
+    "path": "touhou_little_maid:animation/maid/default/sit/skirt_hidden.js"
+  },
+  {
+    "bone": "_sittingHiddenSkirt",
+    "name": "坐下时的显示裙",
+    "description": "坐下状态下显示这个骨骼",
+    "color": "#fe9750",
+    "group": "sit",
+    "path": "touhou_little_maid:animation/maid/default/sit/skirt_hidden.js"
+  },
+  {
+    "bone": "helmet",
+    "name": "头盔",
+    "description": "穿戴头盔后显示该模型",
+    "color": "#66cccc",
+    "group": "armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/default.js"
+  },
+  {
+    "bone": [
+      "chestPlate",
+      "chestPlateLeft",
+      "chestPlateMiddle",
+      "chestPlateRight"
+    ],
+    "name": "胸甲",
+    "description": "穿戴胸甲后显示该模型",
+    "color": "#66cccc",
+    "group": "armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/default.js"
+  },
+  {
+    "bone": [
+      "leggings",
+      "leggingsLeft",
+      "leggingsMiddle",
+      "leggingsRight"
+    ],
+    "name": "护腿",
+    "description": "穿戴护腿后显示该模型",
+    "color": "#66cccc",
+    "group": "armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/default.js"
+  },
+  {
+    "bone": [
+      "bootsLeft",
+      "bootsRight"
+    ],
+    "name": "靴子",
+    "description": "穿戴靴子后显示该模型",
+    "color": "#66cccc",
+    "group": "armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/default.js"
+  },
+  {
+    "bone": "_helmet",
+    "name": "反向头盔",
+    "description": "穿戴头盔后隐藏该模型",
+    "color": "#6699cc",
+    "group": "hide_armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/reverse.js"
+  },
+  {
+    "bone": [
+      "_chestPlate",
+      "_chestPlateLeft",
+      "_chestPlateMiddle",
+      "_chestPlateRight"
+    ],
+    "name": "反向胸甲",
+    "description": "穿戴胸甲后隐藏该模型",
+    "color": "#6699cc",
+    "group": "hide_armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/reverse.js"
+  },
+  {
+    "bone": [
+      "_leggings",
+      "_leggingsLeft",
+      "_leggingsMiddle",
+      "_leggingsRight"
+    ],
+    "name": "反向护腿",
+    "description": "穿戴护腿后隐藏该模型",
+    "color": "#6699cc",
+    "group": "hide_armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/reverse.js"
+  },
+  {
+    "bone": [
+      "_bootsLeft",
+      "_bootsRight"
+    ],
+    "name": "反向靴子",
+    "description": "穿戴靴子后隐藏该模型",
+    "color": "#6699cc",
+    "group": "hide_armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/reverse.js"
+  },
+  {
+    "bone": "armLeftPositioningBone",
+    "name": "左手臂定位骨骼",
+    "description": "女仆手持物品的定位骨骼，为空骨骼。空骨骼的旋转点决定了手持物品的起始位置",
+    "color": "#cc99cc",
+    "parents": [
+      "armLeft"
+    ],
+    "group": "position",
+    "path": ""
+  },
+  {
+    "bone": "armRightPositioningBone",
+    "name": "右手臂定位骨骼",
+    "description": "女仆手持物品的定位骨骼，为空骨骼。它的旋转点决定了手持物品的起始位置",
+    "color": "#cc99cc",
+    "parents": [
+      "armRight"
+    ],
+    "group": "position",
+    "path": ""
+  },
+  {
+    "bone": "backpackPositioningBone",
+    "name": "背包定位骨骼",
+    "description": "女仆背包的定位骨骼，为空骨骼。它的旋转点决定了背包肩带的中心点",
+    "color": "#cc99cc",
+    "parents": [],
+    "group": "position",
+    "path": ""
+  },
+  {
+    "bone": "backpackLevelEmpty",
+    "name": "无背包时显示",
+    "description": "在没有背包时显示此骨骼",
+    "color": "#FDD692",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack_level.js"
+  },
+  {
+    "bone": "backpackLevelSmall",
+    "name": "小背包时显示",
+    "description": "在穿戴小背包时显示此骨骼",
+    "color": "#FDD692",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack_level.js"
+  },
+  {
+    "bone": "backpackLevelMiddle",
+    "name": "中背包时显示",
+    "description": "在穿戴中背包时显示此骨骼",
+    "color": "#FDD692",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack_level.js"
+  },
+  {
+    "bone": "backpackLevelBig",
+    "name": "大背包时显示",
+    "description": "在穿戴大背包时显示此骨骼",
+    "color": "#FDD692",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack_level.js"
+  },
+  {
+    "bone": "backpackShow",
+    "name": "穿戴背包时显示",
+    "description": "在穿戴任意背包时显示此骨骼",
+    "color": "#791E94",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack.js"
+  },
+  {
+    "bone": "backpackHidden",
+    "name": "穿戴背包时隐藏",
+    "description": "在穿戴任意背包时隐藏此骨骼",
+    "color": "#791E94",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack.js"
+  },
+  {
+    "bone": "hasTargetShow",
+    "name": "锁定目标时显示",
+    "description": "在女仆锁定目标时，显示此骨骼",
+    "color": "#84B1ED",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/has_target.js"
+  },
+  {
+    "bone": "hasTargetHidden",
+    "name": "锁定目标时隐藏",
+    "description": "在女仆锁定目标时，隐藏此骨骼",
+    "color": "#84B1ED",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/has_target.js"
+  },
+  {
+    "bone": "movingShow",
+    "name": "移动时显示",
+    "description": "在女仆移动速度不为 0 时，显示此骨骼",
+    "color": "#a3c9c7",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/moving.js"
+  },
+  {
+    "bone": "movingHidden",
+    "name": "移动时隐藏",
+    "description": "在女仆移动速度不为 0 时，隐藏此骨骼",
+    "color": "#a3c9c7",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/moving.js"
+  },
+  {
+    "bone": "sasimonoShow",
+    "name": "装备旗指物时显示",
+    "description": "在女仆装备旗指物时，显示此骨骼",
+    "color": "#fe9750",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/sasimono.js"
+  },
+  {
+    "bone": "sasimonoHidden",
+    "name": "装备旗指物时隐藏",
+    "description": "在女仆装备旗指物时，隐藏此骨骼",
+    "color": "#fe9750",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/sasimono.js"
+  },
+  {
+    "bone": "helmetWeatherRainging",
+    "name": "头盔（下雨时显示）",
+    "description": "下雨时显示该模型",
+    "color": "#66cccc",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/weather/raining.js"
+  },
+  {
+    "bone": [
+      "chestPlateWeatherRainging",
+      "chestPlateLeftWeatherRainging",
+      "chestPlateMiddleWeatherRainging",
+      "chestPlateRightWeatherRainging"
+    ],
+    "name": "胸甲（下雨时显示）",
+    "description": "下雨时显示该模型",
+    "color": "#66cccc",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/weather/raining.js"
+  },
+  {
+    "bone": [
+      "leggingsWeatherRainging",
+      "leggingsLeftWeatherRainging",
+      "leggingsMiddleWeatherRainging",
+      "leggingsRightWeatherRainging"
+    ],
+    "name": "护腿（下雨时显示）",
+    "description": "下雨时显示该模型",
+    "color": "#66cccc",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/weather/raining.js"
+  },
+  {
+    "bone": [
+      "bootsLeftWeatherRainging",
+      "bootsRightWeatherRainging"
+    ],
+    "name": "靴子（下雨时显示）",
+    "description": "下雨时显示该模型",
+    "color": "#66cccc",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/weather/raining.js"
+  }
+]

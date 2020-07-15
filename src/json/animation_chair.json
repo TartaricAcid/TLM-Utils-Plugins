@@ -1,0 +1,34 @@
+[
+  {
+    "bone": "passengerRotationYaw",
+    "name": "偏航",
+    "description": "以乘客的偏航为角度的旋转",
+    "color": "#fe9750",
+    "group": "passenger",
+    "path": "touhou_little_maid:animation/chair/passenger/rotation.js"
+  },
+  {
+    "bone": "passengerRotationPitch",
+    "name": "俯仰",
+    "description": "以乘客的俯仰为角度的旋转",
+    "color": "#fe9750",
+    "group": "passenger",
+    "path": "touhou_little_maid:animation/chair/passenger/rotation.js"
+  },
+  {
+    "bone": "passengerHidden",
+    "name": "乘坐时隐藏",
+    "description": "当有乘客乘坐时，隐藏此骨骼",
+    "color": "#84B1ED",
+    "group": "passenger",
+    "path": "touhou_little_maid:animation/chair/passenger/hidden.js"
+  },
+  {
+    "bone": "passengerShow",
+    "name": "乘坐时显示",
+    "description": "当有乘客乘坐时，显示此骨骼",
+    "color": "#84B1ED",
+    "group": "passenger",
+    "path": "touhou_little_maid:animation/chair/passenger/hidden.js"
+  }
+]

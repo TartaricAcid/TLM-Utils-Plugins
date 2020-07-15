@@ -1,0 +1,349 @@
+[
+  {
+    "bone": [
+      "sinFloat",
+      "cosFloat",
+      "_sinFloat",
+      "_cosFloat"
+    ],
+    "name": "漂浮部件",
+    "description": "以旋转点为中心的上下小距离浮动",
+    "color": "#fe9750",
+    "group": "float",
+    "path": "touhou_little_maid:animation/base/float/default.js"
+  },
+  {
+    "bone": "overWorldHidden",
+    "name": "主世界隐藏",
+    "description": "当处于主世界时，隐藏此骨骼",
+    "color": "#ff7473",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": "overWorldShow",
+    "name": "主世界显示",
+    "description": "当处于主世界时，显示此骨骼",
+    "color": "#ff7473",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": "netherWorldHidden",
+    "name": "下界隐藏",
+    "description": "当处于下界时，隐藏此骨骼",
+    "color": "#47b8e0",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": "netherWorldShow",
+    "name": "下界显示",
+    "description": "当处于下界时，显示此骨骼",
+    "color": "#47b8e0",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": "endWorldHidden",
+    "name": "末地隐藏",
+    "description": "当处于末地时，隐藏此骨骼",
+    "color": "#34314c",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": "endWorldShow",
+    "name": "主世界显示",
+    "description": "当处于末地时，显示此骨骼",
+    "color": "#34314c",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": [
+      "xRotationLowA",
+      "xRotationLowB",
+      "xRotationLowC",
+      "xRotationLowD",
+      "xRotationLowE"
+    ],
+    "name": "X 轴低速旋转",
+    "description": "以 X 轴为旋转轴，永不停止的低速旋转",
+    "color": "#663300",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/x_low_speed.js"
+  },
+  {
+    "bone": [
+      "yRotationLowA",
+      "yRotationLowB",
+      "yRotationLowC",
+      "yRotationLowD",
+      "yRotationLowE"
+    ],
+    "name": "Y 轴低速旋转",
+    "description": "以 Y 轴为旋转轴，永不停止的低速旋转",
+    "color": "#663300",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/y_low_speed.js"
+  },
+  {
+    "bone": [
+      "zRotationLowA",
+      "zRotationLowB",
+      "zRotationLowC",
+      "zRotationLowD",
+      "zRotationLowE"
+    ],
+    "name": "Z 轴低速旋转",
+    "description": "以 Z 轴为旋转轴，永不停止的低速旋转",
+    "color": "#663300",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/z_low_speed.js"
+  },
+  {
+    "bone": [
+      "xRotationNormalA",
+      "xRotationNormalB",
+      "xRotationNormalC",
+      "xRotationNormalD",
+      "xRotationNormalE"
+    ],
+    "name": "X 轴中速旋转",
+    "description": "以 X 轴为旋转轴，永不停止的中速旋转",
+    "color": "#CC9900",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/x_normal_speed.js"
+  },
+  {
+    "bone": [
+      "yRotationNormalA",
+      "yRotationNormalB",
+      "yRotationNormalC",
+      "yRotationNormalD",
+      "yRotationNormalE"
+    ],
+    "name": "Y 轴中速旋转",
+    "description": "以 Y 轴为旋转轴，永不停止的中速旋转",
+    "color": "#CC9900",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/y_normal_speed.js"
+  },
+  {
+    "bone": [
+      "zRotationNormalA",
+      "zRotationNormalB",
+      "zRotationNormalC",
+      "zRotationNormalD",
+      "zRotationNormalE"
+    ],
+    "name": "Z 轴中速旋转",
+    "description": "以 Z 轴为旋转轴，永不停止的中速旋转",
+    "color": "#CC9900",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/z_normal_speed.js"
+  },
+  {
+    "bone": [
+      "xRotationHighA",
+      "xRotationHighB",
+      "xRotationHighC",
+      "xRotationHighD",
+      "xRotationHighE"
+    ],
+    "name": "X 轴高速旋转",
+    "description": "以 X 轴为旋转轴，永不停止的高速旋转",
+    "color": "#CC6600",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/x_high_speed.js"
+  },
+  {
+    "bone": [
+      "yRotationHighA",
+      "yRotationHighB",
+      "yRotationHighC",
+      "yRotationHighD",
+      "yRotationHighE"
+    ],
+    "name": "Y 轴高速旋转",
+    "description": "以 Y 轴为旋转轴，永不停止的高速旋转",
+    "color": "#CC6600",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/y_high_speed.js"
+  },
+  {
+    "bone": [
+      "zRotationHighA",
+      "zRotationHighB",
+      "zRotationHighC",
+      "zRotationHighD",
+      "zRotationHighE"
+    ],
+    "name": "Z 轴高速旋转",
+    "description": "以 Z 轴为旋转轴，永不停止的高速旋转",
+    "color": "#CC6600",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/z_high_speed.js"
+  },
+  {
+    "bone": "xReciprocate",
+    "name": "X 轴往复摆",
+    "description": "以 X 轴为旋转轴，往复大致 30 度角度往复摆动",
+    "color": "#fe9750",
+    "group": "reciprocate",
+    "path": "touhou_little_maid:animation/base/rotation/reciprocate.js"
+  },
+  {
+    "bone": "yReciprocate",
+    "name": "Y 轴往复摆",
+    "description": "以 Y 轴为旋转轴，往复大致 30 度角度往复摆动",
+    "color": "#fe9750",
+    "group": "reciprocate",
+    "path": "touhou_little_maid:animation/base/rotation/reciprocate.js"
+  },
+  {
+    "bone": "zReciprocate",
+    "name": "Z 轴往复摆",
+    "description": "以 Z 轴为旋转轴，往复大致 30 度角度往复摆动",
+    "color": "#fe9750",
+    "group": "reciprocate",
+    "path": "touhou_little_maid:animation/base/rotation/reciprocate.js"
+  },
+  {
+    "bone": "dayShow",
+    "name": "白天显示",
+    "description": "仅在白天才会显示的骨骼",
+    "color": "#fe9750",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/day_night_hidden.js"
+  },
+  {
+    "bone": "nightShow",
+    "name": "夜晚显示",
+    "description": "仅在夜晚才会显示的骨骼",
+    "color": "#fe9750",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/day_night_hidden.js"
+  },
+  {
+    "bone": "gameHourRotationX",
+    "name": "游戏时钟旋转（X 轴丨小时）",
+    "description": "依据游戏小时时间，X 轴向旋转，可用于制作时钟、向日葵等内容",
+    "color": "#587058",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "gameMinuteRotationX",
+    "name": "游戏时钟旋转（X 轴丨分钟）",
+    "description": "依据游戏分钟时间，X 轴向旋转，可用于制作时钟、向日葵等内容",
+    "color": "#587058",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "gameHourRotationY",
+    "name": "游戏时钟旋转（Y 轴丨小时）",
+    "description": "依据游戏小时时间，Y 轴向旋转，可用于制作时钟、向日葵等内容",
+    "color": "#587498",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "gameMinuteRotationY",
+    "name": "游戏时钟旋转（Y 轴丨分钟）",
+    "description": "依据游戏分钟时间，Y 轴向旋转，可用于制作时钟、向日葵等内容",
+    "color": "#587498",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "gameHourRotationZ",
+    "name": "游戏时钟旋转（Z 轴丨小时）",
+    "description": "依据游戏小时时间，Z 轴向旋转，可用于制作时钟、向日葵等内容",
+    "color": "#E86850",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "gameMinuteRotationZ",
+    "name": "游戏时钟旋转（Z 轴丨分钟）",
+    "description": "依据游戏分钟时间，Z 轴向旋转，可用于制作时钟、向日葵等内容",
+    "color": "#E86850",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "systemHourRotationX",
+    "name": "系统时钟旋转（X 轴丨小时）",
+    "description": "依据系统小时时间，X 轴向旋转，可用于制作系统时钟等内容",
+    "color": "#2B4162",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemMinuteRotationX",
+    "name": "系统时钟旋转（X 轴丨分钟）",
+    "description": "依据系统分钟时间，X 轴向旋转，可用于制作系统时钟等内容",
+    "color": "#2B4162",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemSecondRotationX",
+    "name": "系统时钟旋转（X 轴丨秒）",
+    "description": "依据系统秒，X 轴向旋转，可用于制作系统时钟等内容",
+    "color": "#2B4162",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemHourRotationY",
+    "name": "系统时钟旋转（Y 轴丨小时）",
+    "description": "依据系统小时时间，Y 轴向旋转，可用于制作系统时钟等内容",
+    "color": "#629460",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemMinuteRotationY",
+    "name": "系统时钟旋转（Y 轴丨分钟）",
+    "description": "依据系统分钟时间，Y 轴向旋转，可用于制作系统时钟等内容",
+    "color": "#629460",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemSecondRotationY",
+    "name": "系统时钟旋转（Y 轴丨秒）",
+    "description": "依据系统秒，Y 轴向旋转，可用于制作系统时钟等内容",
+    "color": "#629460",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemHourRotationZ",
+    "name": "系统时钟旋转（Z 轴丨小时）",
+    "description": "依据系统小时时间，Z 轴向旋转，可用于制作系统时钟等内容",
+    "color": "#bea32e",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemMinuteRotationZ",
+    "name": "系统时钟旋转（Z 轴丨分钟）",
+    "description": "依据系统分钟时间，Z 轴向旋转，可用于制作系统时钟等内容",
+    "color": "#bea32e",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemSecondRotationZ",
+    "name": "系统时钟旋转（Z 轴丨秒）",
+    "description": "依据系统秒，Z 轴向旋转，可用于制作系统时钟等内容",
+    "color": "#bea32e",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  }
+]

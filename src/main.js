@@ -12,6 +12,7 @@ import {addPolygonMenu} from "./part/genpolygon";
 import {addSkirt2Menu} from "./part/genskirt2";
 import {hideArmor} from "./tool/hidearmor";
 import {rotateArray} from "./tool/rotatearray";
+import {registerSaveEvent, removeSaveEvent} from "./event/saveevent";
 
 
 (function () {
@@ -57,6 +58,7 @@ import {rotateArray} from "./tool/rotatearray";
             ]);
             MenuBar.update();
             registerTextureEvent();
+            registerSaveEvent();
             Group.prototype.menu.structure.push('_');
             Group.prototype.menu.structure.push(rotateArray)
             Group.prototype.menu.structure.push('_');
@@ -80,6 +82,7 @@ import {rotateArray} from "./tool/rotatearray";
             delete MenuBar.menues["tlm_bar_menu"];
             MenuBar.update();
             removeTextureEvent();
+            removeSaveEvent();
 
             // 删除子菜单按钮
             createNewPack.delete();
