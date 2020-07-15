@@ -128,6 +128,11 @@ function getMaidBoneMenu() {
             description: "仅在特定天气、气温环境下显示的骨骼",
             children: []
         }, {
+            icon: 'fa-hammer',
+            name: '工作模式',
+            description: "仅在特定工作模型下显示、隐藏的骨骼",
+            children: []
+        }, {
             icon: 'fa-crosshairs',
             name: '定位骨骼',
             description: "各个定位骨骼部件",
@@ -190,26 +195,29 @@ function getMaidBoneMenu() {
             case "armor_special":
                 out[7].children.push(getMenu(o));
                 break;
-            case "position":
+            case "task":
                 out[8].children.push(getMenu(o));
                 break;
-            case "dimension":
+            case "position":
                 out[9].children.push(getMenu(o));
                 break;
-            case "float":
+            case "dimension":
                 out[10].children.push(getMenu(o));
                 break;
-            case "rotation":
+            case "float":
                 out[11].children.push(getMenu(o));
                 break;
-            case "reciprocate":
+            case "rotation":
                 out[12].children.push(getMenu(o));
                 break;
-            case "game_time":
+            case "reciprocate":
                 out[13].children.push(getMenu(o));
                 break;
-            case "sys_time":
+            case "game_time":
                 out[14].children.push(getMenu(o));
+                break;
+            case "sys_time":
+                out[15].children.push(getMenu(o));
                 break;
         }
     }

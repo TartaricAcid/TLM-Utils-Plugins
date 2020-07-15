@@ -508,5 +508,441 @@
     "color": "#66cccc",
     "group": "armor_special",
     "path": "touhou_little_maid:animation/maid/default/armor/weather/raining.js"
+  },
+  {
+    "bone": "attackHidden",
+    "name": "攻击模式时隐藏",
+    "description": "在女仆处于攻击模式时，隐藏此骨骼",
+    "color": "#0000AA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/attack.js"
+  },
+  {
+    "bone": "attackShow",
+    "name": "攻击模式时显示",
+    "description": "在女仆处于攻击模式时，显示此骨骼",
+    "color": "#0000AA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/attack.js"
+  },
+  {
+    "bone": "cocoaHidden",
+    "name": "可可模式时隐藏",
+    "description": "在女仆处于可可模式时，隐藏此骨骼",
+    "color": "#00AA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/cocoa.js"
+  },
+  {
+    "bone": "cocoaShow",
+    "name": "可可模式时显示",
+    "description": "在女仆处于可可模式时，显示此骨骼",
+    "color": "#00AA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/cocoa.js"
+  },
+  {
+    "bone": "danmakuAttackHidden",
+    "name": "弹幕攻击模式时隐藏",
+    "description": "在女仆处于弹幕攻击模式时，隐藏此骨骼",
+    "color": "#00AAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/danmaku_attack.js"
+  },
+  {
+    "bone": "danmakuAttackShow",
+    "name": "弹幕攻击模式时显示",
+    "description": "在女仆处于弹幕攻击模式时，显示此骨骼",
+    "color": "#00AAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/danmaku_attack.js"
+  },
+  {
+    "bone": "extinguishingHidden",
+    "name": "灭火模式时隐藏",
+    "description": "在女仆处于灭火模式时，隐藏此骨骼",
+    "color": "#AA0000",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/extinguishing.js"
+  },
+  {
+    "bone": "extinguishingShow",
+    "name": "灭火模式时显示",
+    "description": "在女仆处于灭火模式时，显示此骨骼",
+    "color": "#AA0000",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/extinguishing.js"
+  },
+  {
+    "bone": "farmHidden",
+    "name": "农场模式时隐藏",
+    "description": "在女仆处于农场模式时，隐藏此骨骼",
+    "color": "#AA00AA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/farm.js"
+  },
+  {
+    "bone": "farmShow",
+    "name": "农场模式时显示",
+    "description": "在女仆处于农场模式时，显示此骨骼",
+    "color": "#AA00AA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/farm.js"
+  },
+  {
+    "bone": "feedHidden",
+    "name": "喂食模式时隐藏",
+    "description": "在女仆处于喂食模式时，隐藏此骨骼",
+    "color": "#FFAA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/feed.js"
+  },
+  {
+    "bone": "feedShow",
+    "name": "喂食模式时显示",
+    "description": "在女仆处于喂食模式时，显示此骨骼",
+    "color": "#FFAA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/feed.js"
+  },
+  {
+    "bone": "feedAnimalHidden",
+    "name": "繁殖动物模式时隐藏",
+    "description": "在女仆处于繁殖动物模式时，隐藏此骨骼",
+    "color": "#AAAAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/feed_animal.js"
+  },
+  {
+    "bone": "feedAnimalShow",
+    "name": "繁殖动物模式时显示",
+    "description": "在女仆处于繁殖动物模式时，显示此骨骼",
+    "color": "#AAAAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/feed_animal.js"
+  },
+  {
+    "bone": "grassHidden",
+    "name": "花草模式时隐藏",
+    "description": "在女仆处于花草模式时，隐藏此骨骼",
+    "color": "#5555FF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/grass.js"
+  },
+  {
+    "bone": "grassShow",
+    "name": "花草模式时显示",
+    "description": "在女仆处于花草模式时，显示此骨骼",
+    "color": "#5555FF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/grass.js"
+  },
+  {
+    "bone": "idleHidden",
+    "name": "空闲模式时隐藏",
+    "description": "在女仆处于空闲模式时，隐藏此骨骼",
+    "color": "#55FF55",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/idle.js"
+  },
+  {
+    "bone": "idleShow",
+    "name": "空闲模式时显示",
+    "description": "在女仆处于空闲模式时，显示此骨骼",
+    "color": "#55FF55",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/idle.js"
+  },
+  {
+    "bone": "melonHidden",
+    "name": "瓜类模式时隐藏",
+    "description": "在女仆处于瓜类模式时，隐藏此骨骼",
+    "color": "#55FFFF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/melon.js"
+  },
+  {
+    "bone": "melonShow",
+    "name": "瓜类模式时显示",
+    "description": "在女仆处于瓜类模式时，显示此骨骼",
+    "color": "#55FFFF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/melon.js"
+  },
+  {
+    "bone": "milkHidden",
+    "name": "牛奶模式时隐藏",
+    "description": "在女仆处于牛奶模式时，隐藏此骨骼",
+    "color": "#FF5555",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/milk.js"
+  },
+  {
+    "bone": "milkShow",
+    "name": "牛奶模式时显示",
+    "description": "在女仆处于牛奶模式时，显示此骨骼",
+    "color": "#FF5555",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/milk.js"
+  },
+  {
+    "bone": "rangedAttackHidden",
+    "name": "弓兵模式时隐藏",
+    "description": "在女仆处于弓兵模式时，隐藏此骨骼",
+    "color": "#FF55FF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/ranged_attack.js"
+  },
+  {
+    "bone": "rangedAttackShow",
+    "name": "弓兵模式时显示",
+    "description": "在女仆处于弓兵模式时，显示此骨骼",
+    "color": "#FF55FF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/ranged_attack.js"
+  },
+  {
+    "bone": "shearsHidden",
+    "name": "剪刀模式时隐藏",
+    "description": "在女仆处于剪刀模式时，隐藏此骨骼",
+    "color": "#FFFF55",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/shears.js"
+  },
+  {
+    "bone": "shearsShow",
+    "name": "剪刀模式时显示",
+    "description": "在女仆处于剪刀模式时，显示此骨骼",
+    "color": "#FFFF55",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/shears.js"
+  },
+  {
+    "bone": "snowHidden",
+    "name": "清雪模式时隐藏",
+    "description": "在女仆处于清雪模式时，隐藏此骨骼",
+    "color": "#fe9750",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/snow.js"
+  },
+  {
+    "bone": "snowShow",
+    "name": "清雪模式时显示",
+    "description": "在女仆处于清雪模式时，显示此骨骼",
+    "color": "#fe9750",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/snow.js"
+  },
+  {
+    "bone": "sugarCaneHidden",
+    "name": "甘蔗模式时隐藏",
+    "description": "在女仆处于甘蔗模式时，隐藏此骨骼",
+    "color": "#00AA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/sugar_cane.js"
+  },
+  {
+    "bone": "sugarCaneShow",
+    "name": "甘蔗模式时显示",
+    "description": "在女仆处于甘蔗模式时，显示此骨骼",
+    "color": "#00AA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/sugar_cane.js"
+  },
+  {
+    "bone": "torchHidden",
+    "name": "火把模式时隐藏",
+    "description": "在女仆处于火把模式时，隐藏此骨骼",
+    "color": "#00AAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/torch.js"
+  },
+  {
+    "bone": "torchShow",
+    "name": "火把模式时显示",
+    "description": "在女仆处于火把模式时，显示此骨骼",
+    "color": "#00AAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/torch.js"
+  },
+  {
+    "bone": "helmetTempCold",
+    "name": "头盔（寒冷生物群系时显示）",
+    "description": "寒冷生物群系时显示该模型",
+    "color": "#5555FF",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/cold.js"
+  },
+  {
+    "bone": [
+      "chestPlateTempCold",
+      "chestPlateLeftTempCold",
+      "chestPlateMiddleTempCold",
+      "chestPlateRightTempCold"
+    ],
+    "name": "胸甲（寒冷生物群系时显示）",
+    "description": "寒冷生物群系时显示该模型",
+    "color": "#5555FF",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/cold.js"
+  },
+  {
+    "bone": [
+      "leggingsTempCold",
+      "leggingsLeftTempCold",
+      "leggingsMiddleTempCold",
+      "leggingsRightTempCold"
+    ],
+    "name": "护腿（寒冷生物群系时显示）",
+    "description": "寒冷生物群系时显示该模型",
+    "color": "#5555FF",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/cold.js"
+  },
+  {
+    "bone": [
+      "bootsLeftTempCold",
+      "bootsRightTempCold"
+    ],
+    "name": "靴子（寒冷生物群系时显示）",
+    "description": "寒冷生物群系时显示该模型",
+    "color": "#5555FF",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/cold.js"
+  },
+  {
+    "bone": "helmetTempMedium",
+    "name": "头盔（温度适中生物群系时显示）",
+    "description": "温度适中生物群系时显示该模型",
+    "color": "#00AA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/medium.js"
+  },
+  {
+    "bone": [
+      "chestPlateTempMedium",
+      "chestPlateLeftTempMedium",
+      "chestPlateMiddleTempMedium",
+      "chestPlateRightTempMedium"
+    ],
+    "name": "胸甲（温度适中生物群系时显示）",
+    "description": "温度适中生物群系时显示该模型",
+    "color": "#00AA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/medium.js"
+  },
+  {
+    "bone": [
+      "leggingsTempMedium",
+      "leggingsLeftTempMedium",
+      "leggingsMiddleTempMedium",
+      "leggingsRightTempMedium"
+    ],
+    "name": "护腿（温度适中生物群系时显示）",
+    "description": "温度适中生物群系时显示该模型",
+    "color": "#00AA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/medium.js"
+  },
+  {
+    "bone": [
+      "bootsLeftTempMedium",
+      "bootsRightTempMedium"
+    ],
+    "name": "靴子（温度适中生物群系时显示）",
+    "description": "温度适中生物群系时显示该模型",
+    "color": "#00AA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/medium.js"
+  },
+  {
+    "bone": "helmetTempOcean",
+    "name": "头盔（海洋生物群系时显示）",
+    "description": "海洋生物群系时显示该模型",
+    "color": "#00AAAA",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/ocean.js"
+  },
+  {
+    "bone": [
+      "chestPlateTempOcean",
+      "chestPlateLeftTempOcean",
+      "chestPlateMiddleTempOcean",
+      "chestPlateRightTempOcean"
+    ],
+    "name": "胸甲（海洋生物群系时显示）",
+    "description": "海洋生物群系时显示该模型",
+    "color": "#00AAAA",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/ocean.js"
+  },
+  {
+    "bone": [
+      "leggingsTempOcean",
+      "leggingsLeftTempOcean",
+      "leggingsMiddleTempOcean",
+      "leggingsRightTempOcean"
+    ],
+    "name": "护腿（海洋生物群系时显示）",
+    "description": "海洋生物群系时显示该模型",
+    "color": "#00AAAA",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/ocean.js"
+  },
+  {
+    "bone": [
+      "bootsLeftTempOcean",
+      "bootsRightTempOcean"
+    ],
+    "name": "靴子（海洋生物群系时显示）",
+    "description": "海洋生物群系时显示该模型",
+    "color": "#00AAAA",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/ocean.js"
+  },
+  {
+    "bone": "helmetTempWarm",
+    "name": "头盔（温暖生物群系时显示）",
+    "description": "温暖生物群系时显示该模型",
+    "color": "#FFAA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/warm.js"
+  },
+  {
+    "bone": [
+      "chestPlateTempWarm",
+      "chestPlateLeftTempWarm",
+      "chestPlateMiddleTempWarm",
+      "chestPlateRightTempWarm"
+    ],
+    "name": "胸甲（温暖生物群系时显示）",
+    "description": "温暖生物群系时显示该模型",
+    "color": "#FFAA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/warm.js"
+  },
+  {
+    "bone": [
+      "leggingsTempWarm",
+      "leggingsLeftTempWarm",
+      "leggingsMiddleTempWarm",
+      "leggingsRightTempWarm"
+    ],
+    "name": "护腿（温暖生物群系时显示）",
+    "description": "温暖生物群系时显示该模型",
+    "color": "#FFAA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/warm.js"
+  },
+  {
+    "bone": [
+      "bootsLeftTempWarm",
+      "bootsRightTempWarm"
+    ],
+    "name": "靴子（温暖生物群系时显示）",
+    "description": "温暖生物群系时显示该模型",
+    "color": "#FFAA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/warm.js"
   }
 ]
