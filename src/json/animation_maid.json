@@ -363,7 +363,7 @@
     "bone": "backpackPositioningBone",
     "name": "背包定位骨骼",
     "description": "女仆背包的定位骨骼，为空骨骼。它的旋转点决定了背包肩带的中心点",
-    "color": "#cc99cc",
+    "color": "#28b463",
     "parents": [],
     "group": "position",
     "path": ""
@@ -944,5 +944,185 @@
     "color": "#FFAA00",
     "group": "armor_special",
     "path": "touhou_little_maid:animation/maid/default/armor/temp/warm.js"
+  },
+  {
+    "bone": "helmetValueFull",
+    "name": "头盔（护甲 15 点以上显示）",
+    "description": "护甲 15 点以上显示该模型",
+    "color": "#808000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_full.js"
+  },
+  {
+    "bone": [
+      "chestPlateValueFull",
+      "chestPlateLeftValueFull",
+      "chestPlateMiddleValueFull",
+      "chestPlateRightValueFull"
+    ],
+    "name": "胸甲（护甲 15 点以上显示）",
+    "description": "护甲 15 点以上显示该模型",
+    "color": "#808000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_full.js"
+  },
+  {
+    "bone": [
+      "leggingsValueFull",
+      "leggingsLeftValueFull",
+      "leggingsMiddleValueFull",
+      "leggingsRightValueFull"
+    ],
+    "name": "护腿（护甲 15 点以上显示）",
+    "description": "护甲 15 点以上显示该模型",
+    "color": "#808000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_full.js"
+  },
+  {
+    "bone": [
+      "bootsLeftValueFull",
+      "bootsRightValueFull"
+    ],
+    "name": "靴子（护甲 15 点以上显示）",
+    "description": "护甲 15 点以上显示该模型",
+    "color": "#808000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_full.js"
+  },
+  {
+    "bone": "helmetValueHigh",
+    "name": "头盔（护甲 10 点以上显示）",
+    "description": "护甲 10 点以上显示该模型",
+    "color": "#008000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_high.js"
+  },
+  {
+    "bone": [
+      "chestPlateValueHigh",
+      "chestPlateLeftValueHigh",
+      "chestPlateMiddleValueHigh",
+      "chestPlateRightValueHigh"
+    ],
+    "name": "胸甲（护甲 10 点以上显示）",
+    "description": "护甲 10 点以上显示该模型",
+    "color": "#008000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_high.js"
+  },
+  {
+    "bone": [
+      "leggingsValueHigh",
+      "leggingsLeftValueHigh",
+      "leggingsMiddleValueHigh",
+      "leggingsRightValueHigh"
+    ],
+    "name": "护腿（护甲 10 点以上显示）",
+    "description": "护甲 10 点以上显示该模型",
+    "color": "#008000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_high.js"
+  },
+  {
+    "bone": [
+      "bootsLeftValueHigh",
+      "bootsRightValueHigh"
+    ],
+    "name": "靴子（护甲 10 点以上显示）",
+    "description": "护甲 10 点以上显示该模型",
+    "color": "#008000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_high.js"
+  },
+  {
+    "bone": "helmetValueNormal",
+    "name": "头盔（护甲 5 点以上显示）",
+    "description": "护甲 5 点以上显示该模型",
+    "color": "#800000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_normal.js"
+  },
+  {
+    "bone": [
+      "chestPlateValueNormal",
+      "chestPlateLeftValueNormal",
+      "chestPlateMiddleValueNormal",
+      "chestPlateRightValueNormal"
+    ],
+    "name": "胸甲（护甲 5 点以上显示）",
+    "description": "护甲 5 点以上显示该模型",
+    "color": "#800000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_normal.js"
+  },
+  {
+    "bone": [
+      "leggingsValueNormal",
+      "leggingsLeftValueNormal",
+      "leggingsMiddleValueNormal",
+      "leggingsRightValueNormal"
+    ],
+    "name": "护腿（护甲 5 点以上显示）",
+    "description": "护甲 5 点以上显示该模型",
+    "color": "#800000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_normal.js"
+  },
+  {
+    "bone": [
+      "bootsLeftValueNormal",
+      "bootsRightValueNormal"
+    ],
+    "name": "靴子（护甲 5 点以上显示）",
+    "description": "护甲 5 点以上显示该模型",
+    "color": "#800000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_normal.js"
+  },
+  {
+    "bone": "helmetValueLow",
+    "name": "头盔（护甲 5 点以下显示）",
+    "description": "护甲 5 点以下显示该模型",
+    "color": "#800080",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_low.js"
+  },
+  {
+    "bone": [
+      "chestPlateValueLow",
+      "chestPlateLeftValueLow",
+      "chestPlateMiddleValueLow",
+      "chestPlateRightValueLow"
+    ],
+    "name": "胸甲（护甲 5 点以下显示）",
+    "description": "护甲 5 点以下显示该模型",
+    "color": "#800080",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_low.js"
+  },
+  {
+    "bone": [
+      "leggingsValueLow",
+      "leggingsLeftValueLow",
+      "leggingsMiddleValueLow",
+      "leggingsRightValueLow"
+    ],
+    "name": "护腿（护甲 5 点以下显示）",
+    "description": "护甲 5 点以下显示该模型",
+    "color": "#800080",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_low.js"
+  },
+  {
+    "bone": [
+      "bootsLeftValueLow",
+      "bootsRightValueLow"
+    ],
+    "name": "靴子（护甲 5 点以下显示）",
+    "description": "护甲 5 点以下显示该模型",
+    "color": "#800080",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_low.js"
   }
 ]
