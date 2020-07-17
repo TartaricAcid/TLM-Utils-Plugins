@@ -54,7 +54,7 @@
   },
   {
     "bone": "endWorldShow",
-    "name": "主世界显示",
+    "name": "末地显示",
     "description": "当处于末地时，显示此骨骼",
     "color": "#34314c",
     "group": "dimension",

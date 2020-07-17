@@ -1,37 +1,63 @@
 import defaultMaidModel from "../json/default.json";
 import playerMaidModel from "../json/player_maid.json";
-import {TLM_PROJECT_INFO} from "../projectinfo";
+import {clearAll, TLM_PROJECT_INFO} from "../projectinfo";
+import {isEmpty} from "../utils/string";
+
+function newWorkSpace() {
+    // 新建一个项目
+    if (newProject(Formats['bedrock_old'], false)) {
+        new Dialog({
+            title: "选择你要创建的内容",
+            form: {
+                type: {
+                    type: "select",
+                    label: "创建类型",
+                    default: 'maid',
+                    options: {
+                        maid: "女仆模型",
+                        chair: "坐垫模型",
+                    }
+                }
+            },
+            onConfirm: function (formData) {
+                let type = formData.type;
+                if (type === "chair") {
+                    TLM_PROJECT_INFO.type = "chair"
+                    $("#status_saved").text("坐垫模型")
+                    this.hide();
+                } else {
+                    TLM_PROJECT_INFO.type = "maid"
+                    $("#status_saved").text("女仆模型")
+                    selectDiffMaidModelDialog.show();
+                }
+            }
+        }).show();
+    }
+}
 
 export var createDefaultModel = new Action('create_default_model', {
     name: '创建模型工作区',
     icon: 'fa-file-alt',
     click: function () {
-        // 新建一个项目
-        if (newProject(Formats['bedrock_old'], false)) {
-            new Dialog({
-                title: "选择你要创建的内容",
-                form: {
-                    type: {
-                        type: "select",
-                        label: "创建类型",
-                        default: 'maid',
-                        options: {
-                            maid: "女仆模型",
-                            chair: "坐垫模型",
-                        }
-                    }
+        // 先检查残留问题
+        let modelId = TLM_PROJECT_INFO.model_id;
+        if (!isEmpty(modelId)) {
+            Blockbench.showMessageBox({
+                    title: "提醒!",
+                    message: "检测到你此前已经导出过模型，是否打算保留之前的导出信息？",
+                    icon: "warning",
+                    confirm: 0,
+                    cancel: 1,
+                    buttons: ["创建全新模型", "保留导出信息"]
                 },
-                onConfirm: function (formData) {
-                    let type = formData.type;
-                    if (type === "chair") {
-                        TLM_PROJECT_INFO.type = "chair"
-                        this.hide();
-                    } else {
-                        TLM_PROJECT_INFO.type = "maid"
-                        selectDiffMaidModelDialog.show();
+                (result) => {
+                    if (result === 0) {
+                        clearAll()
                     }
-                }
-            }).show();
+                    newWorkSpace();
+                });
+        } else {
+            newWorkSpace();
         }
     }
 })

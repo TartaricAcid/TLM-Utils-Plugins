@@ -79,13 +79,7 @@ export var saveNewMaidModelDialog = new Dialog({
             label: "彩蛋是否加密",
             type: "checkbox",
             value: false
-        },
-        animation: {
-            label: "动画脚本（可选）",
-            type: "file",
-            extensions: ['blockbench'],
-            filetype: 'JS'
-        },
+        }
     },
     onConfirm: function (formData) {
         // 数据获取
@@ -178,13 +172,6 @@ export var saveNewMaidModelDialog = new Dialog({
             };
         }
 
-        // 动画脚本数据书写
-        if (!isEmpty(formData.animation)) {
-            let animationFilePath = formData.animation;
-            let animationFileName = pathToName(animationFilePath).toLowerCase().replace(/\s|-/g, '_');
-            modelData["animation"] = [`${namespace}:animation/${animationFileName}.js`];
-        }
-
         // 检查重复 ID
         if (checkDuplicateModelId()) {
             Blockbench.showMessageBox({
@@ -195,20 +182,20 @@ export var saveNewMaidModelDialog = new Dialog({
                 buttons: ["确认覆盖", "取消"]
             }, function (result) {
                 if (result === 0) {
-                    saveModel(modelData, formData.animation, languageMap, "maid_model");
+                    saveModel(modelData, languageMap, "maid_model");
                     // 隐藏对话框
                     saveNewMaidModelDialog.hide();
                 }
             })
         } else {
-            saveModel(modelData, formData.animation, languageMap, "maid_model");
+            saveModel(modelData, languageMap, "maid_model");
             // 隐藏对话框
             saveNewMaidModelDialog.hide();
         }
     }
 });
 
-function saveModel(modelData, animationFilePath, languageMap, jsonFileName) {
+function saveModel(modelData, languageMap, jsonFileName) {
     // 模型包文件地址
     let jsonFile = `${TLM_PROJECT_INFO.namespace_path}/${jsonFileName}.json`;
     // 模型文件地址
@@ -225,11 +212,6 @@ function saveModel(modelData, animationFilePath, languageMap, jsonFileName) {
     // 把模型添加到列表中
     addModelToList(modelData);
 
-    // 各种文件的书写    
-    if (!isEmpty(animationFilePath)) {
-        let animationFileName = pathToName(animationFilePath).toLowerCase().replace(/\s|-/g, '_');
-        fs.writeFileSync(`${TLM_PROJECT_INFO.animation_path}/${animationFileName}.js`, fs.readFileSync(animationFilePath))
-    }
     fs.writeFileSync(jsonFile, autoStringify(TLM_PROJECT_INFO["pack_data"]));
     fs.writeFile(modelFilePath, Format.codec.compile(), function (err) {
     });
@@ -315,13 +297,7 @@ export var saveNewChairModelDialog = new Dialog({
             label: "坐垫可以浮空",
             type: "checkbox",
             value: false
-        },
-        animation: {
-            label: "动画脚本（可选）",
-            type: "file",
-            extensions: ['blockbench'],
-            filetype: 'JS'
-        },
+        }
     },
     onConfirm: function (formData) {
         // 数据获取
@@ -382,12 +358,6 @@ export var saveNewChairModelDialog = new Dialog({
             modelData["no_gravity"] = true;
             saveNewChairModelDialog.form.noGravity.value = true;
         }
-        // 动画脚本数据书写
-        if (!isEmpty(formData.animation)) {
-            let animationFilePath = formData.animation;
-            let animationFileName = pathToName(animationFilePath).toLowerCase().replace(/\s|-/g, '_');
-            modelData["animation"] = [`${namespace}:animation/${animationFileName}.js`];
-        }
 
         // 检查重复 ID
         if (checkDuplicateModelId()) {
@@ -399,12 +369,12 @@ export var saveNewChairModelDialog = new Dialog({
                 buttons: ["确认覆盖", "取消"]
             }, function (result) {
                 if (result === 0) {
-                    saveModel(modelData, formData.animation, languageMap, "maid_chair");
+                    saveModel(modelData, languageMap, "maid_chair");
                     saveNewChairModelDialog.hide();
                 }
             })
         } else {
-            saveModel(modelData, formData.animation, languageMap, "maid_chair");
+            saveModel(modelData, languageMap, "maid_chair");
             saveNewChairModelDialog.hide();
         }
     }

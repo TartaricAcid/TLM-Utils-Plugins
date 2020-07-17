@@ -417,38 +417,6 @@
     "path": "touhou_little_maid:animation/maid/default/status/backpack.js"
   },
   {
-    "bone": "hasTargetShow",
-    "name": "锁定目标时显示",
-    "description": "在女仆锁定目标时，显示此骨骼",
-    "color": "#84B1ED",
-    "group": "extra",
-    "path": "touhou_little_maid:animation/maid/default/status/has_target.js"
-  },
-  {
-    "bone": "hasTargetHidden",
-    "name": "锁定目标时隐藏",
-    "description": "在女仆锁定目标时，隐藏此骨骼",
-    "color": "#84B1ED",
-    "group": "extra",
-    "path": "touhou_little_maid:animation/maid/default/status/has_target.js"
-  },
-  {
-    "bone": "movingShow",
-    "name": "移动时显示",
-    "description": "在女仆移动速度不为 0 时，显示此骨骼",
-    "color": "#a3c9c7",
-    "group": "extra",
-    "path": "touhou_little_maid:animation/maid/default/status/moving.js"
-  },
-  {
-    "bone": "movingHidden",
-    "name": "移动时隐藏",
-    "description": "在女仆移动速度不为 0 时，隐藏此骨骼",
-    "color": "#a3c9c7",
-    "group": "extra",
-    "path": "touhou_little_maid:animation/maid/default/status/moving.js"
-  },
-  {
     "bone": "sasimonoShow",
     "name": "装备旗指物时显示",
     "description": "在女仆装备旗指物时，显示此骨骼",

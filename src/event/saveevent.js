@@ -1,6 +1,7 @@
 import maidBoneList from "../json/animation_maid.json";
 import chairBoneList from "../json/animation_chair.json";
 import allBoneList from "../json/animation_all.json"
+import order from "../json/animation_order.json"
 import {TLM_PROJECT_INFO} from "../projectinfo";
 import {isEmpty} from "../utils/string";
 
@@ -21,22 +22,20 @@ function getBoneList() {
 }
 
 function insertPath(model, o) {
-    if (!model["animation"]) {
-        model["animation"] = []
-    }
+    let animations = model["animation"];
     let path = o["path"];
     if (Array.isArray(path)) {
         for (let p of path) {
-            if (!model["animation"].includes(p)) {
-                model["animation"].push(p)
+            if (!animations.includes(p)) {
+                animations.push(p)
             }
         }
     } else {
         if (isEmpty(path)) {
             return;
         }
-        if (!model["animation"].includes(path)) {
-            model["animation"].push(path)
+        if (!animations.includes(path)) {
+            animations.push(path)
         }
     }
 }
@@ -50,12 +49,14 @@ function addAnimations(model) {
             for (let g of allGroups) {
                 if (allBone.includes(g.name)) {
                     insertPath(model, o);
+                    // $(`#${g.uuid}`).css("color", "red");
                 }
             }
         } else {
             for (let g of allGroups) {
                 if (g.name === o.bone) {
                     insertPath(model, o);
+                    // $(`#${g.uuid}`).css("color", "red");
                 }
             }
         }
@@ -72,6 +73,24 @@ function saveFile(type, pack_data) {
     fs.writeFileSync(jsonFilePath, autoStringify(pack_data));
 }
 
+function orderAnimations(model) {
+    // 调整动画顺序
+    let animations = model["animation"];
+    let animationsCopy = animations.slice();
+    animationsCopy.forEach(a => {
+        if (order[a] !== undefined) {
+            let after = order[a]["after"];
+            after.forEach(b => {
+                let i1 = animationsCopy.indexOf(a);
+                let i2 = animationsCopy.indexOf(b);
+                if (i2 > i1) {
+                    swap(i2, i1, animations);
+                }
+            })
+        }
+    })
+}
+
 function saveAnimation() {
     let modelId = `${TLM_PROJECT_INFO.namespace}:${TLM_PROJECT_INFO.model_id}`;
     let pack_data = TLM_PROJECT_INFO.pack_data;
@@ -79,11 +98,28 @@ function saveAnimation() {
 
     if (!isEmpty(modelId)) {
         let model_list = pack_data["model_list"]
+
+        console.log("a")
+        if (model_list === undefined) {
+            return;
+        }
         model_list.forEach(model => {
             if (model["model_id"] === modelId) {
+                if (Array.isArray(model["animation"])) {
+                    model["animation"].length = 0;
+                } else {
+                    model["animation"] = []
+                }
                 addAnimations(model);
+                orderAnimations(model);
                 saveFile(type, pack_data);
             }
         })
     }
+}
+
+function swap(indexA, indexB, array) {
+    let c = array[indexB];
+    array[indexB] = array[indexA];
+    array[indexA] = c;
 }
