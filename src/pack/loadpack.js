@@ -192,12 +192,14 @@ function chooseMaidOrChair(namespacePath) {
         // 存储数据
         TLM_PROJECT_INFO["type"] = "maid";
         readPackInfo(maidModelFile);
+        $("#status_saved").text("女仆模型")
         return;
     }
     if (fs.existsSync(chairModelFile)) {
         // 存储数据
         TLM_PROJECT_INFO["type"] = "chair";
         readPackInfo(chairModelFile);
+        $("#status_saved").text("坐垫模型")
     }
 }
 
@@ -220,11 +222,13 @@ var bindTypeDialog = new Dialog({
             // 存储数据
             TLM_PROJECT_INFO["type"] = "chair";
             readPackInfo(`${TLM_PROJECT_INFO.namespace_path}/maid_chair.json`);
+            $("#status_saved").text("坐垫模型")
         }
         if (formData.bindType === "maid") {
             // 存储数据
             TLM_PROJECT_INFO["type"] = "maid";
             readPackInfo(`${TLM_PROJECT_INFO.namespace_path}/maid_model.json`);
+            $("#status_saved").text("女仆模型")
         }
     }
 });

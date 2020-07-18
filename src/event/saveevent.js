@@ -99,7 +99,6 @@ function saveAnimation() {
     if (!isEmpty(modelId)) {
         let model_list = pack_data["model_list"]
 
-        console.log("a")
         if (model_list === undefined) {
             return;
         }

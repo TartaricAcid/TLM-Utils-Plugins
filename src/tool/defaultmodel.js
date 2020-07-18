@@ -1,5 +1,5 @@
 import defaultMaidModel from "../json/default.json";
-import playerMaidModel from "../json/player_maid.json";
+// import playerMaidModel from "../json/player_maid.json";
 import {clearAll, TLM_PROJECT_INFO} from "../projectinfo";
 import {isEmpty} from "../utils/string";
 
@@ -28,7 +28,7 @@ function newWorkSpace() {
                 } else {
                     TLM_PROJECT_INFO.type = "maid"
                     $("#status_saved").text("女仆模型")
-                    selectDiffMaidModelDialog.show();
+                    defaultMaidModelDialog.show();
                 }
             }
         }).show();
@@ -44,14 +44,14 @@ export var createDefaultModel = new Action('create_default_model', {
         if (!isEmpty(modelId)) {
             Blockbench.showMessageBox({
                     title: "提醒!",
-                    message: "检测到你此前已经导出过模型，是否打算保留之前的导出信息？",
+                    message: "是否覆盖之前 保存/导入 的模型？",
                     icon: "warning",
                     confirm: 0,
                     cancel: 1,
-                    buttons: ["创建全新模型", "保留导出信息"]
+                    buttons: ["是", "否"]
                 },
                 (result) => {
-                    if (result === 0) {
+                    if (result === 1) {
                         clearAll()
                     }
                     newWorkSpace();
@@ -62,30 +62,30 @@ export var createDefaultModel = new Action('create_default_model', {
     }
 })
 
-var selectDiffMaidModelDialog = new Dialog({
-    title: "选择预设的女仆模型",
-    form: {
-        type: {
-            type: "select",
-            label: "预设类型",
-            default: 'default',
-            options: {
-                default: "默认女仆",
-                player: "缩小版本的玩家模型",
-            }
-        }
-    },
-    onConfirm: function (formData) {
-        let type = formData.type;
-        if (type === "default") {
-            defaultMaidModelDialog.show();
-        } else {
-            let copyModel = JSON.parse(JSON.stringify(playerMaidModel));
-            this.hide();
-            Codecs["bedrock_old"].parse(copyModel, null);
-        }
-    }
-})
+// var selectDiffMaidModelDialog = new Dialog({
+//     title: "选择预设的女仆模型",
+//     form: {
+//         type: {
+//             type: "select",
+//             label: "预设类型",
+//             default: 'default',
+//             options: {
+//                 default: "默认女仆",
+//                 player: "缩小版本的玩家模型",
+//             }
+//         }
+//     },
+//     onConfirm: function (formData) {
+//         let type = formData.type;
+//         if (type === "default") {
+//             defaultMaidModelDialog.show();
+//         } else {
+//             let copyModel = JSON.parse(JSON.stringify(playerMaidModel));
+//             this.hide();
+//             Codecs["bedrock_old"].parse(copyModel, null);
+//         }
+//     }
+// })
 
 
 var defaultMaidModelDialog = new Dialog({
