@@ -38,14 +38,16 @@ export var exportPack = new Action('export_pack', {
                     // 延迟打开，因为和前面的通知会存在冲突
                     setTimeout(() => {
                         // 选择放置资源包文件夹的窗口
-                        ElecDialogs.showOpenDialog(currentwindow, {
+                        let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
                             title: "选择资源包文件夹",
                             properties: ['openDirectory']
-                        }, function (path) {
+                        });
+                        if (filePaths) {
+                            let path = filePaths[0];
                             if (path !== undefined && path !== null) {
                                 checkIsPackFolder(path);
                             }
-                        });
+                        }
                     }, 25);
                 }
             }

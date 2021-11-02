@@ -1,5 +1,5 @@
 import {mkdirs} from "../utils/filesystem";
-import {TLM_PROJECT_INFO} from "../projectinfo";
+import {clearAll, TLM_PROJECT_INFO} from "../projectinfo";
 import {isEmpty} from "../utils/string";
 import {reloadAndReadLanguage} from "../utils/lang";
 import {dirname as _dirname} from "path";
@@ -13,14 +13,16 @@ export var loadPack = new Action('load_pack', {
         // 新建一个项目
         if (newProject(Formats['bedrock_old'], false)) {
             // 选择放置资源包文件夹的窗口
-            ElecDialogs.showOpenDialog(currentwindow, {
+            let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
                 title: "选择导入的资源包文件夹",
                 properties: ['openDirectory']
-            }, function (path) {
+            });
+            if (filePaths) {
+                let path = filePaths[0];
                 if (path !== undefined && path !== null && path.length > 0) {
                     checkIsPackFolder(path);
                 }
-            });
+            }
         }
     }
 });
@@ -120,6 +122,8 @@ function checkIsPackFolder(path) {
                 mkdirs(`${namespacePath}/textures/entity`);
                 mkdirs(`${namespacePath}/lang`);
                 mkdirs(`${namespacePath}/animation`);
+
+                clearAll();
 
                 TLM_PROJECT_INFO.namespace = namespace;
                 TLM_PROJECT_INFO.namespace_path = namespacePath;
@@ -378,11 +382,10 @@ function readPackInfo(filePath) {
                 loadModelFile(files[0]);
                 // 模型改名
                 Project.geometry_name = "model";
-                Project.name = TLM_PROJECT_INFO.model_id;
                 // 将导出路径修改为此路径
                 // 这样后续 Ctrl + S 保存时候会自动覆盖
-                ModelMeta.name = _dirname(modelFilePath);
-                ModelMeta.export_path = modelFilePath;
+                Project.name = _dirname(modelFilePath);
+                Project.export_path = modelFilePath;
 
                 // 材质加载
                 Blockbench.read([textureFilePath], {

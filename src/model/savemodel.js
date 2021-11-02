@@ -203,11 +203,10 @@ function saveModel(modelData, languageMap, jsonFileName) {
 
     // 模型改名
     Project.geometry_name = "model";
-    Project.name = TLM_PROJECT_INFO.model_id;
     // 将导出路径修改为此路径
     // 这样后续 Ctrl + S 保存时候会自动覆盖
-    ModelMeta.name = TLM_PROJECT_INFO.models_path;
-    ModelMeta.export_path = modelFilePath;
+    Project.name = TLM_PROJECT_INFO.models_path;
+    Project.export_path = modelFilePath;
 
     // 把模型添加到列表中
     addModelToList(modelData);
@@ -223,7 +222,8 @@ function saveModel(modelData, languageMap, jsonFileName) {
     saveLanguageFile();
 
     // 材质保存
-    if (textures.length > 0) {
+    let textures = Project.textures;
+    if (textures) {
         // 实体模型是单材质，获取第一个即可
         let textureFile = textures[0];
         // 来自 Blockbench 的图片二进制文件获取，不太理解

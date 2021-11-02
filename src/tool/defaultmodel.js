@@ -51,7 +51,8 @@ export var createDefaultModel = new Action('create_default_model', {
                     buttons: ["是", "否"]
                 },
                 (result) => {
-                    if (result === 1) {
+                    console.log(result)
+                    if (result === 0) {
                         clearAll()
                     }
                     newWorkSpace();

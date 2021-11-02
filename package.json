@@ -10,8 +10,8 @@
   "license": "MIT",
   "engines": {
     "node": "12.13.0",
-    "electron": "8.0.2",
-    "blockbench": "3.4.2"
+    "electron": "14.1.1",
+    "blockbench": "4.0.3"
   },
   "bugs": {
     "url": "https://github.com/TartaricAcid/TLM-Utils-Plugins/issues",

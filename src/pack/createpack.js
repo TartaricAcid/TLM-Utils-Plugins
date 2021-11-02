@@ -65,9 +65,11 @@ var createNewPackDialog = new Dialog({
         TLM_PROJECT_INFO["version"] = packVersion;
 
         // 选择放置资源包文件夹的窗口
-        ElecDialogs.showOpenDialog(currentwindow, {
+        let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
             properties: ['openDirectory']
-        }, function (path) {
+        });
+        if (filePaths) {
+            let path = filePaths[0];
             // 取消选择时，path 为空
             if (path === undefined || path === null) {
                 return;
@@ -113,6 +115,6 @@ var createNewPackDialog = new Dialog({
 
             createNewPackDialog.hide();
             Blockbench.notification("资源包创建成功！", `已经在 ${path} 放置对应资源包`);
-        });
+        }
     }
 });
