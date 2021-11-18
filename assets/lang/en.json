@@ -1,0 +1,40 @@
+{
+  "info.tlm_utils.title": "Touhou Little Maid Mod Blockbench Plugin",
+  "info.tlm_utils.description": "A plugin design for touhou little maid mod",
+
+  "menu.tlm_utils": "TLM",
+
+  "menu.tlm_utils.create_new_model": "Create New Workspace",
+  "dialog.tlm_utils.create_new_model.choose_type": "Choose Create Type",
+  "dialog.tlm_utils.create_new_model.choose_type.maid": "Maid",
+  "dialog.tlm_utils.create_new_model.choose_type.chair": "Chair",
+  "dialog.tlm_utils.create_new_model.maid.title": "Select what you want to create",
+  "dialog.tlm_utils.create_new_model.maid.default": "Default",
+  "dialog.tlm_utils.create_new_model.maid.little_maid_sr2": "SR2",
+
+  "menu.tlm_utils.create_new_pack": "Create New Model Pack",
+  "dialog.tlm_utils.create_new_pack.title": "Set parameters for model pack",
+  "dialog.tlm_utils.create_new_pack.pack_id": "Model Pack Id (Required)",
+  "dialog.tlm_utils.create_new_pack.pack_id.placeholder": "At least 6 char, only lowercase English characters & underscores are supported",
+  "dialog.tlm_utils.create_new_pack.pack_id.warn.invalid.title": "Model pack id invalid!",
+  "dialog.tlm_utils.create_new_pack.pack_id.warn.invalid.desc": "Only lowercase English characters & underscores are supported",
+  "dialog.tlm_utils.create_new_pack.pack_id.warn.length.title": "Model pack id too short!",
+  "dialog.tlm_utils.create_new_pack.pack_id.warn.length.desc": "To avoid conflicts, the model pack id must be at least 6 char!",
+  "dialog.tlm_utils.create_new_pack.pack_version": "Model Pack Version (Optional)",
+  "dialog.tlm_utils.create_new_pack.pack_version.placeholder": "Recommended format: 1.0.0",
+  "dialog.tlm_utils.create_new_pack.pack_icon": "Model Pack Icon (Optional)",
+  "dialog.tlm_utils.create_new_pack.success.title": "Successfully created!",
+  "dialog.tlm_utils.create_new_pack.success.desc": "Model pack has been placed in %0",
+
+  "model.tlm_utils.maid.head": "Head",
+  "model.tlm_utils.maid.blink": "Blink",
+  "model.tlm_utils.maid.body": "Body",
+  "model.tlm_utils.maid.arm_left": "Left Arm",
+  "model.tlm_utils.maid.arm_right": "Right Arm",
+  "model.tlm_utils.maid.leg_left": "Left Leg",
+  "model.tlm_utils.maid.leg_right": "Right Leg",
+  "model.tlm_utils.maid.wing_left": "Left Wing",
+  "model.tlm_utils.maid.wing_right": "Right Wing",
+  "model.tlm_utils.maid.tail": "Tail",
+  "model.tlm_utils.maid.ahoge": "Ahoge"
+}
