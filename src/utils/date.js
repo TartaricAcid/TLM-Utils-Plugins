@@ -1,18 +1,18 @@
 /**
- * 格式化日期类
- * 来源：https://www.runoob.com/js/js-obj-date.html
- * @param {Date} date 日期
- * @param {String} fmt 格式符
+ * Formatted date
+ * From: https://www.runoob.com/js/js-obj-date.html
+ * @param {Date} date Date
+ * @param {String} fmt Format
  */
 export function dateFormat(date, fmt = "yyyy-MM-dd") {
     let o = {
-        "M+": date.getMonth() + 1,                           // 月份
-        "d+": date.getDate(),                               // 日
-        "h+": date.getHours(),                              // 小时
-        "m+": date.getMinutes(),                           // 分
-        "s+": date.getSeconds(),                           // 秒
-        "q+": Math.floor((date.getMonth() + 3) / 3),   // 季度
-        "S": date.getMilliseconds()                       // 毫秒
+        "M+": date.getMonth() + 1,
+        "d+": date.getDate(),
+        "h+": date.getHours(),
+        "m+": date.getMinutes(),
+        "s+": date.getSeconds(),
+        "q+": Math.floor((date.getMonth() + 3) / 3),
+        "S": date.getMilliseconds()
     };
 
     if (/(y+)/.test(fmt)) {

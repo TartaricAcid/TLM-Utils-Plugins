@@ -1,8 +1,8 @@
 import {dirname as _dirname} from "path";
 
 /**
- * 递归创建文件夹
- * @param {String} dirname 文件夹
+ * Create folders recursively
+ * @param {String} dirname Folders name
  */
 export function mkdirs(dirname) {
     if (fs.existsSync(dirname)) {

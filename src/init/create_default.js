@@ -5,8 +5,6 @@ import TLM_ZH from "../../assets/lang/zh.json";
 import defaultMaidModel from "../../assets/model/maid/default.json"
 import sr2MaidModel from "../../assets/model/maid/sr2.json"
 
-Language.addTranslations("en", TLM_EN)
-Language.addTranslations("zh", TLM_ZH)
 export var createDefaultAction = new Action("tlm_utils.create_new_model", {
     name: "menu.tlm_utils.create_new_model",
     icon: "fa-file-alt",
@@ -15,7 +13,7 @@ export var createDefaultAction = new Action("tlm_utils.create_new_model", {
     }
 });
 
-let defaultMaidModelDialog = new Dialog({
+var defaultMaidModelDialog = new Dialog({
     title: "dialog.tlm_utils.create_new_model.maid.title",
     sidebar: {
         pages: {
@@ -26,9 +24,9 @@ let defaultMaidModelDialog = new Dialog({
         onPageSwitch(page) {
             if (page === "sr2") {
                 sr2MaidModelDialog.show();
-                for (let key in sr2MaidModelDialog.sidebar.page_menu) {
-                    let li = sr2MaidModelDialog.sidebar.page_menu[key];
-                    li.classList.toggle("selected", key == page);
+                for (let k in sr2MaidModelDialog.sidebar["page_menu"]) {
+                    let li = sr2MaidModelDialog.sidebar["page_menu"][k];
+                    li.classList.toggle("selected", k === page);
                 }
             }
         }
@@ -96,7 +94,7 @@ let defaultMaidModelDialog = new Dialog({
     }
 });
 
-let sr2MaidModelDialog = new Dialog({
+var sr2MaidModelDialog = new Dialog({
     title: "dialog.tlm_utils.create_new_model.maid.title",
     sidebar: {
         pages: {
@@ -107,10 +105,9 @@ let sr2MaidModelDialog = new Dialog({
         onPageSwitch(page) {
             if (page === "default") {
                 defaultMaidModelDialog.show();
-                defaultMaidModelDialog.sidebar.page = page;
-                for (let key in defaultMaidModelDialog.sidebar.page_menu) {
-                    let li = defaultMaidModelDialog.sidebar.page_menu[key];
-                    li.classList.toggle("selected", key == page);
+                for (let k in defaultMaidModelDialog.sidebar["page_menu"]) {
+                    let li = defaultMaidModelDialog.sidebar["page_menu"][k];
+                    li.classList.toggle("selected", k === page);
                 }
             }
         }
@@ -158,7 +155,7 @@ let sr2MaidModelDialog = new Dialog({
     }
 });
 
-let createPresetModelWorkspace = function (formData, model) {
+var createPresetModelWorkspace = function (formData, model) {
     let copyModel = JSON.parse(JSON.stringify(model));
     let bones = copyModel["geometry.model"]["bones"];
     for (let i in formData) {
@@ -172,36 +169,38 @@ let createPresetModelWorkspace = function (formData, model) {
     Codecs["bedrock_old"].load(copyModel, {path: ""});
 }
 
-let createEmptyWorkspace = function () {
-    createDefaultDialog.hide();
-    newProject(Formats["bedrock_old"]);
-}
-
-let createDefaultDialog = new Dialog("create_new_model", {
+var createDefaultDialog = new Dialog("create_new_model", {
     title: "menu.tlm_utils.create_new_model",
     width: 800,
     singleButton: true,
     component: {
-        data: function () {
-            return {
-                color_maid: "#17191d",
-                color_chair: "#17191d",
-                defaultMaidModelDialog: defaultMaidModelDialog,
-                createEmptyWorkspace: createEmptyWorkspace
+        data: {},
+        methods: {
+            createEmptyWorkspace: function () {
+                createDefaultDialog.hide();
+                newProject(Formats["bedrock_old"]);
+            },
+            openDefaultMaidModelDialog: function () {
+                createDefaultDialog.hide();
+                defaultMaidModelDialog.show();
             }
         },
         template: `
             <div>
                 <h1 style="text-align: center">${tl("dialog.tlm_utils.create_new_model.choose_type")}</h1>
                 <ul style="display: grid; max-height: 465px; padding: 5px; overflow-y: auto; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); grid-gap: 5px;">
-                <li :style="{'background-color': color_maid, 'cursor': 'pointer', 'text-align': 'center'}" v-on:click="defaultMaidModelDialog.show()" @mouseenter="color_maid='#3e90ff'" @mouseleave="color_maid = '#17191d'">
-                    <img src="${TLM_IMG_MAID}" alt="" width="200px">
-                    <h2 style="margin: 10px">${tl("dialog.tlm_utils.create_new_model.choose_type.maid")}</h2>
-                </li>
-                <li :style="{'background-color': color_chair, 'cursor': 'pointer', 'text-align': 'center'}" v-on:click="createEmptyWorkspace()" @mouseenter="color_chair='#3e90ff'" @mouseleave="color_chair = '#17191d'">
-                    <img src="${TLM_IMG_CHAIR}" alt="" width="200px">
-                    <h2 style="margin: 10px">${tl("dialog.tlm_utils.create_new_model.choose_type.chair")}</h2>
-                </li>
+                    <li :style="{'background-color': '#17191d', 'cursor': 'pointer', 'text-align': 'center'}">
+                        <button @click="openDefaultMaidModelDialog" style="width: 100%; height: 100%">
+                            <img src="${TLM_IMG_MAID}" alt="" width="200px">
+                            <h2 style="margin: 10px">${tl("dialog.tlm_utils.create_new_model.choose_type.maid")}</h2>
+                        </button>
+                    </li>
+                    <li :style="{'background-color': '#17191d', 'cursor': 'pointer', 'text-align': 'center'}">
+                        <button @click="createEmptyWorkspace" style="width: 100%; height: 100%">
+                            <img src="${TLM_IMG_CHAIR}" alt="" width="200px">
+                            <h2 style="margin: 10px">${tl("dialog.tlm_utils.create_new_model.choose_type.chair")}</h2>
+                        </button>
+                    </li>
                 </ul>
             </div>
             `

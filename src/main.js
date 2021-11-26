@@ -1,13 +1,10 @@
+import {loadTLMLanguage} from "./utils/langloader"
 import TLM from "../package.json";
-import TLM_EN from "../assets/lang/en.json";
-import TLM_ZH from "../assets/lang/zh.json";
 import {createDefaultAction} from "./init/create_default";
-import {createNewPack} from "./pack/create_pack";
+import {createNewPackAction} from "./pack/create_pack";
+import {loadPackAction} from "./load/load_file";
 
 (function () {
-    const OUTPUT_INFO = {}
-    Language.addTranslations("en", TLM_EN)
-    Language.addTranslations("zh", TLM_ZH)
     Plugin.register(TLM.name, {
         title: tl("info.tlm_utils.title"),
         author: TLM.author,
@@ -17,10 +14,12 @@ import {createNewPack} from "./pack/create_pack";
         variant: "desktop",
         min_version: "4.0.0",
         onload() {
+            loadTLMLanguage();
             new BarMenu("tlm_utils", [
                 "tlm_utils.create_new_model",
                 "_",
-                "tlm_utils.create_new_pack"
+                "tlm_utils.create_new_pack",
+                "tlm_utils.load_pack"
             ]);
             MenuBar.update();
         },
@@ -28,7 +27,8 @@ import {createNewPack} from "./pack/create_pack";
             delete MenuBar.menues["tlm_utils"];
             MenuBar.update();
             createDefaultAction.delete();
-            createNewPack.delete();
+            createNewPackAction.delete();
+            loadPackAction.delete();
         }
     });
 })();
