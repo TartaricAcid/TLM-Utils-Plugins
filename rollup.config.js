@@ -3,6 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import {terser} from "rollup-plugin-terser";
 import image from "@rollup/plugin-image";
+import css from "rollup-plugin-import-css";
 
 export default {
     input: "src/main.js",
@@ -14,8 +15,11 @@ export default {
         json(),
         resolve(),
         commonjs(),
-        terser(),
-        image()
+        //terser(),
+        image(),
+        css({
+            minify: true
+        })
     ],
     external: ["path"]
 };

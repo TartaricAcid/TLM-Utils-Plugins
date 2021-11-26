@@ -4,8 +4,8 @@ import {isEmpty} from "../utils/string";
 import {dirname as _dirname} from "path";
 import {getPackLanguage, getTranslationKey, getTranslationResult, writeLanguageFile} from "../utils/langreader";
 
-const MAID = "maid";
-const CHAIR = "chair"
+var MAID = "maid";
+var CHAIR = "chair"
 
 export var loadPackAction = new Action("tlm_utils.load_pack", {
     name: "menu.tlm_utils.load_pack",
@@ -61,6 +61,13 @@ function checkIsPackFolder(path) {
             onPageSwitch(page) {
                 select.content_vue.open_category = page;
                 select.content_vue.is_edit_pack_info = false;
+                if (select.content_vue.maidInfo && select.content_vue.maidInfo.data) {
+                    select.content_vue.selected = "maid"
+                    return
+                }
+                if (select.content_vue.chairInfo && select.content_vue.chairInfo.data) {
+                    select.content_vue.selected = "chair"
+                }
             }
         },
         component: {
@@ -70,7 +77,6 @@ function checkIsPackFolder(path) {
                 edit_pack_info: {},
                 selected_icon_path: "",
                 is_edit_pack_info: false,
-                refresh_computed: false
             },
             methods: {
                 readInfo: function (type) {
@@ -197,12 +203,7 @@ function checkIsPackFolder(path) {
                 },
                 clickEditPack: function () {
                     this.is_edit_pack_info = true;
-                    if (this.selected === "maid") {
-                        this.edit_pack_info = JSON.parse(JSON.stringify(this.maidInfo));
-                    }
-                    if (this.selected === "chair") {
-                        this.edit_pack_info = JSON.parse(JSON.stringify(this.chairInfo));
-                    }
+                    this.edit_pack_info = this.showInfo;
                     if (!this.edit_pack_info.data["author"]) {
                         this.edit_pack_info.data["author"] = []
                     }
@@ -223,6 +224,7 @@ function checkIsPackFolder(path) {
                 deleteAuthor: function (index) {
                     if (this.edit_pack_info && this.edit_pack_info.data && this.edit_pack_info.data["author"]) {
                         this.edit_pack_info.data["author"].splice(index, 1)
+                        this.$forceUpdate();
                     }
                 },
                 addAuthor: function () {
@@ -231,6 +233,7 @@ function checkIsPackFolder(path) {
                             this.edit_pack_info.data["author"].push("")
                         } else {
                             this.edit_pack_info.data["author"] = [""]
+                            this.$forceUpdate();
                         }
                     }
                 },
@@ -268,11 +271,12 @@ function checkIsPackFolder(path) {
                     writeLanguageFile("en_us", this.edit_pack_info.lang_path, this.edit_pack_info.lang)
                     this.is_edit_pack_info = false
                     this.selected_icon_path = ""
-
                 },
                 clickCancel: function () {
                     this.is_edit_pack_info = false
                     this.selected_icon_path = ""
+                    this.selected = " " + this.selected;
+                    this.selected.substr(1)
                 }
             },
             computed: {
@@ -281,6 +285,9 @@ function checkIsPackFolder(path) {
                 },
                 chairInfo: function () {
                     return this.readInfo(CHAIR)
+                },
+                showInfo: function () {
+                    return this.readInfo(this.selected)
                 }
             },
             template: `
@@ -298,13 +305,13 @@ function checkIsPackFolder(path) {
                                 </button>
                             </div>
                         </div>
-                        <div v-if="selected==='maid' && isShowList(maidInfo)">
+                        <div v-if="isShowList(showInfo)">
                             <div style="background-color: #21252b; padding: 10px; margin-top: 10px">
                                 <div style="display: flex;">
                                     <div style="width: 100px; height: 100px; border-style: solid; border-width: 1px; border-color: #17191d">
-                                        <div v-if="getIconPath(maidInfo)"
+                                        <div v-if="getIconPath(showInfo)"
                                              style="width: 100%; height: 100%; padding: 5px">
-                                            <img :src="getIconPath(maidInfo)" alt="" width="100%" height="100%">
+                                            <img :src="getIconPath(showInfo)" alt="" width="100%" height="100%">
                                         </div>
                                         <div v-else
                                              style="width: 100%; height: 100%; padding: 5px; display: flex; justify-content: center; align-items: center">
@@ -312,71 +319,26 @@ function checkIsPackFolder(path) {
                                         </div>
                                     </div>
                                     <div style="padding-left: 10px; width: 77%">
-                                        <p style="font-size: larger">{{getPackName(maidInfo)}}
+                                        <p style="font-size: larger">{{getPackName(showInfo)}}
                                             <span style="font-size: small; color: #848891; margin-left: 5px; background-color: #17191d; border-radius: 2px; padding: 0 5px">
                                                 <i class="fas fa-tag"
-                                                   style="font-size: smaller;"></i> {{getStringVersion(maidInfo.version)}}
+                                                   style="font-size: smaller;"></i> {{getStringVersion(showInfo.version)}}
                                             </span>
                                         </p>
-                                        <p v-if="maidInfo.data['description']"
+                                        <p v-if="showInfo.data['description']"
                                            style="color: #848891; font-size: small; margin: 0;">
                                             <i class="fas fa-comment-alt fa-fw"></i>
-                                            {{getDescription(maidInfo)}}
+                                            {{getDescription(showInfo)}}
                                         </p>
                                         <p style="color: #848891; font-size: small; margin: 0;">
                                             <i class="fas fa-user fa-fw"></i>
-                                            <span v-for="author in maidInfo.data['author']">
+                                            <span v-for="(author,index) in showInfo.data['author']" v-bind:key="index">
                                                 {{author}}
                                             </span>
                                         </p>
                                         <p style="color: #848891; font-size: small; margin: 0;">
                                             <i class="far fa-calendar-alt fa-fw"></i>
-                                            {{maidInfo.data['date']}}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div style="margin-top: 10px">
-                                    <button style="width: 100%" @click="clickEditPack">
-                                        <i class="fas fa-edit"></i>
-                                        {{tl("dialog.tlm_utils.load_pack.detail.edit_pack_info")}}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div v-if="selected==='chair' && isShowList(chairInfo)">
-                            <div style="background-color: #21252b; padding: 10px; margin-top: 10px">
-                                <div style="display: flex;">
-                                    <div style="width: 100px; height: 100px; border-style: solid; border-width: 1px; border-color: #17191d">
-                                        <div v-if="getIconPath(chairInfo)"
-                                             style="width: 100%; height: 100%; padding: 5px">
-                                            <img :src="getIconPath(chairInfo)" alt="" width="100%" height="100%">
-                                        </div>
-                                        <div v-else
-                                             style="width: 100%; height: 100%; padding: 5px; display: flex; justify-content: center; align-items: center">
-                                            <i class="far fa-4x fa-images"></i>
-                                        </div>
-                                    </div>
-                                    <div style="padding-left: 10px; width: 77%">
-                                        <p style="font-size: larger">{{getPackName(chairInfo)}}
-                                            <span style="font-size: small; color: #848891; margin-left: 5px; background-color: #17191d; border-radius: 2px; padding: 0 5px">
-                                                <i class="fas fa-tag"
-                                                   style="font-size: smaller;"></i> {{getStringVersion(chairInfo.version)}}
-                                            </span>
-                                        </p>
-                                        <p v-if="chairInfo.data['description']"
-                                           style="color: #848891; font-size: small; margin: 0;">
-                                            <i class="fas fa-comment-alt fa-fw"></i>
-                                            {{getDescription(chairInfo)}}
-                                        </p>
-                                        <p style="color: #848891; font-size: small; margin: 0;">
-                                            <i class="fas fa-user fa-fw"></i>
-                                            <span v-for="author in chairInfo.data['author']">
-                                                {{author}}
-                                            </span>
-                                        </p>
-                                        <p style="color: #848891; font-size: small; margin: 0;">
-                                            <i class="far fa-calendar-alt fa-fw"></i>
-                                            {{chairInfo.data['date']}}
+                                            {{showInfo.data['date']}}
                                         </p>
                                     </div>
                                 </div>
@@ -447,7 +409,8 @@ function checkIsPackFolder(path) {
                                     </div>
                                     <div style="display: flex; align-items: center; margin-top: 10px">
                                         <div>
-                                            <div v-for="(author, index) in edit_pack_info.data['author']">
+                                            <div v-for="(author, index) in edit_pack_info.data['author']"
+                                                 v-bind:key="index">
                                                 <div style="display: flex">
                                                     <input type="text"
                                                            style="border-radius: 1px; margin-top:5px; padding: 2px; width: 90px; height:30px; font-size: 13px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
@@ -470,7 +433,7 @@ function checkIsPackFolder(path) {
                                     <div style="margin-top: 10px">
                                         <p style="margin: 0; padding: 0; font-size: large">{{tl("dialog.tlm_utils.load_pack.edit.description")}}</p>
                                         <p style="margin: 0; padding: 0; color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}</p>
-                                        <div v-for="descKey in getDescriptionKeys()">
+                                        <div v-for="(descKey,index) in getDescriptionKeys()" v-bind:key="index">
                                             <input style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:30px; font-size: 20px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
                                                    v-model="edit_pack_info.lang[descKey]" type="text">
                                         </div>
@@ -494,17 +457,10 @@ function checkIsPackFolder(path) {
                             <i class="fas fa-clipboard-list fa-fw"></i>
                             {{tl("dialog.tlm_utils.load_pack.detail.model_list")}}
                         </p>
-                        <div v-if="selected==='maid' && isShowList(maidInfo)">
+                        <div v-if="isShowList(showInfo)">
                             <ul style="max-height: 550px; overflow-y: auto; text-align: center;">
-                                <li v-for="modelInfo in maidInfo.data['model_list']">
-                                    <button style="width: 98%; height: 30px; margin: 1px; font-size: small">{{getModelName(modelInfo, maidInfo.lang)}}</button>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="selected==='chair' && isShowList(chairInfo)">
-                            <ul style="max-height: 550px; overflow-y: auto; text-align: center;">
-                                <li v-for="modelInfo in chairInfo.data['model_list']">
-                                    <button style="width: 98%; height: 30px; margin: 1px; font-size: small">{{getModelName(modelInfo, chairInfo.lang)}}</button>
+                                <li v-for="modelInfo in showInfo.data['model_list']" v-bind:key="modelInfo['model_id']">
+                                    <button style="width: 98%; height: 30px; margin: 1px; font-size: small">{{getModelName(modelInfo, showInfo.lang)}}</button>
                                 </li>
                             </ul>
                         </div>

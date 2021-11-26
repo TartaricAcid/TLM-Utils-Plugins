@@ -1,4 +1,4 @@
-export class TlmPackInfo {
+export var TlmPackInfo = class TlmPackInfo {
     constructor() {
         this.type = "maid" // Only two options: maid, chair
 

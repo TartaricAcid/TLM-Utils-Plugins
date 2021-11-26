@@ -3,6 +3,7 @@ import TLM from "../package.json";
 import {createDefaultAction} from "./init/create_default";
 import {createNewPackAction} from "./pack/create_pack";
 import {loadPackAction} from "./load/load_file";
+import cssTlm from "./css/tlm_utils_css.css"
 
 (function () {
     Plugin.register(TLM.name, {
@@ -15,6 +16,7 @@ import {loadPackAction} from "./load/load_file";
         min_version: "4.0.0",
         onload() {
             loadTLMLanguage();
+            $("<style>", {type: "text/css", id: "tlm_utils_css"}).append(cssTlm).appendTo("head");
             new BarMenu("tlm_utils", [
                 "tlm_utils.create_new_model",
                 "_",
@@ -24,6 +26,7 @@ import {loadPackAction} from "./load/load_file";
             MenuBar.update();
         },
         onunload() {
+            $("#tlm_utils_css").remove();
             delete MenuBar.menues["tlm_utils"];
             MenuBar.update();
             createDefaultAction.delete();
