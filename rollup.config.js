@@ -15,7 +15,7 @@ export default {
         json(),
         resolve(),
         commonjs(),
-        //terser(),
+        terser(),
         image(),
         css({
             minify: true

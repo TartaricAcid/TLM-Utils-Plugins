@@ -1,0 +1,39 @@
+name: Node JS Package
+
+on:
+  push:
+    branches:
+      - 2.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Build with Node JS
+        run: |
+          npm ci
+          npm run build
+
+      - name: Create timestamp
+        id: create_timestamp
+        run: echo "::set-output name=timestamp::$(date '+%Y%m%d%H%M%s')"
+        shell: bash
+
+      - name: Send file to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: snapshot-${{ steps.create_timestamp.outputs.timestamp }}
+          body: ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: true
+          files: |
+            ./tlm-utils.js
