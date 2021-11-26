@@ -20,7 +20,7 @@ jobs:
 
       - name: Build with Node JS
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Create timestamp
