@@ -276,7 +276,7 @@ function checkIsPackFolder(path) {
                     this.is_edit_pack_info = false
                     this.selected_icon_path = ""
                     this.selected = " " + this.selected;
-                    this.selected.substr(1)
+                    this.selected = this.selected.substr(1)
                 }
             },
             computed: {
@@ -376,7 +376,7 @@ function checkIsPackFolder(path) {
                                             <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.icon.desc")}}</p>
                                         </div>
                                     </div>
-                                    <div style="display: flex; align-items: center; margin-top: 10px">
+                                    <div style="display: flex; align-items: center; margin-top: 20px">
                                         <input style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:30px; font-size: 20px; background-color: #1c2026; border: #17191d 1px solid"
                                                v-model="edit_pack_info.version[0]" placeholder="1" type="number"
                                                value="1"
@@ -398,7 +398,7 @@ function checkIsPackFolder(path) {
                                             <p style="margin: 0; padding: 0; color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.version.desc")}}</p>
                                         </div>
                                     </div>
-                                    <div style="display: flex; align-items: center; margin-top: 10px">
+                                    <div style="display: flex; align-items: center; margin-top: 20px">
                                         <input type="date"
                                                style="border-radius: 1px; margin-top:5px; padding: 2px; width: 125px; height:30px; font-size: 13px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
                                                v-model="edit_pack_info.data['date']">
@@ -407,7 +407,7 @@ function checkIsPackFolder(path) {
                                             <p style="margin: 0; padding: 0; color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.date.desc")}}</p>
                                         </div>
                                     </div>
-                                    <div style="display: flex; align-items: center; margin-top: 10px">
+                                    <div style="display: flex; align-items: center; margin-top: 20px">
                                         <div>
                                             <div v-for="(author, index) in edit_pack_info.data['author']"
                                                  v-bind:key="index">
@@ -415,13 +415,13 @@ function checkIsPackFolder(path) {
                                                     <input type="text"
                                                            style="border-radius: 1px; margin-top:5px; padding: 2px; width: 90px; height:30px; font-size: 13px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
                                                            v-model="edit_pack_info.data['author'][index]">
-                                                    <button style="width: 25px; min-width: 25px; height: 30px; min-height: 25px; margin: 5px; display: flex; justify-content: center; align-items: center"
+                                                    <button style="width: 30px; min-width: 30px; height: 30px; min-height: 30px; margin: 5px 0 0 5px; display: flex; justify-content: center; align-items: center"
                                                             @click="deleteAuthor(index)">
                                                         <i class="fas fa-trash-alt fa-align-center"></i>
                                                     </button>
                                                 </div>
                                             </div>
-                                            <button style="width: 125px; margin-top: 5px" @click="addAuthor">
+                                            <button style="width: 127px; margin-top: 5px" @click="addAuthor">
                                                 <i class="fas fa-user-plus fa-fw"></i>
                                             </button>
                                         </div>
@@ -430,7 +430,7 @@ function checkIsPackFolder(path) {
                                             <p style="margin: 0; padding: 0; color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.author.desc")}}</p>
                                         </div>
                                     </div>
-                                    <div style="margin-top: 10px">
+                                    <div style="margin-top: 20px">
                                         <p style="margin: 0; padding: 0; font-size: large">{{tl("dialog.tlm_utils.load_pack.edit.description")}}</p>
                                         <p style="margin: 0; padding: 0; color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}</p>
                                         <div v-for="(descKey,index) in getDescriptionKeys()" v-bind:key="index">
