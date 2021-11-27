@@ -51,17 +51,23 @@ var createNewPackDialog = new Dialog({
             checkId: function () {
                 this.packId = this.packId.toLowerCase().replace(/\s|-/g, "_");
                 if (!this.packId) {
-                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.empty.desc");
+                    this.tip = tl(
+                        "dialog.tlm_utils.create_new_pack.pack_id.warn.empty.desc"
+                    );
                     this.setWarning();
                     return;
                 }
                 if (this.packId.length < 6) {
-                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.length.desc");
+                    this.tip = tl(
+                        "dialog.tlm_utils.create_new_pack.pack_id.warn.length.desc"
+                    );
                     this.setWarning();
                     return;
                 }
-                if (!(/^[\w.]+$/.test(this.packId))) {
-                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.invalid.desc");
+                if (!/^[\w.]+$/.test(this.packId)) {
+                    this.tip = tl(
+                        "dialog.tlm_utils.create_new_pack.pack_id.warn.invalid.desc"
+                    );
                     this.setWarning();
                     return;
                 }
@@ -69,7 +75,9 @@ var createNewPackDialog = new Dialog({
             },
             submit: function () {
                 if (!this.packId) {
-                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.empty.desc");
+                    this.tip = tl(
+                        "dialog.tlm_utils.create_new_pack.pack_id.warn.empty.desc"
+                    );
                     this.setWarning();
                     return;
                 }
@@ -88,7 +96,10 @@ var createNewPackDialog = new Dialog({
                         if (path === undefined || path === null) {
                             return;
                         }
-                        if (!isEmpty(this.packIcon) && !fs.existsSync(this.packIcon)) {
+                        if (
+                            !isEmpty(this.packIcon) &&
+                            !fs.existsSync(this.packIcon)
+                        ) {
                             this.packIcon = "";
                         }
                         let packVersion;
@@ -105,14 +116,27 @@ var createNewPackDialog = new Dialog({
                         mkdirs(`${namespace}/lang`);
                         mkdirs(`${namespace}/models/entity`);
                         mkdirs(`${namespace}/textures/entity`);
-                        fs.writeFileSync(`${root}/pack.mcmeta`, "{\"pack\":{\"pack_format\":3,\"description\":\"Touhou Little Maid Model Pack\"}}");
+                        fs.writeFileSync(
+                            `${root}/pack.mcmeta`,
+                            '{"pack":{"pack_format":3,"description":"Touhou Little Maid Model Pack"}}'
+                        );
                         if (!isEmpty(this.packIcon)) {
-                            fs.writeFileSync(`${root}/pack.png`, fs.readFileSync(this.packIcon));
+                            fs.writeFileSync(
+                                `${root}/pack.png`,
+                                fs.readFileSync(this.packIcon)
+                            );
                         }
                         createNewPackDialog.hide();
                         clearData(this);
-                        Blockbench.notification(tl("dialog.tlm_utils.create_new_pack.success.title"),
-                            tl("dialog.tlm_utils.create_new_pack.success.desc", path));
+                        Blockbench.notification(
+                            tl(
+                                "dialog.tlm_utils.create_new_pack.success.title"
+                            ),
+                            tl(
+                                "dialog.tlm_utils.create_new_pack.success.desc",
+                                path
+                            )
+                        );
                     }
                 }
             },

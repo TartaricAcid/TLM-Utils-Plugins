@@ -1,7 +1,7 @@
 import json from "@rollup/plugin-json";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
-import {terser} from "rollup-plugin-terser";
+import { terser } from "rollup-plugin-terser";
 import image from "@rollup/plugin-image";
 import css from "rollup-plugin-import-css";
 
@@ -9,7 +9,7 @@ export default {
     input: "src/main.js",
     output: {
         file: "tlm-utils.js",
-        format: "cjs"
+        format: "cjs",
     },
     plugins: [
         json(),
@@ -18,8 +18,8 @@ export default {
         terser(),
         image(),
         css({
-            minify: true
-        })
+            minify: true,
+        }),
     ],
-    external: ["path"]
+    external: ["path"],
 };

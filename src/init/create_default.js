@@ -164,7 +164,7 @@ var createPresetModelWorkspace = function (formData, model) {
             }
         }
     }
-    Codecs["bedrock_old"].load(copyModel, {path: ""});
+    Codecs["bedrock_old"].load(copyModel, { path: "" });
 };
 
 var createDefaultDialog = new Dialog("create_new_model", {
@@ -207,6 +207,6 @@ var createDefaultDialog = new Dialog("create_new_model", {
                     </li>
                 </ul>
             </div>
-            `
-    }
+            `,
+    },
 });

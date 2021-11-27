@@ -1,4 +1,4 @@
-import {isEmpty} from "./string";
+import { isEmpty } from "./string";
 
 export function getPackLanguage(langPath, local) {
     if (!local) {
@@ -24,7 +24,10 @@ export function writeLanguageFile(local, langPath, langMap) {
 }
 
 export function getTranslationKey(keyRaw) {
-    if (keyRaw.indexOf("{") === 0 && keyRaw.indexOf("}") === (keyRaw.length - 1)) {
+    if (
+        keyRaw.indexOf("{") === 0 &&
+        keyRaw.indexOf("}") === keyRaw.length - 1
+    ) {
         return keyRaw.replace(/^{/, "").replace(/}$/, "");
     } else {
         return keyRaw;
@@ -32,7 +35,10 @@ export function getTranslationKey(keyRaw) {
 }
 
 export function getTranslationResult(keyRaw, langMap) {
-    if (keyRaw.indexOf("{") === 0 && keyRaw.indexOf("}") === (keyRaw.length - 1)) {
+    if (
+        keyRaw.indexOf("{") === 0 &&
+        keyRaw.indexOf("}") === keyRaw.length - 1
+    ) {
         let key = keyRaw.replace(/^{/, "").replace(/}$/, "");
         if (!langMap || isEmpty(langMap[key])) {
             return keyRaw;
@@ -46,7 +52,7 @@ export function getTranslationResult(keyRaw, langMap) {
 function readLanguageFile(langFile, langMap) {
     if (fs.existsSync(langFile) && fs.statSync(langFile).isFile()) {
         let allText = fs.readFileSync(langFile, "utf8");
-        if (allText.charCodeAt(0) === 0xFEFF) {
+        if (allText.charCodeAt(0) === 0xfeff) {
             allText = allText.substr(1);
         }
         allText.split(/\r?\n/).forEach(function (line) {
