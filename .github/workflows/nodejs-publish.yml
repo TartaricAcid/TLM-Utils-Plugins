@@ -36,4 +36,15 @@ jobs:
           draft: false
           prerelease: true
           files: |
-            ./tlm-utils.js
+            ./dist/tlm-utils.js
+
+      - name: Push to repo
+        run: |
+          $ErrorActionPreference ='Continue'
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'actions@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add -f .
+          git commit -m "Update publish"
+          git push origin HEAD:${{ github.ref }}
+        shell: pwsh

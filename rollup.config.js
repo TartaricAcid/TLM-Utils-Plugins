@@ -8,7 +8,7 @@ import css from "rollup-plugin-import-css";
 export default {
     input: "src/main.js",
     output: {
-        file: "tlm-utils.js",
+        file: "dist/tlm-utils.js",
         format: "cjs",
     },
     plugins: [
