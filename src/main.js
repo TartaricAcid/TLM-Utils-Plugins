@@ -1,9 +1,9 @@
-import {loadTLMLanguage} from "./utils/langloader"
+import {loadTLMLanguage} from "./utils/i18nloader";
 import TLM from "../package.json";
 import {createDefaultAction} from "./init/create_default";
 import {createNewPackAction} from "./pack/create_pack";
 import {loadPackAction} from "./load/load_file";
-import cssTlm from "./css/tlm_utils_css.css"
+import cssTlm from "./css/tlm_utils_css.css";
 
 (function () {
     Plugin.register(TLM.name, {

@@ -1,9 +1,7 @@
 import TLM_IMG_MAID from "../../assets/img/maid.png";
 import TLM_IMG_CHAIR from "../../assets/img/chair.png";
-import TLM_EN from "../../assets/lang/en.json";
-import TLM_ZH from "../../assets/lang/zh.json";
-import defaultMaidModel from "../../assets/model/maid/default.json"
-import sr2MaidModel from "../../assets/model/maid/sr2.json"
+import defaultMaidModel from "../../assets/model/maid/default.json";
+import sr2MaidModel from "../../assets/model/maid/sr2.json";
 
 export var createDefaultAction = new Action("tlm_utils.create_new_model", {
     name: "menu.tlm_utils.create_new_model",
@@ -167,7 +165,7 @@ var createPresetModelWorkspace = function (formData, model) {
         }
     }
     Codecs["bedrock_old"].load(copyModel, {path: ""});
-}
+};
 
 var createDefaultDialog = new Dialog("create_new_model", {
     title: "menu.tlm_utils.create_new_model",
@@ -205,4 +203,4 @@ var createDefaultDialog = new Dialog("create_new_model", {
             </div>
             `
     }
-})
+});

@@ -3,5 +3,5 @@
  * @param {String} str Test string
  */
 export function isEmpty(str) {
-    return typeof str == "undefined" || str == null || str.trim() === "";
+    return !str || (typeof str === "string" && str.trim() === "");
 }

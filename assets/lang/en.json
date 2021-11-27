@@ -1,13 +1,10 @@
 {
   "info.tlm_utils.title": "Touhou Little Maid Mod Blockbench Plugin",
   "info.tlm_utils.description": "A plugin design for touhou little maid mod",
-
   "menu.tlm_utils": "TLM",
   "local.tlm_utils.name": "en_us",
-
   "button.tlm_utils.confirm": "Confirm",
   "button.tlm_utils.cancel": "Cancel",
-
   "menu.tlm_utils.create_new_model": "Create New Workspace",
   "dialog.tlm_utils.create_new_model.choose_type": "Choose Create Type",
   "dialog.tlm_utils.create_new_model.choose_type.maid": "Maid",
@@ -15,7 +12,6 @@
   "dialog.tlm_utils.create_new_model.maid.title": "Select what you want to create",
   "dialog.tlm_utils.create_new_model.maid.default": "Default",
   "dialog.tlm_utils.create_new_model.maid.little_maid_sr2": "SR2",
-
   "menu.tlm_utils.create_new_pack": "Create New Model Pack",
   "dialog.tlm_utils.create_new_pack.title": "Set parameters for model pack",
   "dialog.tlm_utils.create_new_pack.pack_id": "Model Pack ID",
@@ -31,7 +27,6 @@
   "dialog.tlm_utils.create_new_pack.directory": "Select the model pack path",
   "dialog.tlm_utils.create_new_pack.success.title": "Successfully created!",
   "dialog.tlm_utils.create_new_pack.success.desc": "Model pack has been placed in %0",
-
   "menu.tlm_utils.load_pack": "Import Model",
   "dialog.tlm_utils.load_pack.title": "Select model pack folder",
   "dialog.tlm_utils.load_pack.warn.pack_mcmeta_not_file": "The selected folder is not a model pack, pack.mcmeta should be a file!",
@@ -42,7 +37,6 @@
   "dialog.tlm_utils.load_pack.detail": "Loaded pack info",
   "dialog.tlm_utils.load_pack.detail.edit_pack_info": "Edit Pack Info",
   "dialog.tlm_utils.load_pack.detail.model_list": "Model List",
-
   "dialog.tlm_utils.load_pack.edit.pack_name": "Model Pack Name",
   "dialog.tlm_utils.load_pack.edit.pack_name.desc": "You can enter any characters",
   "dialog.tlm_utils.load_pack.edit.icon": "Model Pack Icon",
@@ -55,7 +49,6 @@
   "dialog.tlm_utils.load_pack.edit.author.desc": "Click the bottom button to add author",
   "dialog.tlm_utils.load_pack.edit.description": "Model Pack Description",
   "dialog.tlm_utils.load_pack.edit.description.desc": "You can enter any characters",
-
   "model.tlm_utils.maid.head": "Head",
   "model.tlm_utils.maid.blink": "Blink",
   "model.tlm_utils.maid.body": "Body",
@@ -67,6 +60,5 @@
   "model.tlm_utils.maid.wing_right": "Right Wing",
   "model.tlm_utils.maid.tail": "Tail",
   "model.tlm_utils.maid.ahoge": "Ahoge",
-
   "message.tlm_utils.prompt": "Prompt"
 }

@@ -10,13 +10,13 @@ export var createNewPackAction = new Action("tlm_utils.create_new_pack", {
 });
 
 function clearData(data) {
-    data.pack_id = ""
-    data.pack_icon = ""
-    data.pack_version = [1, 0, 0]
-    data.tip = ""
-    data.canSubmit = false
-    data.pack_id_border_color = "#17191d"
-    data.pack_id_border_size = "1px"
+    data.packId = "";
+    data.packIcon = "";
+    data.packVersion = [1, 0, 0];
+    data.tip = "";
+    data.canSubmit = false;
+    data.packIdBorderColor = "#17191d";
+    data.packIdBorderSize = "1px";
 }
 
 var createNewPackDialog = new Dialog({
@@ -24,53 +24,53 @@ var createNewPackDialog = new Dialog({
     width: 600,
     singleButton: true,
     onCancel: function () {
-        clearData(createNewPackDialog.content_vue)
+        clearData(createNewPackDialog.content_vue);
     },
     component: {
         data: {
-            pack_id: "",
-            pack_id_border_color: "#17191d",
-            pack_id_border_size: "1px",
-            pack_version: [1, 0, 0],
-            pack_icon: "",
+            packId: "",
+            packIdBorderColor: "#17191d",
+            packIdBorderSize: "1px",
+            packVersion: [1, 0, 0],
+            packIcon: "",
             tip: "",
             canSubmit: false
         },
         methods: {
             setWarning: function () {
-                this.pack_id_border_color = "#FF0000"
-                this.pack_id_border_size = "1px"
-                this.canSubmit = false
+                this.packIdBorderColor = "#FF0000";
+                this.packIdBorderSize = "1px";
+                this.canSubmit = false;
             },
             resetWarning: function () {
-                this.tip = ""
-                this.canSubmit = true
-                this.pack_id_border_color = "#17191d"
-                this.pack_id_border_size = "1px"
+                this.tip = "";
+                this.canSubmit = true;
+                this.packIdBorderColor = "#17191d";
+                this.packIdBorderSize = "1px";
             },
             checkId: function () {
-                this.pack_id = this.pack_id.toLowerCase().replace(/\s|-/g, "_");
-                if (!this.pack_id) {
-                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.empty.desc")
-                    this.setWarning()
+                this.packId = this.packId.toLowerCase().replace(/\s|-/g, "_");
+                if (!this.packId) {
+                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.empty.desc");
+                    this.setWarning();
                     return;
                 }
-                if (this.pack_id.length < 6) {
-                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.length.desc")
-                    this.setWarning()
+                if (this.packId.length < 6) {
+                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.length.desc");
+                    this.setWarning();
                     return;
                 }
-                if (!(/^[\w.]+$/.test(this.pack_id))) {
-                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.invalid.desc")
-                    this.setWarning()
+                if (!(/^[\w.]+$/.test(this.packId))) {
+                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.invalid.desc");
+                    this.setWarning();
                     return;
                 }
-                this.resetWarning()
+                this.resetWarning();
             },
             submit: function () {
-                if (!this.pack_id) {
-                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.empty.desc")
-                    this.setWarning()
+                if (!this.packId) {
+                    this.tip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.empty.desc");
+                    this.setWarning();
                     return;
                 }
                 if (this.canSubmit) {
@@ -83,17 +83,17 @@ var createNewPackDialog = new Dialog({
                         if (path === undefined || path === null) {
                             return;
                         }
-                        if (!isEmpty(this.pack_icon) && !fs.existsSync(this.pack_icon)) {
-                            this.pack_icon = ""
+                        if (!isEmpty(this.packIcon) && !fs.existsSync(this.packIcon)) {
+                            this.packIcon = "";
                         }
                         let packVersion;
-                        if (!this.pack_version || this.pack_version.length < 3) {
+                        if (!this.packVersion || this.packVersion.length < 3) {
                             packVersion = "1.0.0";
                         } else {
-                            packVersion = `${this.pack_version[0]}.${this.pack_version[1]}.${this.pack_version[2]}`;
+                            packVersion = `${this.packVersion[0]}.${this.packVersion[1]}.${this.packVersion[2]}`;
                         }
-                        let root = `${path}/${this.pack_id}-${packVersion}`;
-                        let namespace = `${root}/assets/${this.pack_id}`;
+                        let root = `${path}/${this.packId}-${packVersion}`;
+                        let namespace = `${root}/assets/${this.packId}`;
                         mkdirs(root);
                         mkdirs(namespace);
                         mkdirs(`${namespace}/animation`);
@@ -101,11 +101,11 @@ var createNewPackDialog = new Dialog({
                         mkdirs(`${namespace}/models/entity`);
                         mkdirs(`${namespace}/textures/entity`);
                         fs.writeFileSync(`${root}/pack.mcmeta`, "{\"pack\":{\"pack_format\":3,\"description\":\"Touhou Little Maid Model Pack\"}}");
-                        if (!isEmpty(this.pack_icon)) {
-                            fs.writeFileSync(`${root}/pack.png`, fs.readFileSync(this.pack_icon))
+                        if (!isEmpty(this.packIcon)) {
+                            fs.writeFileSync(`${root}/pack.png`, fs.readFileSync(this.packIcon));
                         }
                         createNewPackDialog.hide();
-                        clearData(this)
+                        clearData(this);
                         Blockbench.notification(tl("dialog.tlm_utils.create_new_pack.success.title"),
                             tl("dialog.tlm_utils.create_new_pack.success.desc", path));
                     }
@@ -118,7 +118,7 @@ var createNewPackDialog = new Dialog({
                     filters: [{name: "PNG", extensions: ["png"]}]
                 });
                 if (filePaths) {
-                    this.pack_icon = filePaths[0]
+                    this.packIcon = filePaths[0];
                 }
             }
         },
@@ -129,15 +129,15 @@ var createNewPackDialog = new Dialog({
                         <span style="color: #ff0000">*</span></h5>
                     <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.create_new_pack.pack_id.desc")}}</p>
                     <input style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:50px; font-size: 30px; background-color: #1c2026; border-style: solid"
-                           :style="{'border-color': pack_id_border_color, 'border-width': this.pack_id_border_size}"
-                           v-model="pack_id" placeholder="" type="text" @blur="checkId" required>
+                           :style="{'border-color': packIdBorderColor, 'border-width': this.packIdBorderSize}"
+                           v-model="packId" placeholder="" type="text" @blur="checkId" required>
                 </div>
                 <div style="margin-top: 20px;">
                     <div style="display: flex; align-items: center;">
                         <button style="min-width: 50px; width: 130px; height: 130px; border-radius: 1px; margin: 0; padding: 0"
                                 @click="openIconPath">
-                            <div v-if="pack_icon" style="padding: 5px">
-                                <img :src="pack_icon" alt="" width="120px" height="120px">
+                            <div v-if="packIcon" style="padding: 5px">
+                                <img :src="packIcon" alt="" width="120px" height="120px">
                             </div>
                             <div v-else>
                                 <i class="far fa-4x fa-images"></i>
@@ -152,13 +152,13 @@ var createNewPackDialog = new Dialog({
                 <div style="margin-top: 20px">
                     <div style="display: flex; align-items: center">
                         <input style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid"
-                               v-model="pack_version[0]" placeholder="1" type="number" value="1" step="1" min="0">
+                               v-model="packVersion[0]" placeholder="1" type="number" value="1" step="1" min="0">
                         <p style="font-weight: bold; font-size: 30px; margin: 20px 2px 2px;">.</p>
                         <input style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid"
-                               v-model="pack_version[1]" placeholder="0" type="number" value="0" step="1" min="0">
+                               v-model="packVersion[1]" placeholder="0" type="number" value="0" step="1" min="0">
                         <p style="font-weight: bold; font-size: 30px; margin: 20px 2px 2px;">.</p>
                         <input style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid"
-                               v-model="pack_version[2]" placeholder="0" type="number" value="0" step="1" min="0">
+                               v-model="packVersion[2]" placeholder="0" type="number" value="0" step="1" min="0">
                         <div style="margin-left: 20px">
                             <h5 style="margin: 0; padding: 0">{{tl("dialog.tlm_utils.create_new_pack.pack_version")}}</h5>
                             <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.create_new_pack.pack_version.desc")}}</p>

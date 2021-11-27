@@ -1,26 +1,28 @@
-export var TlmPackInfo = class TlmPackInfo {
+export var TlmPackInfo = class {
     constructor() {
-        this.type = "maid" // Only two options: maid, chair
+        // Only two options: maid, chair
+        this.type = "maid";
 
-        this.namespace = ""
-        this.version = []
-        this.data = {}
-        this.lang = {}
+        this.namespace = "";
+        this.version = [];
+        this.data = {};
+        this.lang = {};
+        this.local = {};
 
-        this.namespace_path = ""
-        this.textures_path = ""
-        this.animation_path = ""
-        this.lang_path = ""
-        this.models_path = ""
+        this.namespacePath = "";
+        this.texturesPath = "";
+        this.animationPath = "";
+        this.langPath = "";
+        this.modelsPath = "";
     }
-}
+};
 
 export var splitStringVersion = function (strVersion) {
-    let re = /^(\d+)\.(\d+)\.(\d+)$/
-    let result = re.exec(strVersion)
+    let re = /^(\d+)\.(\d+)\.(\d+)$/;
+    let result = re.exec(strVersion);
     if (result.length >= 4) {
-        return [result[1], result[2], result[3]]
+        return [result[1], result[2], result[3]];
     } else {
-        return [1, 0, 0]
+        return [1, 0, 0];
     }
-}
+};

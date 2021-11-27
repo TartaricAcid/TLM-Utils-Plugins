@@ -1,11 +1,9 @@
-import {mkdirs} from "../utils/filesystem";
 import {splitStringVersion, TlmPackInfo} from "../info/pack_info";
 import {isEmpty} from "../utils/string";
-import {dirname as _dirname} from "path";
-import {getPackLanguage, getTranslationKey, getTranslationResult, writeLanguageFile} from "../utils/langreader";
+import {getPackLanguage, getTranslationKey, getTranslationResult, writeLanguageFile} from "../utils/language";
 
 var MAID = "maid";
-var CHAIR = "chair"
+var CHAIR = "chair";
 
 export var loadPackAction = new Action("tlm_utils.load_pack", {
     name: "menu.tlm_utils.load_pack",
@@ -59,32 +57,40 @@ function checkIsPackFolder(path) {
             pages: namespaceMap,
             page: Object.keys(namespaceMap)[0],
             onPageSwitch(page) {
-                select.content_vue.open_category = page;
-                select.content_vue.is_edit_pack_info = false;
+                select.content_vue.openCategory = page;
+                select.content_vue.isEditPackInfo = false;
+                select.content_vue.selectedModelIndex = -1;
+                select.content_vue.selectedIconPath = "";
                 if (select.content_vue.maidInfo && select.content_vue.maidInfo.data) {
-                    select.content_vue.selected = "maid"
-                    return
+                    select.content_vue.selected = "maid";
+                    return;
                 }
                 if (select.content_vue.chairInfo && select.content_vue.chairInfo.data) {
-                    select.content_vue.selected = "chair"
+                    select.content_vue.selected = "chair";
                 }
             }
         },
         component: {
             data: {
-                open_category: Object.keys(namespaceMap)[0],
+                openCategory: Object.keys(namespaceMap)[0],
                 selected: "maid",
-                edit_pack_info: {},
-                selected_icon_path: "",
-                is_edit_pack_info: false,
+                editPackInfo: {},
+                selectedIconPath: "",
+                randomIconSuffix: 0,    // used to clean img cache
+                isEditPackInfo: false,
+                selectedModelIndex: -1
             },
             methods: {
                 readInfo: function (type) {
-                    let namespacePath = `${assetsPath}/${this.open_category}`;
+                    let namespacePath = `${assetsPath}/${this.openCategory}`;
                     let modelFile = (type === MAID) ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
                     if (fs.existsSync(modelFile)) {
                         let info = new TlmPackInfo();
-                        info.data = JSON.parse(fs.readFileSync(modelFile, "utf8").replace(/^\uFEFF/, ""));
+                        let text = fs.readFileSync(modelFile, "utf8");
+                        if (text.charCodeAt(0) === 0xFEFF) {
+                            text = text.substr(1);
+                        }
+                        info.data = JSON.parse(text);
 
                         let version = info.data.version;
                         if (isEmpty(version)) {
@@ -94,121 +100,95 @@ function checkIsPackFolder(path) {
                             info.version = splitStringVersion(version);
                         }
 
-                        info.namespace = this.open_category;
-                        info.namespace_path = namespacePath;
-                        info.animation_path = `${namespacePath}/animation`;
-                        info.lang_path = `${namespacePath}/lang`;
-                        info.models_path = `${namespacePath}/models/entity`;
-                        info.textures_path = `${namespacePath}/textures/entity`;
-                        info.lang = getPackLanguage(info.lang_path)
+                        info.namespace = this.openCategory;
+                        info.namespacePath = namespacePath;
+                        info.animationPath = `${namespacePath}/animation`;
+                        info.langPath = `${namespacePath}/lang`;
+                        info.modelsPath = `${namespacePath}/models/entity`;
+                        info.texturesPath = `${namespacePath}/textures/entity`;
+                        info.lang = getPackLanguage(info.langPath, "en_us");
+                        info.local = getPackLanguage(info.langPath);
 
-                        return info
+                        return info;
                     }
                 },
-                getStringVersion: function (version) {
-                    if (version && version.length >= 3) {
-                        return `${version[0]}.${version[1]}.${version[2]}`
+                getStringVersion: function () {
+                    if (this.showInfo && this.showInfo.version && this.showInfo.version.length >= 3) {
+                        let version = this.showInfo.version;
+                        return `${version[0]}.${version[1]}.${version[2]}`;
                     } else {
-                        return "1.0.0"
+                        return "1.0.0";
                     }
                 },
-                getModelName: function (modelInfo, langMap) {
+                getLocalModelName: function (modelInfo) {
                     let name = modelInfo["name"];
-                    let modelId = modelInfo["model_id"]
+                    let local = this.showInfo.local;
                     if (isEmpty(name)) {
+                        let modelId = modelInfo["model_id"];
                         let key = `model.${modelId.replace(":", ".")}.name`;
-                        if (isEmpty(langMap[key])) {
+                        if (!local || isEmpty(local[key])) {
                             return key;
-                        } else {
-                            return langMap[key];
                         }
+                        return local[key];
                     } else {
-                        return getTranslationResult(name, langMap)
+                        return getTranslationResult(name, local);
                     }
                 },
-                getPackName: function (packInfo) {
-                    if (packInfo && packInfo.data && packInfo.data["pack_name"]) {
-                        let name = packInfo.data["pack_name"];
-                        return getTranslationResult(name, packInfo.lang)
+                getPackName: function () {
+                    if (this.showInfo && this.showInfo.data && this.showInfo.data["pack_name"]) {
+                        let name = this.showInfo.data["pack_name"];
+                        return getTranslationResult(name, this.showInfo.lang);
                     }
                 },
-                getPackNameKey: function () {
-                    if (this.edit_pack_info && this.edit_pack_info.data && this.edit_pack_info.data["pack_name"]) {
-                        return getTranslationKey(this.edit_pack_info.data["pack_name"])
-                    }
-                },
-                isShowList: function (packInfo) {
-                    return packInfo && packInfo.data && packInfo.data["model_list"]
-                },
-                getDescription: function (packInfo) {
-                    if (packInfo && packInfo.data && packInfo.data["description"]) {
-                        let output = []
-                        for (let keyRaw of packInfo.data["description"]) {
+                getDescription: function () {
+                    if (this.showInfo && this.showInfo.data && this.showInfo.data["description"]) {
+                        let output = [];
+                        for (let keyRaw of this.showInfo.data["description"]) {
                             if (typeof keyRaw === "string") {
-                                output.push(getTranslationResult(keyRaw, packInfo.lang));
+                                output.push(getTranslationResult(keyRaw, this.showInfo.lang));
                             }
                         }
                         if (output.length === 1) {
-                            return output[0]
+                            return output[0];
                         }
                         if (output.length >= 1) {
-                            return output[0] + "..."
+                            return output[0] + "...";
                         }
-                    }
-                },
-                getDescriptionKeys: function () {
-                    if (this.edit_pack_info && this.edit_pack_info.data) {
-                        let output = []
-                        if (this.edit_pack_info.data["description"]) {
-                            for (let keyRaw of this.edit_pack_info.data["description"]) {
-                                if (typeof keyRaw === "string") {
-                                    output.push(getTranslationKey(keyRaw));
-                                }
-                            }
-                        }
-                        if (!output || output.length < 1) {
-                            let key = `${this.selected}_pack.${this.open_category}.desc`;
-                            let keyRaw = `{${key}}`;
-                            this.edit_pack_info.lang[key] = ""
-                            if (!this.edit_pack_info.data["description"]) {
-                                this.edit_pack_info.data["description"] = []
-                            }
-                            this.edit_pack_info.data["description"].push(keyRaw)
-                            output.push(key)
-                        }
-                        return output
                     }
                 },
                 getIconPath: function (packInfo) {
-                    if (this.selected_icon_path) {
-                        return this.selected_icon_path;
+                    if (this.selectedIconPath) {
+                        return this.selectedIconPath;
                     }
                     if (packInfo && packInfo.data && packInfo.data["icon"]) {
-                        let icon = packInfo.data["icon"].replace(":", "/")
+                        let icon = packInfo.data["icon"].replace(":", "/");
                         let iconPath = `${assetsPath}/${icon}`;
                         if (fs.existsSync(iconPath)) {
-                            return iconPath
+                            return `${iconPath}?${this.randomIconSuffix}`;
                         }
                     }
                 },
                 selectMaid: function () {
-                    this.selected = "maid"
-                    this.is_edit_pack_info = false
-                    this.selected_icon_path = ""
+                    this.selected = "maid";
+                    this.isEditPackInfo = false;
+                    this.selectedIconPath = "";
+                    this.selectedModelIndex = -1;
                 },
                 selectChair: function () {
-                    this.selected = "chair"
-                    this.is_edit_pack_info = false
-                    this.selected_icon_path = ""
+                    this.selected = "chair";
+                    this.isEditPackInfo = false;
+                    this.selectedIconPath = "";
+                    this.selectedModelIndex = -1;
                 },
                 clickEditPack: function () {
-                    this.is_edit_pack_info = true;
-                    this.edit_pack_info = this.showInfo;
-                    if (!this.edit_pack_info.data["author"]) {
-                        this.edit_pack_info.data["author"] = []
+                    this.isEditPackInfo = true;
+                    this.selectedModelIndex = -1;
+                    this.editPackInfo = this.showInfo;
+                    if (!this.editPackInfo.data["author"]) {
+                        this.editPackInfo.data["author"] = [];
                     }
-                    if (!this.edit_pack_info.data["description"]) {
-                        this.edit_pack_info.data["description"] = []
+                    if (!this.editPackInfo.data["description"]) {
+                        this.editPackInfo.data["description"] = [];
                     }
                 },
                 openIconPath: function () {
@@ -218,77 +198,109 @@ function checkIsPackFolder(path) {
                         filters: [{name: "PNG", extensions: ["png"]}]
                     });
                     if (filePaths) {
-                        this.selected_icon_path = filePaths[0]
+                        this.selectedIconPath = filePaths[0];
                     }
                 },
                 deleteAuthor: function (index) {
-                    if (this.edit_pack_info && this.edit_pack_info.data && this.edit_pack_info.data["author"]) {
-                        this.edit_pack_info.data["author"].splice(index, 1)
+                    if (this.editPackInfo && this.editPackInfo.data && this.editPackInfo.data["author"]) {
+                        this.editPackInfo.data["author"].splice(index, 1);
                         this.$forceUpdate();
                     }
                 },
                 addAuthor: function () {
-                    if (this.edit_pack_info && this.edit_pack_info.data) {
-                        if (this.edit_pack_info.data["author"] && this.edit_pack_info.data["author"].length > 0) {
-                            this.edit_pack_info.data["author"].push("")
+                    if (this.editPackInfo && this.editPackInfo.data) {
+                        if (this.editPackInfo.data["author"] && this.editPackInfo.data["author"].length > 0) {
+                            this.editPackInfo.data["author"].push("");
                         } else {
-                            this.edit_pack_info.data["author"] = [""]
+                            this.editPackInfo.data["author"] = [""];
                             this.$forceUpdate();
                         }
                     }
                 },
                 clickConfirm: function () {
-                    let namespacePath = `${assetsPath}/${this.open_category}`;
+                    let namespacePath = `${assetsPath}/${this.openCategory}`;
                     let modelFile = (this.selected === MAID) ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
-                    if (this.selected_icon_path) {
-                        fs.writeFileSync(`${namespacePath}/textures/${this.selected}_icon.png`, fs.readFileSync(this.selected_icon_path))
+                    if (this.selectedIconPath) {
+                        fs.writeFileSync(`${namespacePath}/textures/${this.selected}_icon.png`, fs.readFileSync(this.selectedIconPath));
                     }
-                    this.edit_pack_info.data["icon"] = `${this.open_category}:textures/${this.selected}_icon.png`
-                    this.edit_pack_info.data["version"] = `${this.edit_pack_info.version[0]}.${this.edit_pack_info.version[1]}.${this.edit_pack_info.version[2]}`
-                    if (this.edit_pack_info.data["author"]) {
-                        for (let author of this.edit_pack_info.data["author"]) {
+                    this.editPackInfo.data["icon"] = `${this.openCategory}:textures/${this.selected}_icon.png`;
+                    this.editPackInfo.data["version"] = `${this.editPackInfo.version[0]}.${this.editPackInfo.version[1]}.${this.editPackInfo.version[2]}`;
+                    if (this.editPackInfo.data["author"]) {
+                        for (let author of this.editPackInfo.data["author"]) {
                             if (isEmpty(author)) {
-                                this.edit_pack_info.data["author"].splice(this.edit_pack_info.data["author"].indexOf(author))
+                                this.editPackInfo.data["author"].splice(this.editPackInfo.data["author"].indexOf(author));
                             }
                         }
-                        if (this.edit_pack_info.data["author"].length < 1) {
-                            delete this.edit_pack_info.data["author"]
+                        if (this.editPackInfo.data["author"].length < 1) {
+                            delete this.editPackInfo.data["author"];
                         }
                     }
-                    if (this.edit_pack_info.data["description"]) {
-                        for (let desc of this.edit_pack_info.data["description"]) {
+                    if (this.editPackInfo.data["description"]) {
+                        for (let desc of this.editPackInfo.data["description"]) {
                             let key = getTranslationKey(desc);
-                            if (isEmpty(this.edit_pack_info.lang[key])) {
-                                delete this.edit_pack_info.lang[key]
-                                this.edit_pack_info.data["description"].splice(this.edit_pack_info.data["description"].indexOf(desc))
+                            if (isEmpty(this.editPackInfo.lang[key])) {
+                                delete this.editPackInfo.lang[key];
+                                this.editPackInfo.data["description"].splice(this.editPackInfo.data["description"].indexOf(desc));
                             }
                         }
-                        if (this.edit_pack_info.data["description"].length < 1) {
-                            delete this.edit_pack_info.data["description"]
+                        if (this.editPackInfo.data["description"].length < 1) {
+                            delete this.editPackInfo.data["description"];
                         }
                     }
-                    fs.writeFileSync(modelFile, autoStringify(this.edit_pack_info.data))
-                    writeLanguageFile("en_us", this.edit_pack_info.lang_path, this.edit_pack_info.lang)
-                    this.is_edit_pack_info = false
-                    this.selected_icon_path = ""
+                    fs.writeFileSync(modelFile, autoStringify(this.editPackInfo.data));
+                    writeLanguageFile("en_us", this.editPackInfo.langPath, this.editPackInfo.lang);
+                    this.isEditPackInfo = false;
+                    this.selectedIconPath = "";
+                    this.randomIconSuffix = Math.random();
                 },
                 clickCancel: function () {
-                    this.is_edit_pack_info = false
-                    this.selected_icon_path = ""
-                    this.selected = " " + this.selected;
-                    this.selected = this.selected.substr(1)
+                    this.isEditPackInfo = false;
+                    this.selectedIconPath = "";
+                    this.selected = this.selected + " ";
+                    this.selected = this.selected.trim();
                 }
             },
             computed: {
                 maidInfo: function () {
-                    return this.readInfo(MAID)
+                    return this.readInfo(MAID);
                 },
                 chairInfo: function () {
-                    return this.readInfo(CHAIR)
+                    return this.readInfo(CHAIR);
                 },
                 showInfo: function () {
-                    return this.readInfo(this.selected)
-                }
+                    return this.readInfo(this.selected);
+                },
+                isShowList: function () {
+                    return this.showInfo && this.showInfo.data && this.showInfo.data["model_list"];
+                },
+                packNameKey: function () {
+                    if (this.editPackInfo && this.editPackInfo.data && this.editPackInfo.data["pack_name"]) {
+                        return getTranslationKey(this.editPackInfo.data["pack_name"]);
+                    }
+                },
+                packDescKeys: function () {
+                    if (this.editPackInfo && this.editPackInfo.data) {
+                        let output = [];
+                        if (this.editPackInfo.data["description"]) {
+                            for (let keyRaw of this.editPackInfo.data["description"]) {
+                                if (typeof keyRaw === "string") {
+                                    output.push(getTranslationKey(keyRaw));
+                                }
+                            }
+                        }
+                        if (!output || output.length < 1) {
+                            let key = `${this.selected}_pack.${this.openCategory}.desc`;
+                            let keyRaw = `{${key}}`;
+                            this.editPackInfo.lang[key] = "";
+                            if (!this.editPackInfo.data["description"]) {
+                                this.editPackInfo.data["description"] = [];
+                            }
+                            this.editPackInfo.data["description"].push(keyRaw);
+                            output.push(key);
+                        }
+                        return output;
+                    }
+                },
             },
             template: `
                 <div style="display:flex">
@@ -305,7 +317,7 @@ function checkIsPackFolder(path) {
                                 </button>
                             </div>
                         </div>
-                        <div v-if="isShowList(showInfo)">
+                        <div v-if="isShowList">
                             <div style="background-color: #21252b; padding: 10px; margin-top: 10px">
                                 <div style="display: flex;">
                                     <div style="width: 100px; height: 100px; border-style: solid; border-width: 1px; border-color: #17191d">
@@ -319,16 +331,16 @@ function checkIsPackFolder(path) {
                                         </div>
                                     </div>
                                     <div style="padding-left: 10px; width: 77%">
-                                        <p style="font-size: larger">{{getPackName(showInfo)}}
+                                        <p style="font-size: larger">{{getPackName()}}
                                             <span style="font-size: small; color: #848891; margin-left: 5px; background-color: #17191d; border-radius: 2px; padding: 0 5px">
                                                 <i class="fas fa-tag"
-                                                   style="font-size: smaller;"></i> {{getStringVersion(showInfo.version)}}
+                                                   style="font-size: smaller;"></i> {{getStringVersion()}}
                                             </span>
                                         </p>
                                         <p v-if="showInfo.data['description']"
                                            style="color: #848891; font-size: small; margin: 0;">
                                             <i class="fas fa-comment-alt fa-fw"></i>
-                                            {{getDescription(showInfo)}}
+                                            {{getDescription()}}
                                         </p>
                                         <p style="color: #848891; font-size: small; margin: 0;">
                                             <i class="fas fa-user fa-fw"></i>
@@ -351,20 +363,20 @@ function checkIsPackFolder(path) {
                             </div>
                         </div>
                         <div style="width: 100%; margin-top: 10px">
-                            <div v-if="is_edit_pack_info" style="height: 100%">
+                            <div v-if="isEditPackInfo" style="height: 100%">
                                 <div style="background-color: #21252b; width: 100%; height: 330px; overflow-y: auto; padding: 10px 20px">
                                     <div>
                                         <p style="margin: 0; padding: 0; font-size: large">{{tl("dialog.tlm_utils.load_pack.edit.pack_name")}}</p>
                                         <p style="margin: 0; padding: 0; color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.pack_name.desc")}}</p>
                                         <input style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:30px; font-size: 20px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
-                                               v-model="edit_pack_info.lang[getPackNameKey(edit_pack_info)]"
+                                               v-model="editPackInfo.lang[packNameKey]"
                                                type="text">
                                     </div>
                                     <div style="display: flex; align-items: center; margin-top: 20px">
                                         <button style="min-width: 50px; width: 125px; height: 125px; border-radius: 1px; margin: 0; padding: 0"
                                                 @click="openIconPath">
-                                            <div v-if="getIconPath(edit_pack_info)" style="padding: 5px">
-                                                <img :src="getIconPath(edit_pack_info)" alt="" width="115x"
+                                            <div v-if="getIconPath(editPackInfo)" style="padding: 5px">
+                                                <img :src="getIconPath(editPackInfo)" alt="" width="115x"
                                                      height="115x">
                                             </div>
                                             <div v-else>
@@ -378,19 +390,19 @@ function checkIsPackFolder(path) {
                                     </div>
                                     <div style="display: flex; align-items: center; margin-top: 20px">
                                         <input style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:30px; font-size: 20px; background-color: #1c2026; border: #17191d 1px solid"
-                                               v-model="edit_pack_info.version[0]" placeholder="1" type="number"
+                                               v-model="editPackInfo.version[0]" placeholder="1" type="number"
                                                value="1"
                                                step="1" min="0">
                                         <p style="font-weight: bold; font-size: 20px; margin: 15px 2px 2px;">
                                             .</p>
                                         <input style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:30px; font-size: 20px; background-color: #1c2026; border: #17191d 1px solid"
-                                               v-model="edit_pack_info.version[1]" placeholder="0" type="number"
+                                               v-model="editPackInfo.version[1]" placeholder="0" type="number"
                                                value="0"
                                                step="1" min="0">
                                         <p style="font-weight: bold; font-size: 20px; margin: 15px 2px 2px;">
                                             .</p>
                                         <input style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:30px; font-size: 20px; background-color: #1c2026; border: #17191d 1px solid"
-                                               v-model="edit_pack_info.version[2]" placeholder="0" type="number"
+                                               v-model="editPackInfo.version[2]" placeholder="0" type="number"
                                                value="0"
                                                step="1" min="0">
                                         <div style="margin-left: 20px">
@@ -401,7 +413,7 @@ function checkIsPackFolder(path) {
                                     <div style="display: flex; align-items: center; margin-top: 20px">
                                         <input type="date"
                                                style="border-radius: 1px; margin-top:5px; padding: 2px; width: 125px; height:30px; font-size: 13px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
-                                               v-model="edit_pack_info.data['date']">
+                                               v-model="editPackInfo.data['date']">
                                         <div style="margin-left: 20px">
                                             <p style="margin: 0; padding: 0; font-size: large">{{tl("dialog.tlm_utils.load_pack.edit.date")}}</p>
                                             <p style="margin: 0; padding: 0; color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.date.desc")}}</p>
@@ -409,12 +421,12 @@ function checkIsPackFolder(path) {
                                     </div>
                                     <div style="display: flex; align-items: center; margin-top: 20px">
                                         <div>
-                                            <div v-for="(author, index) in edit_pack_info.data['author']"
+                                            <div v-for="(author, index) in editPackInfo.data['author']"
                                                  v-bind:key="index">
                                                 <div style="display: flex">
                                                     <input type="text"
                                                            style="border-radius: 1px; margin-top:5px; padding: 2px; width: 90px; height:30px; font-size: 13px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
-                                                           v-model="edit_pack_info.data['author'][index]">
+                                                           v-model="editPackInfo.data['author'][index]">
                                                     <button style="width: 30px; min-width: 30px; height: 30px; min-height: 30px; margin: 5px 0 0 5px; display: flex; justify-content: center; align-items: center"
                                                             @click="deleteAuthor(index)">
                                                         <i class="fas fa-trash-alt fa-align-center"></i>
@@ -433,9 +445,9 @@ function checkIsPackFolder(path) {
                                     <div style="margin-top: 20px">
                                         <p style="margin: 0; padding: 0; font-size: large">{{tl("dialog.tlm_utils.load_pack.edit.description")}}</p>
                                         <p style="margin: 0; padding: 0; color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}</p>
-                                        <div v-for="(descKey,index) in getDescriptionKeys()" v-bind:key="index">
+                                        <div v-for="(key, index) in packDescKeys" v-bind:key="index">
                                             <input style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:30px; font-size: 20px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
-                                                   v-model="edit_pack_info.lang[descKey]" type="text">
+                                                   v-model="editPackInfo.lang[key]" type="text">
                                         </div>
                                     </div>
                                 </div>
@@ -457,10 +469,10 @@ function checkIsPackFolder(path) {
                             <i class="fas fa-clipboard-list fa-fw"></i>
                             {{tl("dialog.tlm_utils.load_pack.detail.model_list")}}
                         </p>
-                        <div v-if="isShowList(showInfo)">
+                        <div v-if="isShowList">
                             <ul style="max-height: 550px; overflow-y: auto; text-align: center;">
                                 <li v-for="modelInfo in showInfo.data['model_list']" v-bind:key="modelInfo['model_id']">
-                                    <button style="width: 98%; height: 30px; margin: 1px; font-size: small">{{getModelName(modelInfo, showInfo.lang)}}</button>
+                                    <button style="width: 98%; height: 30px; margin: 1px; font-size: small">{{getLocalModelName(modelInfo)}}</button>
                                 </li>
                             </ul>
                         </div>
