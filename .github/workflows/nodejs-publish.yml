@@ -28,16 +28,6 @@ jobs:
         run: echo "::set-output name=timestamp::$(date '+%Y%m%d%H%M%s')"
         shell: bash
 
-      - name: Send file to Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: snapshot-${{ steps.create_timestamp.outputs.timestamp }}
-          body: ${{ github.event.head_commit.message }}
-          draft: false
-          prerelease: true
-          files: |
-            ./dist/tlm-utils.js
-
       - name: Push to repo
         run: |
           $ErrorActionPreference ='Continue'
@@ -50,3 +40,13 @@ jobs:
           git commit -m "Update publish"
           git push origin HEAD:${{ github.ref }}
         shell: pwsh
+
+      - name: Send file to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: snapshot-${{ steps.create_timestamp.outputs.timestamp }}
+          body: ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
+          files: |
+            ./dist/tlm-utils.js
