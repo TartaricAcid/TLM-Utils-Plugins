@@ -323,13 +323,13 @@ function checkIsPackFolder(path) {
                         <div style="display: flex;">
                             <div v-if="maidInfo && maidInfo.data" style="width: 50%; height: 30px">
                                 <button @click="selectMaid" style="width: 98%"
-                                        v-bind:class="{'inactive-tlm-selected-type-button':isMaidButtonActive}">
+                                        :class="{'inactive-tlm-selected-type-button':isMaidButtonActive}">
                                     {{tl("dialog.tlm_utils.create_new_model.choose_type.maid")}}
                                 </button>
                             </div>
                             <div v-if="chairInfo && chairInfo.data" style="width: 50%; height: 30px">
                                 <button @click="selectChair" style="width: 98%; margin-left: 2%"
-                                        v-bind:class="{'inactive-tlm-selected-type-button':isChairButtonActive}">
+                                        :class="{'inactive-tlm-selected-type-button':isChairButtonActive}">
                                     {{tl("dialog.tlm_utils.create_new_model.choose_type.chair")}}
                                 </button>
                             </div>
@@ -361,7 +361,7 @@ function checkIsPackFolder(path) {
                                         </p>
                                         <p style="color: #848891; font-size: small; margin: 0;">
                                             <i class="fas fa-user fa-fw"></i>
-                                            <span v-for="(author,index) in showInfo.data['author']" v-bind:key="index">
+                                            <span v-for="(author,index) in showInfo.data['author']" :key="index">
                                                 {{author}}
                                             </span>
                                         </p>
@@ -373,7 +373,7 @@ function checkIsPackFolder(path) {
                                 </div>
                                 <div style="margin-top: 10px">
                                     <button style="width: 100%" @click="clickEditPack"
-                                            v-bind:class="{'inactive-tlm-edit-pack-button':isEditPackButtonActive}">
+                                            :class="{'inactive-tlm-edit-pack-button':isEditPackButtonActive}">
                                         <i class="fas fa-edit"></i>
                                         {{tl("dialog.tlm_utils.load_pack.detail.edit_pack_info")}}
                                     </button>
@@ -440,7 +440,7 @@ function checkIsPackFolder(path) {
                                     <div style="display: flex; align-items: center; margin-top: 20px">
                                         <div>
                                             <div v-for="(author, index) in editPackInfo.data['author']"
-                                                 v-bind:key="index">
+                                                 :key="index">
                                                 <div style="display: flex">
                                                     <input type="text"
                                                            style="border-radius: 1px; margin-top:5px; padding: 2px; width: 90px; height:30px; font-size: 13px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
@@ -463,7 +463,7 @@ function checkIsPackFolder(path) {
                                     <div style="margin-top: 20px">
                                         <p style="margin: 0; padding: 0; font-size: large">{{tl("dialog.tlm_utils.load_pack.edit.description")}}</p>
                                         <p style="margin: 0; padding: 0; color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}</p>
-                                        <div v-for="(key, index) in packDescKeys" v-bind:key="index">
+                                        <div v-for="(key, index) in packDescKeys" :key="index">
                                             <input style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:30px; font-size: 20px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
                                                    v-model="editPackInfo.lang[key]" type="text">
                                         </div>
@@ -489,7 +489,7 @@ function checkIsPackFolder(path) {
                         </p>
                         <div v-if="isShowList">
                             <ul style="max-height: 550px; overflow-y: auto; text-align: center;">
-                                <li v-for="modelInfo in showInfo.data['model_list']" v-bind:key="modelInfo['model_id']">
+                                <li v-for="modelInfo in showInfo.data['model_list']" :key="modelInfo['model_id']">
                                     <button style="width: 98%; height: 30px; margin: 1px; font-size: small">{{getLocalModelName(modelInfo)}}</button>
                                 </li>
                             </ul>
