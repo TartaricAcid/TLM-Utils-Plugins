@@ -407,13 +407,13 @@ function checkIsPackFolder(path) {
                         <div style="display: flex;">
                             <div v-if="maidInfo && maidInfo.data" style="width: 50%; height: 30px">
                                 <button @click="selectMaid" style="width: 98%"
-                                        v-bind:class="{'inactive-tlm-selected-type-button':isMaidButtonActive}">
+                                        :class="{'inactive-tlm-selected-type-button':isMaidButtonActive}">
                                     {{tl("dialog.tlm_utils.create_new_model.choose_type.maid")}}
                                 </button>
                             </div>
                             <div v-if="chairInfo && chairInfo.data" style="width: 50%; height: 30px">
                                 <button @click="selectChair" style="width: 98%; margin-left: 2%"
-                                        v-bind:class="{'inactive-tlm-selected-type-button':isChairButtonActive}">
+                                        :class="{'inactive-tlm-selected-type-button':isChairButtonActive}">
                                     {{tl("dialog.tlm_utils.create_new_model.choose_type.chair")}}
                                 </button>
                             </div>
@@ -457,7 +457,7 @@ function checkIsPackFolder(path) {
                                 </div>
                                 <div style="margin-top: 10px">
                                     <button style="width: 100%" @click="clickEditPack"
-                                            v-bind:class="{'inactive-tlm-edit-pack-button':isEditPackButtonActive}">
+                                            :class="{'inactive-tlm-edit-pack-button':isEditPackButtonActive}">
                                         <i class="fas fa-edit"></i>
                                         {{tl("dialog.tlm_utils.load_pack.detail.edit_pack_info")}}
                                     </button>
