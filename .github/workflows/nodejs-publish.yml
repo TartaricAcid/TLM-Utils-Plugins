@@ -41,7 +41,8 @@ jobs:
       - name: Push to repo
         run: |
           $ErrorActionPreference ='Continue'
-          rm -f ./node_modules
+          rm -r ./node_modules
+          rm ./package-lock.json
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'actions@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
