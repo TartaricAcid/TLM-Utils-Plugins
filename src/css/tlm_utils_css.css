@@ -1,0 +1,9 @@
+.inactive-tlm-selected-type-button {
+    background-color: #21252b;
+    pointer-events: none;
+}
+
+.inactive-tlm-edit-pack-button {
+    background-color: #1c2026;
+    pointer-events: none;
+}
