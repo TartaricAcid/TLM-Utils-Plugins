@@ -2,8 +2,7 @@ name: 'Usptream Sync'
 
 on:
   schedule:
-    - cron:  '0 7 * * 1,4'
-    # scheduled at 07:00 every Monday and Thursday
+    - cron:  '0 0,12 * * *'
 
   workflow_dispatch:  # click the button on Github repo!
 
@@ -38,7 +37,7 @@ jobs:
         #upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
 
         # Set test_mode true to run tests instead of the true action!!
-        test_mode: true
+        test_mode: false
       
     # Step 3: Display a sample message based on the sync output var 'has_new_commits'
     - name: New commits found
