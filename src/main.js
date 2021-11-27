@@ -16,12 +16,14 @@ import cssTlm from "./css/tlm_utils_css.css";
         min_version: "4.0.0",
         onload() {
             loadTLMLanguage();
-            $("<style>", {type: "text/css", id: "tlm_utils_css"}).append(cssTlm).appendTo("head");
+            $("<style>", { type: "text/css", id: "tlm_utils_css" })
+                .append(cssTlm)
+                .appendTo("head");
             new BarMenu("tlm_utils", [
                 "tlm_utils.create_new_model",
                 "_",
                 "tlm_utils.create_new_pack",
-                "tlm_utils.load_pack"
+                "tlm_utils.load_pack",
             ]);
             MenuBar.update();
         },
@@ -32,6 +34,6 @@ import cssTlm from "./css/tlm_utils_css.css";
             createDefaultAction.delete();
             createNewPackAction.delete();
             loadPackAction.delete();
-        }
+        },
     });
 })();

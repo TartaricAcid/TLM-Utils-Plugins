@@ -1,6 +1,11 @@
-import {splitStringVersion, TlmPackInfo} from "../info/pack_info";
-import {isEmpty} from "../utils/string";
-import {getPackLanguage, getTranslationKey, getTranslationResult, writeLanguageFile} from "../utils/language";
+import { splitStringVersion, TlmPackInfo } from "../info/pack_info";
+import { isEmpty } from "../utils/string";
+import {
+    getPackLanguage,
+    getTranslationKey,
+    getTranslationResult,
+    writeLanguageFile,
+} from "../utils/language";
 
 var MAID = "maid";
 var CHAIR = "chair";
@@ -12,7 +17,7 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
     click: function () {
         let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
             title: tl("dialog.tlm_utils.load_pack.title"),
-            properties: ["openDirectory"]
+            properties: ["openDirectory"],
         });
         if (filePaths) {
             let path = filePaths[0];
@@ -20,7 +25,7 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
                 checkIsPackFolder(path);
             }
         }
-    }
+    },
 });
 
 function checkIsPackFolder(path) {
@@ -40,12 +45,14 @@ function checkIsPackFolder(path) {
     }
 
     if (namespaceMap.length === 0) {
-        Blockbench.showMessageBox({
-            title: "message.tlm_utils.prompt",
-            message: "dialog.tlm_utils.load_pack.warn.namespace_not_exist",
-            icon: "warning"
-        }, function (result) {
-        });
+        Blockbench.showMessageBox(
+            {
+                title: "message.tlm_utils.prompt",
+                message: "dialog.tlm_utils.load_pack.warn.namespace_not_exist",
+                icon: "warning",
+            },
+            function (result) {}
+        );
         return;
     }
 
@@ -61,14 +68,20 @@ function checkIsPackFolder(path) {
                 select.content_vue.isEditPackInfo = false;
                 select.content_vue.selectedModelIndex = -1;
                 select.content_vue.selectedIconPath = "";
-                if (select.content_vue.maidInfo && select.content_vue.maidInfo.data) {
+                if (
+                    select.content_vue.maidInfo &&
+                    select.content_vue.maidInfo.data
+                ) {
                     select.content_vue.selected = "maid";
                     return;
                 }
-                if (select.content_vue.chairInfo && select.content_vue.chairInfo.data) {
+                if (
+                    select.content_vue.chairInfo &&
+                    select.content_vue.chairInfo.data
+                ) {
                     select.content_vue.selected = "chair";
                 }
-            }
+            },
         },
         component: {
             data: {
@@ -76,18 +89,21 @@ function checkIsPackFolder(path) {
                 selected: "maid",
                 editPackInfo: {},
                 selectedIconPath: "",
-                randomIconSuffix: 0,    // used to clean img cache
+                randomIconSuffix: 0, // used to clean img cache
                 isEditPackInfo: false,
-                selectedModelIndex: -1
+                selectedModelIndex: -1,
             },
             methods: {
                 readInfo: function (type) {
                     let namespacePath = `${assetsPath}/${this.openCategory}`;
-                    let modelFile = (type === MAID) ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
+                    let modelFile =
+                        type === MAID
+                            ? `${namespacePath}/maid_model.json`
+                            : `${namespacePath}/maid_chair.json`;
                     if (fs.existsSync(modelFile)) {
                         let info = new TlmPackInfo();
                         let text = fs.readFileSync(modelFile, "utf8");
-                        if (text.charCodeAt(0) === 0xFEFF) {
+                        if (text.charCodeAt(0) === 0xfeff) {
                             text = text.substr(1);
                         }
                         info.data = JSON.parse(text);
@@ -113,7 +129,11 @@ function checkIsPackFolder(path) {
                     }
                 },
                 getStringVersion: function () {
-                    if (this.showInfo && this.showInfo.version && this.showInfo.version.length >= 3) {
+                    if (
+                        this.showInfo &&
+                        this.showInfo.version &&
+                        this.showInfo.version.length >= 3
+                    ) {
                         let version = this.showInfo.version;
                         return `${version[0]}.${version[1]}.${version[2]}`;
                     } else {
@@ -135,17 +155,30 @@ function checkIsPackFolder(path) {
                     }
                 },
                 getPackName: function () {
-                    if (this.showInfo && this.showInfo.data && this.showInfo.data["pack_name"]) {
+                    if (
+                        this.showInfo &&
+                        this.showInfo.data &&
+                        this.showInfo.data["pack_name"]
+                    ) {
                         let name = this.showInfo.data["pack_name"];
                         return getTranslationResult(name, this.showInfo.lang);
                     }
                 },
                 getDescription: function () {
-                    if (this.showInfo && this.showInfo.data && this.showInfo.data["description"]) {
+                    if (
+                        this.showInfo &&
+                        this.showInfo.data &&
+                        this.showInfo.data["description"]
+                    ) {
                         let output = [];
                         for (let keyRaw of this.showInfo.data["description"]) {
                             if (typeof keyRaw === "string") {
-                                output.push(getTranslationResult(keyRaw, this.showInfo.lang));
+                                output.push(
+                                    getTranslationResult(
+                                        keyRaw,
+                                        this.showInfo.lang
+                                    )
+                                );
                             }
                         }
                         if (output.length === 1) {
@@ -192,24 +225,36 @@ function checkIsPackFolder(path) {
                     }
                 },
                 openIconPath: function () {
-                    let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
-                        properties: ["openFile"],
-                        title: tl("dialog.tlm_utils.create_new_pack.pack_icon.desc"),
-                        filters: [{name: "PNG", extensions: ["png"]}]
-                    });
+                    let filePaths = electron.dialog.showOpenDialogSync(
+                        currentwindow,
+                        {
+                            properties: ["openFile"],
+                            title: tl(
+                                "dialog.tlm_utils.create_new_pack.pack_icon.desc"
+                            ),
+                            filters: [{ name: "PNG", extensions: ["png"] }],
+                        }
+                    );
                     if (filePaths) {
                         this.selectedIconPath = filePaths[0];
                     }
                 },
                 deleteAuthor: function (index) {
-                    if (this.editPackInfo && this.editPackInfo.data && this.editPackInfo.data["author"]) {
+                    if (
+                        this.editPackInfo &&
+                        this.editPackInfo.data &&
+                        this.editPackInfo.data["author"]
+                    ) {
                         this.editPackInfo.data["author"].splice(index, 1);
                         this.$forceUpdate();
                     }
                 },
                 addAuthor: function () {
                     if (this.editPackInfo && this.editPackInfo.data) {
-                        if (this.editPackInfo.data["author"] && this.editPackInfo.data["author"].length > 0) {
+                        if (
+                            this.editPackInfo.data["author"] &&
+                            this.editPackInfo.data["author"].length > 0
+                        ) {
                             this.editPackInfo.data["author"].push("");
                         } else {
                             this.editPackInfo.data["author"] = [""];
@@ -219,16 +264,30 @@ function checkIsPackFolder(path) {
                 },
                 clickConfirm: function () {
                     let namespacePath = `${assetsPath}/${this.openCategory}`;
-                    let modelFile = (this.selected === MAID) ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
+                    let modelFile =
+                        this.selected === MAID
+                            ? `${namespacePath}/maid_model.json`
+                            : `${namespacePath}/maid_chair.json`;
                     if (this.selectedIconPath) {
-                        fs.writeFileSync(`${namespacePath}/textures/${this.selected}_icon.png`, fs.readFileSync(this.selectedIconPath));
+                        fs.writeFileSync(
+                            `${namespacePath}/textures/${this.selected}_icon.png`,
+                            fs.readFileSync(this.selectedIconPath)
+                        );
                     }
-                    this.editPackInfo.data["icon"] = `${this.openCategory}:textures/${this.selected}_icon.png`;
-                    this.editPackInfo.data["version"] = `${this.editPackInfo.version[0]}.${this.editPackInfo.version[1]}.${this.editPackInfo.version[2]}`;
+                    this.editPackInfo.data[
+                        "icon"
+                    ] = `${this.openCategory}:textures/${this.selected}_icon.png`;
+                    this.editPackInfo.data[
+                        "version"
+                    ] = `${this.editPackInfo.version[0]}.${this.editPackInfo.version[1]}.${this.editPackInfo.version[2]}`;
                     if (this.editPackInfo.data["author"]) {
                         for (let author of this.editPackInfo.data["author"]) {
                             if (isEmpty(author)) {
-                                this.editPackInfo.data["author"].splice(this.editPackInfo.data["author"].indexOf(author));
+                                this.editPackInfo.data["author"].splice(
+                                    this.editPackInfo.data["author"].indexOf(
+                                        author
+                                    )
+                                );
                             }
                         }
                         if (this.editPackInfo.data["author"].length < 1) {
@@ -236,19 +295,32 @@ function checkIsPackFolder(path) {
                         }
                     }
                     if (this.editPackInfo.data["description"]) {
-                        for (let desc of this.editPackInfo.data["description"]) {
+                        for (let desc of this.editPackInfo.data[
+                            "description"
+                        ]) {
                             let key = getTranslationKey(desc);
                             if (isEmpty(this.editPackInfo.lang[key])) {
                                 delete this.editPackInfo.lang[key];
-                                this.editPackInfo.data["description"].splice(this.editPackInfo.data["description"].indexOf(desc));
+                                this.editPackInfo.data["description"].splice(
+                                    this.editPackInfo.data[
+                                        "description"
+                                    ].indexOf(desc)
+                                );
                             }
                         }
                         if (this.editPackInfo.data["description"].length < 1) {
                             delete this.editPackInfo.data["description"];
                         }
                     }
-                    fs.writeFileSync(modelFile, autoStringify(this.editPackInfo.data));
-                    writeLanguageFile("en_us", this.editPackInfo.langPath, this.editPackInfo.lang);
+                    fs.writeFileSync(
+                        modelFile,
+                        autoStringify(this.editPackInfo.data)
+                    );
+                    writeLanguageFile(
+                        "en_us",
+                        this.editPackInfo.langPath,
+                        this.editPackInfo.lang
+                    );
                     this.isEditPackInfo = false;
                     this.selectedIconPath = "";
                     this.randomIconSuffix = Math.random();
@@ -258,7 +330,7 @@ function checkIsPackFolder(path) {
                     this.selectedIconPath = "";
                     this.selected = this.selected + " ";
                     this.selected = this.selected.trim();
-                }
+                },
             },
             computed: {
                 maidInfo: function () {
@@ -271,18 +343,30 @@ function checkIsPackFolder(path) {
                     return this.readInfo(this.selected);
                 },
                 isShowList: function () {
-                    return this.showInfo && this.showInfo.data && this.showInfo.data["model_list"];
+                    return (
+                        this.showInfo &&
+                        this.showInfo.data &&
+                        this.showInfo.data["model_list"]
+                    );
                 },
                 packNameKey: function () {
-                    if (this.editPackInfo && this.editPackInfo.data && this.editPackInfo.data["pack_name"]) {
-                        return getTranslationKey(this.editPackInfo.data["pack_name"]);
+                    if (
+                        this.editPackInfo &&
+                        this.editPackInfo.data &&
+                        this.editPackInfo.data["pack_name"]
+                    ) {
+                        return getTranslationKey(
+                            this.editPackInfo.data["pack_name"]
+                        );
                     }
                 },
                 packDescKeys: function () {
                     if (this.editPackInfo && this.editPackInfo.data) {
                         let output = [];
                         if (this.editPackInfo.data["description"]) {
-                            for (let keyRaw of this.editPackInfo.data["description"]) {
+                            for (let keyRaw of this.editPackInfo.data[
+                                "description"
+                            ]) {
                                 if (typeof keyRaw === "string") {
                                     output.push(getTranslationKey(keyRaw));
                                 }
@@ -344,7 +428,7 @@ function checkIsPackFolder(path) {
                                         </p>
                                         <p style="color: #848891; font-size: small; margin: 0;">
                                             <i class="fas fa-user fa-fw"></i>
-                                            <span v-for="(author,index) in showInfo.data['author']" v-bind:key="index">
+                                            <span v-for="(author,index) in showInfo.data['author']" :key="index">
                                                 {{author}}
                                             </span>
                                         </p>
@@ -422,7 +506,7 @@ function checkIsPackFolder(path) {
                                     <div style="display: flex; align-items: center; margin-top: 20px">
                                         <div>
                                             <div v-for="(author, index) in editPackInfo.data['author']"
-                                                 v-bind:key="index">
+                                                 :key="index">
                                                 <div style="display: flex">
                                                     <input type="text"
                                                            style="border-radius: 1px; margin-top:5px; padding: 2px; width: 90px; height:30px; font-size: 13px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
@@ -445,7 +529,7 @@ function checkIsPackFolder(path) {
                                     <div style="margin-top: 20px">
                                         <p style="margin: 0; padding: 0; font-size: large">{{tl("dialog.tlm_utils.load_pack.edit.description")}}</p>
                                         <p style="margin: 0; padding: 0; color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}</p>
-                                        <div v-for="(key, index) in packDescKeys" v-bind:key="index">
+                                        <div v-for="(key, index) in packDescKeys" :key="index">
                                             <input style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:30px; font-size: 20px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
                                                    v-model="editPackInfo.lang[key]" type="text">
                                         </div>
@@ -471,15 +555,15 @@ function checkIsPackFolder(path) {
                         </p>
                         <div v-if="isShowList">
                             <ul style="max-height: 550px; overflow-y: auto; text-align: center;">
-                                <li v-for="modelInfo in showInfo.data['model_list']" v-bind:key="modelInfo['model_id']">
+                                <li v-for="modelInfo in showInfo.data['model_list']" :key="modelInfo['model_id']">
                                     <button style="width: 98%; height: 30px; margin: 1px; font-size: small">{{getLocalModelName(modelInfo)}}</button>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            `
-        }
+            `,
+        },
     });
 
     select.show();
@@ -489,21 +573,26 @@ function checkPackMcmeta(path) {
     let mcmetaPath = `${path}/pack.mcmeta`;
     if (fs.existsSync(mcmetaPath)) {
         if (!fs.statSync(mcmetaPath).isFile()) {
-            Blockbench.showMessageBox({
-                title: "message.tlm_utils.prompt",
-                message: "dialog.tlm_utils.load_pack.warn.pack_mcmeta_not_file",
-                icon: "warning"
-            }, function (result) {
-            });
+            Blockbench.showMessageBox(
+                {
+                    title: "message.tlm_utils.prompt",
+                    message:
+                        "dialog.tlm_utils.load_pack.warn.pack_mcmeta_not_file",
+                    icon: "warning",
+                },
+                function (result) {}
+            );
             return false;
         }
     } else {
-        Blockbench.showMessageBox({
-            title: "message.tlm_utils.prompt",
-            message: "dialog.tlm_utils.load_pack.warn.pack_mcmeta_not_file",
-            icon: "warning"
-        }, function (result) {
-        });
+        Blockbench.showMessageBox(
+            {
+                title: "message.tlm_utils.prompt",
+                message: "dialog.tlm_utils.load_pack.warn.pack_mcmeta_not_file",
+                icon: "warning",
+            },
+            function (result) {}
+        );
         return false;
     }
     return true;
@@ -513,21 +602,26 @@ function checkAssets(path) {
     let assetsPath = `${path}/assets`;
     if (fs.existsSync(assetsPath)) {
         if (!fs.statSync(assetsPath).isDirectory()) {
-            Blockbench.showMessageBox({
-                title: "message.tlm_utils.prompt",
-                message: "dialog.tlm_utils.load_pack.warn.assets_not_folder",
-                icon: "warning"
-            }, function (result) {
-            });
+            Blockbench.showMessageBox(
+                {
+                    title: "message.tlm_utils.prompt",
+                    message:
+                        "dialog.tlm_utils.load_pack.warn.assets_not_folder",
+                    icon: "warning",
+                },
+                function (result) {}
+            );
             return false;
         }
     } else {
-        Blockbench.showMessageBox({
-            title: "message.tlm_utils.prompt",
-            message: "dialog.tlm_utils.load_pack.warn.assets_not_exist",
-            icon: "warning"
-        }, function (result) {
-        });
+        Blockbench.showMessageBox(
+            {
+                title: "message.tlm_utils.prompt",
+                message: "dialog.tlm_utils.load_pack.warn.assets_not_exist",
+                icon: "warning",
+            },
+            function (result) {}
+        );
         return false;
     }
     return true;

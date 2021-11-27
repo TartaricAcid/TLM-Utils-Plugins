@@ -1,12 +1,12 @@
-import {mkdirs} from "../utils/filesystem";
-import {isEmpty} from "../utils/string";
+import { mkdirs } from "../utils/filesystem";
+import { isEmpty } from "../utils/string";
 
 export var createNewPackAction = new Action("tlm_utils.create_new_pack", {
     name: "menu.tlm_utils.create_new_pack",
     icon: "create",
     click: function () {
         createNewPackDialog.show();
-    }
+    },
 });
 
 function clearData(data) {
@@ -34,7 +34,7 @@ var createNewPackDialog = new Dialog({
             packVersion: [1, 0, 0],
             packIcon: "",
             tip: "",
-            canSubmit: false
+            canSubmit: false,
         },
         methods: {
             setWarning: function () {
@@ -74,10 +74,15 @@ var createNewPackDialog = new Dialog({
                     return;
                 }
                 if (this.canSubmit) {
-                    let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
-                        properties: ["openDirectory"],
-                        title: tl("dialog.tlm_utils.create_new_pack.directory")
-                    });
+                    let filePaths = electron.dialog.showOpenDialogSync(
+                        currentwindow,
+                        {
+                            properties: ["openDirectory"],
+                            title: tl(
+                                "dialog.tlm_utils.create_new_pack.directory"
+                            ),
+                        }
+                    );
                     if (filePaths) {
                         let path = filePaths[0];
                         if (path === undefined || path === null) {
@@ -112,15 +117,20 @@ var createNewPackDialog = new Dialog({
                 }
             },
             openIconPath: function () {
-                let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
-                    properties: ["openFile"],
-                    title: tl("dialog.tlm_utils.create_new_pack.pack_icon.desc"),
-                    filters: [{name: "PNG", extensions: ["png"]}]
-                });
+                let filePaths = electron.dialog.showOpenDialogSync(
+                    currentwindow,
+                    {
+                        properties: ["openFile"],
+                        title: tl(
+                            "dialog.tlm_utils.create_new_pack.pack_icon.desc"
+                        ),
+                        filters: [{ name: "PNG", extensions: ["png"] }],
+                    }
+                );
                 if (filePaths) {
                     this.packIcon = filePaths[0];
                 }
-            }
+            },
         },
         template: `
             <div style="margin-left: 0">
@@ -174,6 +184,6 @@ var createNewPackDialog = new Dialog({
                         <h5>{{tl("dialog.tlm_utils.create_new_pack.create")}}</h5></button>
                 </div>
             </div>
-        `
-    }
+        `,
+    },
 });

@@ -8,7 +8,7 @@ export var createDefaultAction = new Action("tlm_utils.create_new_model", {
     icon: "fa-file-alt",
     click: function () {
         createDefaultDialog.show();
-    }
+    },
 });
 
 var defaultMaidModelDialog = new Dialog({
@@ -27,69 +27,69 @@ var defaultMaidModelDialog = new Dialog({
                     li.classList.toggle("selected", k === page);
                 }
             }
-        }
+        },
     },
     form: {
         head: {
             label: "model.tlm_utils.maid.head",
             type: "checkbox",
-            value: true
+            value: true,
         },
         blink: {
             label: "model.tlm_utils.maid.blink",
             type: "checkbox",
-            value: true
+            value: true,
         },
         body: {
             label: "model.tlm_utils.maid.body",
             type: "checkbox",
-            value: true
+            value: true,
         },
         armLeft: {
             label: "model.tlm_utils.maid.arm_left",
             type: "checkbox",
-            value: true
+            value: true,
         },
         armRight: {
             label: "model.tlm_utils.maid.arm_right",
             type: "checkbox",
-            value: true
+            value: true,
         },
         legLeft: {
             label: "model.tlm_utils.maid.leg_left",
             type: "checkbox",
-            value: true
+            value: true,
         },
         legRight: {
             label: "model.tlm_utils.maid.leg_right",
             type: "checkbox",
-            value: true
+            value: true,
         },
         wingLeft: {
             label: "model.tlm_utils.maid.wing_left",
             type: "checkbox",
-            value: false
+            value: false,
         },
         wingRight: {
             label: "model.tlm_utils.maid.wing_right",
             type: "checkbox",
-            value: false
+            value: false,
         },
         tail: {
             label: "model.tlm_utils.maid.tail",
             type: "checkbox",
-            value: false
+            value: false,
         },
         ahoge: {
             label: "model.tlm_utils.maid.ahoge",
             type: "checkbox",
-            value: false
-        }
+            value: false,
+        },
     },
     onConfirm: function (formData) {
         this.hide();
         createPresetModelWorkspace(formData, defaultMaidModel);
-    }
+    },
 });
 
 var sr2MaidModelDialog = new Dialog({
@@ -108,49 +108,49 @@ var sr2MaidModelDialog = new Dialog({
                     li.classList.toggle("selected", k === page);
                 }
             }
-        }
+        },
     },
     form: {
         head: {
             label: "model.tlm_utils.maid.head",
             type: "checkbox",
-            value: true
+            value: true,
         },
         blink: {
             label: "model.tlm_utils.maid.blink",
             type: "checkbox",
-            value: true
+            value: true,
         },
         body: {
             label: "model.tlm_utils.maid.body",
             type: "checkbox",
-            value: true
+            value: true,
         },
         armLeft: {
             label: "model.tlm_utils.maid.arm_left",
             type: "checkbox",
-            value: true
+            value: true,
         },
         armRight: {
             label: "model.tlm_utils.maid.arm_right",
             type: "checkbox",
-            value: true
+            value: true,
         },
         legLeft: {
             label: "model.tlm_utils.maid.leg_left",
             type: "checkbox",
-            value: true
+            value: true,
         },
         legRight: {
             label: "model.tlm_utils.maid.leg_right",
             type: "checkbox",
-            value: true
-        }
+            value: true,
+        },
     },
     onConfirm: function (formData) {
         this.hide();
         createPresetModelWorkspace(formData, sr2MaidModel);
-    }
+    },
 });
 
 var createPresetModelWorkspace = function (formData, model) {
@@ -181,22 +181,28 @@ var createDefaultDialog = new Dialog("create_new_model", {
             openDefaultMaidModelDialog: function () {
                 createDefaultDialog.hide();
                 defaultMaidModelDialog.show();
-            }
+            },
         },
         template: `
             <div>
-                <h1 style="text-align: center">${tl("dialog.tlm_utils.create_new_model.choose_type")}</h1>
+                <h1 style="text-align: center">${tl(
+                    "dialog.tlm_utils.create_new_model.choose_type"
+                )}</h1>
                 <ul style="display: grid; max-height: 465px; padding: 5px; overflow-y: auto; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); grid-gap: 5px;">
                     <li :style="{'background-color': '#17191d', 'cursor': 'pointer', 'text-align': 'center'}">
                         <button @click="openDefaultMaidModelDialog" style="width: 100%; height: 100%">
                             <img src="${TLM_IMG_MAID}" alt="" width="200px">
-                            <h2 style="margin: 10px">${tl("dialog.tlm_utils.create_new_model.choose_type.maid")}</h2>
+                            <h2 style="margin: 10px">${tl(
+                                "dialog.tlm_utils.create_new_model.choose_type.maid"
+                            )}</h2>
                         </button>
                     </li>
                     <li :style="{'background-color': '#17191d', 'cursor': 'pointer', 'text-align': 'center'}">
                         <button @click="createEmptyWorkspace" style="width: 100%; height: 100%">
                             <img src="${TLM_IMG_CHAIR}" alt="" width="200px">
-                            <h2 style="margin: 10px">${tl("dialog.tlm_utils.create_new_model.choose_type.chair")}</h2>
+                            <h2 style="margin: 10px">${tl(
+                                "dialog.tlm_utils.create_new_model.choose_type.chair"
+                            )}</h2>
                         </button>
                     </li>
                 </ul>
