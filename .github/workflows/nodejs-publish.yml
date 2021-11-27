@@ -44,9 +44,9 @@ jobs:
       - name: Send file to Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: 0.1.${{ steps.create_timestamp.outputs.timestamp }}
+          tag_name: snapshot-${{ steps.create_timestamp.outputs.timestamp }}
           body: ${{ github.event.head_commit.message }}
           draft: false
-          prerelease: false
+          prerelease: true
           files: |
             ./dist/tlm-utils.js
