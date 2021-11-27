@@ -34,7 +34,7 @@ jobs:
         # REQUIRED 'target_repo_token' exactly like this!
         target_repo_token: ${{ secrets.GITHUB_TOKEN }}
         upstream_sync_branch: "2.0"
-        upstream_sync_repo: aormsby/Fork-Sync-With-Upstream-action
+        upstream_sync_repo: TartaricAcid/TLM-Utils-Plugins
         #upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
 
         # Set test_mode true to run tests instead of the true action!!
