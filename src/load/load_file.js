@@ -84,14 +84,16 @@ function checkIsPackFolder(path) {
             },
         },
         component: {
-            data: {
-                openCategory: Object.keys(namespaceMap)[0],
-                selected: "maid",
-                editPackInfo: {},
-                selectedIconPath: "",
-                randomIconSuffix: 0, // used to clean img cache
-                isEditPackInfo: false,
-                selectedModelIndex: -1,
+            data() {
+                return {
+                    openCategory: Object.keys(namespaceMap)[0],
+                    selected: "maid",
+                    editPackInfo: {},
+                    selectedIconPath: "",
+                    randomIconSuffix: 0, // used to clean img cache
+                    isEditPackInfo: false,
+                    selectedModelIndex: -1,
+                };
             },
             methods: {
                 readInfo: function (type) {
