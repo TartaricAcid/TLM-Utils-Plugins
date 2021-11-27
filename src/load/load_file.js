@@ -169,26 +169,32 @@ function checkIsPackFolder(path) {
                     }
                 },
                 selectMaid: function () {
-                    this.selected = "maid";
-                    this.isEditPackInfo = false;
-                    this.selectedIconPath = "";
-                    this.selectedModelIndex = -1;
+                    if (this.selected !== MAID) {
+                        this.selected = "maid";
+                        this.isEditPackInfo = false;
+                        this.selectedIconPath = "";
+                        this.selectedModelIndex = -1;
+                    }
                 },
                 selectChair: function () {
-                    this.selected = "chair";
-                    this.isEditPackInfo = false;
-                    this.selectedIconPath = "";
-                    this.selectedModelIndex = -1;
+                    if (this.selected !== CHAIR) {
+                        this.selected = "chair";
+                        this.isEditPackInfo = false;
+                        this.selectedIconPath = "";
+                        this.selectedModelIndex = -1;
+                    }
                 },
                 clickEditPack: function () {
-                    this.isEditPackInfo = true;
-                    this.selectedModelIndex = -1;
-                    this.editPackInfo = this.showInfo;
-                    if (!this.editPackInfo.data["author"]) {
-                        this.editPackInfo.data["author"] = [];
-                    }
-                    if (!this.editPackInfo.data["description"]) {
-                        this.editPackInfo.data["description"] = [];
+                    if (!this.isEditPackInfo) {
+                        this.isEditPackInfo = true;
+                        this.selectedModelIndex = -1;
+                        this.editPackInfo = this.showInfo;
+                        if (!this.editPackInfo.data["author"]) {
+                            this.editPackInfo.data["author"] = [];
+                        }
+                        if (!this.editPackInfo.data["description"]) {
+                            this.editPackInfo.data["description"] = [];
+                        }
                     }
                 },
                 openIconPath: function () {
@@ -301,18 +307,29 @@ function checkIsPackFolder(path) {
                         return output;
                     }
                 },
+                isMaidButtonActive: function () {
+                    return this.selected === MAID;
+                },
+                isChairButtonActive: function () {
+                    return this.selected === CHAIR;
+                },
+                isEditPackButtonActive: function () {
+                    return this.isEditPackInfo;
+                }
             },
             template: `
                 <div style="display:flex">
                     <div style="width: 70%">
                         <div style="display: flex;">
                             <div v-if="maidInfo && maidInfo.data" style="width: 50%; height: 30px">
-                                <button @click="selectMaid" style="width: 98%">
+                                <button @click="selectMaid" style="width: 98%"
+                                        v-bind:class="{'inactive-tlm-selected-type-button':isMaidButtonActive}">
                                     {{tl("dialog.tlm_utils.create_new_model.choose_type.maid")}}
                                 </button>
                             </div>
                             <div v-if="chairInfo && chairInfo.data" style="width: 50%; height: 30px">
-                                <button @click="selectChair" style="width: 98%; margin-left: 2%">
+                                <button @click="selectChair" style="width: 98%; margin-left: 2%"
+                                        v-bind:class="{'inactive-tlm-selected-type-button':isChairButtonActive}">
                                     {{tl("dialog.tlm_utils.create_new_model.choose_type.chair")}}
                                 </button>
                             </div>
@@ -355,7 +372,8 @@ function checkIsPackFolder(path) {
                                     </div>
                                 </div>
                                 <div style="margin-top: 10px">
-                                    <button style="width: 100%" @click="clickEditPack">
+                                    <button style="width: 100%" @click="clickEditPack"
+                                            v-bind:class="{'inactive-tlm-edit-pack-button':isEditPackButtonActive}">
                                         <i class="fas fa-edit"></i>
                                         {{tl("dialog.tlm_utils.load_pack.detail.edit_pack_info")}}
                                     </button>
