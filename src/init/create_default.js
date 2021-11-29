@@ -1,7 +1,6 @@
-import TLM_IMG_MAID from "../../assets/img/maid.png";
-import TLM_IMG_CHAIR from "../../assets/img/chair.png";
 import defaultMaidModel from "../../assets/model/maid/default.json";
 import sr2MaidModel from "../../assets/model/maid/sr2.json";
+import maidModelChooseVue from "./maid_model.vue";
 
 export var createDefaultAction = new Action("tlm_utils.create_new_model", {
     name: "menu.tlm_utils.create_new_model",
@@ -11,7 +10,15 @@ export var createDefaultAction = new Action("tlm_utils.create_new_model", {
     }
 });
 
-var defaultMaidModelDialog = new Dialog({
+
+export var createDefaultDialog = new Dialog("create_new_model", {
+    title: "menu.tlm_utils.create_new_model",
+    width: 800,
+    singleButton: true,
+    component: maidModelChooseVue
+});
+
+export var defaultMaidModelDialog = new Dialog({
     title: "dialog.tlm_utils.create_new_model.maid.title",
     sidebar: {
         pages: {
@@ -166,41 +173,3 @@ var createPresetModelWorkspace = function (formData, model) {
     }
     Codecs["bedrock_old"].load(copyModel, {path: ""});
 };
-
-var createDefaultDialog = new Dialog("create_new_model", {
-    title: "menu.tlm_utils.create_new_model",
-    width: 800,
-    singleButton: true,
-    component: {
-        data: {},
-        methods: {
-            createEmptyWorkspace: function () {
-                createDefaultDialog.hide();
-                newProject(Formats["bedrock_old"]);
-            },
-            openDefaultMaidModelDialog: function () {
-                createDefaultDialog.hide();
-                defaultMaidModelDialog.show();
-            }
-        },
-        template: `
-            <div>
-                <h1 style="text-align: center">${tl("dialog.tlm_utils.create_new_model.choose_type")}</h1>
-                <ul style="display: grid; max-height: 465px; padding: 5px; overflow-y: auto; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); grid-gap: 5px;">
-                    <li :style="{'background-color': '#17191d', 'cursor': 'pointer', 'text-align': 'center'}">
-                        <button @click="openDefaultMaidModelDialog" style="width: 100%; height: 100%">
-                            <img src="${TLM_IMG_MAID}" alt="" width="200px">
-                            <h2 style="margin: 10px">${tl("dialog.tlm_utils.create_new_model.choose_type.maid")}</h2>
-                        </button>
-                    </li>
-                    <li :style="{'background-color': '#17191d', 'cursor': 'pointer', 'text-align': 'center'}">
-                        <button @click="createEmptyWorkspace" style="width: 100%; height: 100%">
-                            <img src="${TLM_IMG_CHAIR}" alt="" width="200px">
-                            <h2 style="margin: 10px">${tl("dialog.tlm_utils.create_new_model.choose_type.chair")}</h2>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-            `
-    }
-});

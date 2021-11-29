@@ -30,6 +30,7 @@
     "@rollup/plugin-node-resolve": "^8.0.0",
     "rollup": "2.3.4",
     "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-import-css": "latest"
+    "rollup-plugin-vue": "5.0.0",
+    "vue-template-compiler": "latest"
   }
 }

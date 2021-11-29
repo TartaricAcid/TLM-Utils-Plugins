@@ -3,7 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import {terser} from "rollup-plugin-terser";
 import image from "@rollup/plugin-image";
-import css from "rollup-plugin-import-css";
+import vue from "rollup-plugin-vue";
 
 export default {
     input: "src/main.js",
@@ -12,14 +12,12 @@ export default {
         format: "cjs"
     },
     plugins: [
+        vue(),
         json(),
         resolve(),
         commonjs(),
         terser(),
-        image(),
-        css({
-            minify: true
-        })
+        image()
     ],
     external: ["path"]
 };
