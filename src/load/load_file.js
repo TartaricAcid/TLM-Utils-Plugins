@@ -63,7 +63,8 @@ function checkIsPackFolder(path) {
                         icon: "fa-folder-open",
                         click: function () {
                             let openPath = pathJoin(assetsPath, select.sidebar.page);
-                            electron.shell.openPath(openPath);
+                            electron.shell.openPath(openPath).then(result => {
+                            });
                         }
                     }),
                     new Action("tlm_utils.load_pack.new", {
@@ -116,11 +117,11 @@ function checkIsPackFolder(path) {
                     select.content_vue.newModelPackIdTip = "";
                     select.content_vue.selectedModelIndex = -1;
                     select.content_vue.selectedIconPath = "";
-                    if (select.content_vue.maidInfo && select.content_vue.maidInfo.data) {
+                    if (select.content_vue.hasModelListFile("maid")) {
                         select.content_vue.selected = "maid";
                         return;
                     }
-                    if (select.content_vue.chairInfo && select.content_vue.chairInfo.data) {
+                    if (select.content_vue.hasModelListFile("chair")) {
                         select.content_vue.selected = "chair";
                     }
                 }
@@ -183,11 +184,13 @@ function checkIsPackFolder(path) {
                         let local = this.showInfo.local;
                         if (isEmpty(name)) {
                             let modelId = modelInfo["model_id"];
-                            let key = `model.${modelId.replace(":", ".")}.name`;
-                            if (!local || isEmpty(local[key])) {
-                                return key;
+                            if (!isEmpty(modelId)) {
+                                let key = `model.${modelId.replace(":", ".")}.name`;
+                                if (!local || isEmpty(local[key])) {
+                                    return key;
+                                }
+                                return local[key];
                             }
-                            return local[key];
                         } else {
                             return getTranslationResult(name, local);
                         }
@@ -323,9 +326,30 @@ function checkIsPackFolder(path) {
                         this.selected = this.selected + " ";
                         this.selected = this.selected.trim();
                     },
+                    checkNewModelPackId: function () {
+                        this.newModelPackId = this.newModelPackId.toLowerCase().replace(/\s|-/g, "_");
+                        if (!this.newModelPackId) {
+                            this.newModelPackIdTip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.empty.desc");
+                            return false;
+                        }
+                        if (this.newModelPackId.length < 6) {
+                            this.newModelPackIdTip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.length.desc");
+                            return false;
+                        }
+                        if (!(/^[\w.]+$/.test(this.newModelPackId))) {
+                            this.newModelPackIdTip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.invalid.desc");
+                            return false;
+                        }
+                        if (select.sidebar.pages[this.newModelPackId]) {
+                            this.newModelPackIdTip = tl("dialog.tlm_utils.load_pack.new.id.warn.duplicate");
+                            return false;
+                        }
+                        this.newModelPackIdTip = "";
+                        return true;
+                    },
                     newModelPackIdConfirm: function () {
                         let pages = select.sidebar.pages;
-                        if (pages && this.checkNewModelPackId) {
+                        if (pages && this.checkNewModelPackId()) {
                             let createRootPath = `${assetsPath}/${this.newModelPackId}`;
                             mkdirs(createRootPath);
                             mkdirs(`${createRootPath}/animation`);
@@ -344,15 +368,43 @@ function checkIsPackFolder(path) {
                         } else {
                             select.sidebar.setPage("");
                         }
+                    },
+                    newModelList: function (type) {
+                        let index = electron.dialog.showMessageBoxSync(currentwindow, {
+                            title: tl("dialog.tlm_utils.load_pack.new_list"),
+                            message: tl("dialog.tlm_utils.load_pack.new_list.desc"),
+                            type: "warning",
+                            buttons: [tl("button.tlm_utils.confirm"), tl("button.tlm_utils.cancel")],
+                            defaultId: 1,
+                            cancelId: 1,
+                            noLink: true
+                        });
+                        if (index === 0) {
+                            let namespacePath = `${assetsPath}/${this.openCategory}`;
+                            let modelFile = (type === MAID) ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
+                            let packNameKey = `${type}_pack.${this.openCategory}.name`;
+                            let initData = {
+                                "pack_name": `{${packNameKey}}`,
+                                "model_list": []
+                            };
+                            fs.writeFileSync(modelFile, autoStringify(initData));
+                            let langPath = `${namespacePath}/lang`;
+                            let langMap = getPackLanguage(langPath, "en_us");
+                            langMap[packNameKey] = "";
+                            this.selected = type + " ";
+                            this.selected = this.selected.trim();
+                            this.isEditPackInfo = false;
+                            this.selectedIconPath = "";
+                            this.selectedModelIndex = -1;
+                        }
+                    },
+                    hasModelListFile: function (type) {
+                        let namespacePath = `${assetsPath}/${this.openCategory}`;
+                        let modelFile = (type === MAID) ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
+                        return fs.existsSync(modelFile);
                     }
                 },
                 computed: {
-                    maidInfo: function () {
-                        return this.readInfo(MAID);
-                    },
-                    chairInfo: function () {
-                        return this.readInfo(CHAIR);
-                    },
                     showInfo: function () {
                         return this.readInfo(this.selected);
                     },
@@ -395,27 +447,6 @@ function checkIsPackFolder(path) {
                     },
                     isEditPackButtonActive: function () {
                         return this.isEditPackInfo;
-                    },
-                    checkNewModelPackId: function () {
-                        this.newModelPackId = this.newModelPackId.toLowerCase().replace(/\s|-/g, "_");
-                        if (!this.newModelPackId) {
-                            this.newModelPackIdTip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.empty.desc");
-                            return false;
-                        }
-                        if (this.newModelPackId.length < 6) {
-                            this.newModelPackIdTip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.length.desc");
-                            return false;
-                        }
-                        if (!(/^[\w.]+$/.test(this.newModelPackId))) {
-                            this.newModelPackIdTip = tl("dialog.tlm_utils.create_new_pack.pack_id.warn.invalid.desc");
-                            return false;
-                        }
-                        if (select.sidebar.pages[this.newModelPackId]) {
-                            this.newModelPackIdTip = tl("dialog.tlm_utils.load_pack.new.id.warn.duplicate");
-                            return false;
-                        }
-                        this.newModelPackIdTip = "";
-                        return true;
                     }
                 },
                 template: `
@@ -449,17 +480,33 @@ function checkIsPackFolder(path) {
                         <div v-else style="display:flex">
                             <div style="width: 70%">
                                 <div style="display: flex;">
-                                    <div v-if="maidInfo && maidInfo.data" style="width: 50%; height: 30px">
-                                        <button @click="selectMaid" style="width: 98%"
-                                                :class="{'inactive-tlm-selected-type-button':isMaidButtonActive}">
-                                            {{tl("dialog.tlm_utils.create_new_model.choose_type.maid")}}
-                                        </button>
+                                    <div style="width: 50%; height: 30px">
+                                        <div v-if="hasModelListFile('maid')">
+                                            <button @click="selectMaid" style="width: 98%"
+                                                    :class="{'inactive-tlm-selected-type-button':isMaidButtonActive}">
+                                                {{tl("dialog.tlm_utils.create_new_model.choose_type.maid")}}
+                                            </button>
+                                        </div>
+                                        <div v-else>
+                                            <button @click="newModelList('maid')" style="width: 98%">
+                                                <i class="fas fa-folder-plus"></i>
+                                                {{tl("button.tlm_utils.new_maid_list")}}
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div v-if="chairInfo && chairInfo.data" style="width: 50%; height: 30px">
-                                        <button @click="selectChair" style="width: 98%; margin-left: 2%"
-                                                :class="{'inactive-tlm-selected-type-button':isChairButtonActive}">
-                                            {{tl("dialog.tlm_utils.create_new_model.choose_type.chair")}}
-                                        </button>
+                                    <div style="width: 50%; height: 30px">
+                                        <div v-if="hasModelListFile('chair')">
+                                            <button @click="selectChair" style="width: 98%; margin-left: 2%"
+                                                    :class="{'inactive-tlm-selected-type-button':isChairButtonActive}">
+                                                {{tl("dialog.tlm_utils.create_new_model.choose_type.chair")}}
+                                            </button>
+                                        </div>
+                                        <div v-else>
+                                            <button @click="newModelList('chair')" style="width: 98%">
+                                                <i class="fas fa-folder-plus"></i>
+                                                {{tl("button.tlm_utils.new_chair_list")}}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div v-if="isShowList">
