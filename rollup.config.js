@@ -16,7 +16,9 @@ export default {
         json(),
         resolve(),
         commonjs(),
-        terser(),
+        terser({
+            mangle: false
+        }),
         image()
     ],
     external: ["path"]

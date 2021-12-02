@@ -1,6 +1,6 @@
 import {isEmpty} from "../utils/string";
 import {join as pathJoin} from "path";
-import packEditSubVue from "./pack_edit.vue";
+import loadFileMainVue from "./load_file_main.vue";
 
 export var loadPackAction = new Action("tlm_utils.load_pack", {
     name: "menu.tlm_utils.load_pack",
@@ -45,7 +45,8 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
                         icon: "fa-folder-plus",
                         click: function () {
                             packEditDialog.sidebar.setPage("");
-                            packEditDialog.content_vue.newModelPack = true;
+                            let child = packEditDialog.content_vue.$children[0];
+                            child.newSubModelPack = true;
                         }
                     }),
                     new Action("tlm_utils.load_pack.delete", {
@@ -85,12 +86,8 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
                 onPageSwitch(page) {
                     let child = packEditDialog.content_vue.$children[0];
                     child.openCategory = page;
-                    child.isEditPackInfo = false;
-                    child.newModelPack = false;
-                    child.newModelPackId = "";
-                    child.newModelPackIdTip = "";
-                    child.selectedModelIndex = -1;
-                    child.selectedIconPath = "";
+                    child.newSubModelPack = false;
+                    child.reset();
                     if (child.hasModelListFile("maid")) {
                         child.selected = "maid";
                         return;
@@ -103,13 +100,13 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
             component: {
                 data() {
                     return {
-                        namespaceMap: namespaceMap,
                         assetsPath: assetsPath,
+                        namespaceMap: namespaceMap,
                         packEditDialog: packEditDialog
                     };
                 },
-                components: {packEditSubVue},
-                template: "<packEditSubVue :namespaceMap='namespaceMap' :assetsPath='assetsPath' :packEditDialog='packEditDialog'/>"
+                components: {loadFileMainVue},
+                template: "<loadFileMainVue :assetsPath='assetsPath' :namespaceMap='namespaceMap' :packEditDialog='packEditDialog'/>"
             }
         });
         packEditDialog.show();
