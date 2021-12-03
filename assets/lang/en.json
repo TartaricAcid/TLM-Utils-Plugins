@@ -40,7 +40,7 @@
   "dialog.tlm_utils.load_pack.warn.namespace_not_exist": "The selected folder is not a model pack, namespace folder is missing!",
   "dialog.tlm_utils.load_pack.detail": "Loaded pack info",
   "dialog.tlm_utils.load_pack.detail.edit_list_info": "Edit List Info",
-  "dialog.tlm_utils.load_pack.detail.model_list": "Model List",
+  "dialog.tlm_utils.load_pack.detail.model_list.add": "Add Model",
   "dialog.tlm_utils.load_pack.edit.pack_name": "Model Pack Name",
   "dialog.tlm_utils.load_pack.edit.pack_name.desc": "You can enter any characters",
   "dialog.tlm_utils.load_pack.edit.icon": "Model Pack Icon",

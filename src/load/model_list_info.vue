@@ -252,7 +252,7 @@
             },
             clickConfirm: function () {
                 let namespacePath = `${this.parent.assetsPath}/${this.parent.openCategory}`;
-                let modelFile = (this.parent.selected === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
+                let modelListFile = (this.parent.selected === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
                 if (this.selectedIconPath) {
                     fs.writeFileSync(`${namespacePath}/textures/${this.parent.selected}_icon.png`, fs.readFileSync(this.selectedIconPath));
                 }
@@ -280,7 +280,7 @@
                         delete this.modelListInfo.data["description"];
                     }
                 }
-                fs.writeFileSync(modelFile, autoStringify(this.modelListInfo.data));
+                fs.writeFileSync(modelListFile, autoStringify(this.modelListInfo.data));
                 writeLanguageFile("en_us", this.modelListInfo.langPath, this.modelListInfo.lang);
                 this.isEditModelListInfo = false;
                 this.selectedIconPath = "";
