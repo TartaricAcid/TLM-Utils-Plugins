@@ -5,8 +5,8 @@
             {{tl("dialog.tlm_utils.load_pack.detail.model_list")}}
         </p>
         <ul style="max-height: 550px; overflow-y: auto; text-align: center;">
-            <li v-for="modelInfo in parent.showInfo.data['model_list']" :key="modelInfo['model_id']">
-                <button class="model-button"> {{getLocalModelName(modelInfo)}}</button>
+            <li :key="modelInfo['model_id']" v-for="modelInfo in parent.showInfo.data['model_list']">
+                <button class="model-button">{{getLocalModelName(modelInfo)}}</button>
             </li>
         </ul>
     </div>
@@ -21,7 +21,7 @@
             parent: {
                 type: Object,
                 required: true
-            },
+            }
         },
         methods: {
             tl: tl,

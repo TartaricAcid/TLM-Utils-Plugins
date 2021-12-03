@@ -28,7 +28,7 @@
         data() {
             return {
                 imgMaid: TLM_IMG_MAID,
-                imgChair: TLM_IMG_CHAIR,
+                imgChair: TLM_IMG_CHAIR
             };
         },
         methods: {
@@ -41,7 +41,7 @@
                 createDefaultDialog.hide();
                 defaultMaidModelDialog.show();
             }
-        },
+        }
     };
 </script>
 

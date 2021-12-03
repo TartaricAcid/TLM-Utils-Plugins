@@ -3,13 +3,13 @@
         <div v-if="newSubModelPack">
             <newSubModelPackFormVue :parent="this"/>
         </div>
-        <div v-else style="display:flex">
+        <div style="display:flex" v-else>
             <div style="width: 70%">
                 <topTypeButtonVue :parent="this"/>
-                <modelListInfoVue v-if="isShowList" :parent="this"/>
+                <modelListInfoVue :parent="this" v-if="isShowList"/>
             </div>
             <div style="width: 30%; padding-left: 10px;">
-                <modelListTableVue v-if="isShowList" :parent="this"/>
+                <modelListTableVue :parent="this" v-if="isShowList"/>
             </div>
         </div>
     </div>
@@ -37,13 +37,13 @@
             packEditDialog: {
                 type: Object,
                 required: true
-            },
+            }
         },
         data() {
             return {
                 openCategory: Object.keys(this.namespaceMap)[0],
                 selected: "maid",
-                newSubModelPack: false,
+                newSubModelPack: false
             };
         },
         components: {
@@ -61,10 +61,10 @@
             },
             readInfo: function (type) {
                 let namespacePath = `${this.assetsPath}/${this.openCategory}`;
-                let modelFile = (type === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
-                if (fs.existsSync(modelFile)) {
+                let modelListFile = (type === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
+                if (fs.existsSync(modelListFile)) {
                     let info = new TlmPackInfo();
-                    let text = fs.readFileSync(modelFile, "utf8");
+                    let text = fs.readFileSync(modelListFile, "utf8");
                     if (text.charCodeAt(0) === 0xFEFF) {
                         text = text.substr(1);
                     }
@@ -78,6 +78,7 @@
                         info.version = splitStringVersion(version);
                     }
 
+                    info.type = type;
                     info.namespace = this.openCategory;
                     info.namespacePath = namespacePath;
                     info.animationPath = `${namespacePath}/animation`;
@@ -92,8 +93,8 @@
             },
             hasModelListFile: function (type) {
                 let namespacePath = `${this.assetsPath}/${this.openCategory}`;
-                let modelFile = (type === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
-                return fs.existsSync(modelFile);
+                let modelListFile = (type === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
+                return fs.existsSync(modelListFile);
             }
         },
         computed: {
@@ -103,10 +104,9 @@
             isShowList: function () {
                 return this.showInfo && this.showInfo.data && this.showInfo.data["model_list"];
             }
-        },
+        }
     };
 </script>
 
 <style scoped>
-
 </style>

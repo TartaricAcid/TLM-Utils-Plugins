@@ -4,16 +4,16 @@
             <h5 style="margin: 0; padding: 0">{{tl("dialog.tlm_utils.create_new_pack.pack_id")}}
                 <span style="color: #ff0000">*</span></h5>
             <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.create_new_pack.pack_id.desc")}}</p>
-            <input style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:50px; font-size: 30px; background-color: #1c2026; border-style: solid"
-                   :style="{'border-color': packIdBorderColor, 'border-width': this.packIdBorderSize}"
-                   v-model="packId" placeholder="" type="text" @blur="checkId" required>
+            <input :style="{'border-color': packIdBorderColor, 'border-width': this.packIdBorderSize}"
+                   @blur="checkId"
+                   placeholder="" required style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:50px; font-size: 30px; background-color: #1c2026; border-style: solid" type="text" v-model="packId">
         </div>
         <div style="margin-top: 20px;">
             <div style="display: flex; align-items: center;">
-                <button style="min-width: 50px; width: 130px; height: 130px; border-radius: 1px; margin: 0; padding: 0"
-                        @click="openIconPath">
-                    <div v-if="packIcon" style="padding: 5px">
-                        <img :src="packIcon" alt="" width="120px" height="120px">
+                <button @click="openIconPath"
+                        style="min-width: 50px; width: 130px; height: 130px; border-radius: 1px; margin: 0; padding: 0">
+                    <div style="padding: 5px" v-if="packIcon">
+                        <img :src="packIcon" alt="" height="120px" width="120px">
                     </div>
                     <div v-else>
                         <i class="far fa-4x fa-images"></i>
@@ -27,14 +27,14 @@
         </div>
         <div style="margin-top: 20px">
             <div style="display: flex; align-items: center">
-                <input style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid"
-                       v-model="packVersion[0]" placeholder="1" type="number" value="1" step="1" min="0">
+                <input min="0"
+                       placeholder="1" step="1" style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid" type="number" v-model="packVersion[0]" value="1">
                 <p style="font-weight: bold; font-size: 30px; margin: 20px 2px 2px;">.</p>
-                <input style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid"
-                       v-model="packVersion[1]" placeholder="0" type="number" value="0" step="1" min="0">
+                <input min="0"
+                       placeholder="0" step="1" style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid" type="number" v-model="packVersion[1]" value="0">
                 <p style="font-weight: bold; font-size: 30px; margin: 20px 2px 2px;">.</p>
-                <input style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid"
-                       v-model="packVersion[2]" placeholder="0" type="number" value="0" step="1" min="0">
+                <input min="0"
+                       placeholder="0" step="1" style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid" type="number" v-model="packVersion[2]" value="0">
                 <div style="margin-left: 20px">
                     <h5 style="margin: 0; padding: 0">{{tl("dialog.tlm_utils.create_new_pack.pack_version")}}</h5>
                     <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.create_new_pack.pack_version.desc")}}</p>
@@ -45,8 +45,8 @@
             <p style="color: red">{{tip}}</p>
         </div>
         <div style="margin-top: 20px">
-            <button style="width: 100%; height:50px; border-radius: 1px"
-                    @click="submit">
+            <button @click="submit"
+                    style="width: 100%; height:50px; border-radius: 1px">
                 <h5>{{tl("dialog.tlm_utils.create_new_pack.create")}}</h5></button>
         </div>
     </div>
@@ -155,8 +155,8 @@
                 if (filePaths) {
                     this.packIcon = filePaths[0];
                 }
-            },
-        },
+            }
+        }
     };
 </script>
 

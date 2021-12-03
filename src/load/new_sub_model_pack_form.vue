@@ -2,27 +2,18 @@
     <div class="new-sub-model-pack-form-main">
         <div>
             <h5 style="margin: 0; padding: 0">
-                {{tl("dialog.tlm_utils.load_pack.new.id")}}
+                {{tl("dialog.tlm_utils.create_new_pack.pack_id")}}
                 <span style="color: #ff0000">*</span>
             </h5>
-            <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.new.id.desc")}}</p>
-            <input class="new-sub-model-pack-form-input" v-model="newSubModelPackId" type="text"
-                   @blur="checkNewSubModelPackId" required>
+            <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.create_new_pack.pack_id.desc")}}</p>
+            <input @blur="checkNewSubModelPackId" class="new-sub-model-pack-form-input" type="text" v-model="newSubModelPackId" required>
         </div>
         <div style="margin-top: 10px; height: 20px">
             <p style="color: red">{{newSubModelPackIdTip}}</p>
         </div>
         <div style="display: flex; margin-top: 15px">
-            <div style="width: 50%; height: 30px">
-                <button @click="newSubModelPackIdConfirm" style="width: 98%">
-                    {{tl("button.tlm_utils.confirm")}}
-                </button>
-            </div>
-            <div style="width: 50%; height: 30px">
-                <button @click="newSubModelPackIdCancel" style="width: 98%; margin-left: 2%">
-                    {{tl("button.tlm_utils.cancel")}}
-                </button>
-            </div>
+            <button @click="newSubModelPackIdConfirm" style="width: 48%; height: 30px">{{tl("button.tlm_utils.confirm")}}</button>
+            <button @click="newSubModelPackIdCancel" style="width: 48%; height: 30px; margin-left: 2%">{{tl("button.tlm_utils.cancel")}}</button>
         </div>
     </div>
 </template>
@@ -35,12 +26,12 @@
             parent: {
                 type: Object,
                 required: true
-            },
+            }
         },
         data() {
             return {
                 newSubModelPackId: "",
-                newSubModelPackIdTip: "",
+                newSubModelPackIdTip: ""
             };
         },
         methods: {
@@ -60,7 +51,7 @@
                     return false;
                 }
                 if (this.parent.packEditDialog.sidebar.pages[this.newSubModelPackId]) {
-                    this.newSubModelPackIdTip = tl("dialog.tlm_utils.load_pack.new.id.warn.duplicate");
+                    this.newSubModelPackIdTip = tl("dialog.tlm_utils.load_pack.new_sub_pack.warn.duplicate");
                     return false;
                 }
                 this.newSubModelPackIdTip = "";

@@ -23,7 +23,7 @@ export var defaultMaidModelDialog = new Dialog({
     sidebar: {
         pages: {
             default: tl("dialog.tlm_utils.create_new_model.maid.default"),
-            sr2: tl("dialog.tlm_utils.create_new_model.maid.little_maid_sr2"),
+            sr2: tl("dialog.tlm_utils.create_new_model.maid.little_maid_sr2")
         },
         page: "default",
         onPageSwitch(page) {
@@ -104,7 +104,7 @@ var sr2MaidModelDialog = new Dialog({
     sidebar: {
         pages: {
             default: tl("dialog.tlm_utils.create_new_model.maid.default"),
-            sr2: tl("dialog.tlm_utils.create_new_model.maid.little_maid_sr2"),
+            sr2: tl("dialog.tlm_utils.create_new_model.maid.little_maid_sr2")
         },
         page: "sr2",
         onPageSwitch(page) {

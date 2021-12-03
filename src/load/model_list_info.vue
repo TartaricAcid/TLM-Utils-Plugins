@@ -1,42 +1,39 @@
 <template>
     <div>
         <!-- Model List Info -->
-        <div style="background-color: #21252b; padding: 10px; margin-top: 10px">
+        <div class="model-list-info">
             <!-- Info -->
             <div style="display: flex;">
                 <!-- Icon -->
-                <div style="width: 100px; height: 100px; border-style: solid; border-width: 1px; border-color: #17191d">
-                    <div v-if="getIconPath(parent.showInfo)"
-                         style="width: 100%; height: 100%; padding: 5px">
-                        <img :src="getIconPath(parent.showInfo)" alt="" width="100%" height="100%">
+                <div class="model-list-info-icon">
+                    <div class="model-list-info-icon-img" v-if="getIconPath(parent.showInfo)">
+                        <img :src="getIconPath(parent.showInfo)" alt="" height="100%" width="100%">
                     </div>
-                    <div v-else
-                         style="width: 100%; height: 100%; padding: 5px; display: flex; justify-content: center; align-items: center">
+                    <div class="model-list-info-icon-no-img" v-else>
                         <i class="far fa-4x fa-images"></i>
                     </div>
                 </div>
 
                 <!-- Text Info -->
-                <div style="padding-left: 10px; width: 77%">
+                <div class="model-list-text">
                     <p style="font-size: larger">
                         {{getPackName()}}
-                        <span style="font-size: small; color: #848891; margin-left: 5px; background-color: #17191d; border-radius: 2px; padding: 0 5px">
+                        <span class="model-list-info-version">
                             <i class="fas fa-tag fa-fw" style="font-size: smaller;"></i>
                             {{getStringVersion()}}
                         </span>
                     </p>
-                    <p v-if="parent.showInfo.data['description']"
-                       style="color: #848891; font-size: small; margin: 0;">
+                    <p class="model-list-info-other" v-if="parent.showInfo.data['description']">
                         <i class="fas fa-comment-alt fa-fw"></i>
                         {{getDescription()}}
                     </p>
-                    <p style="color: #848891; font-size: small; margin: 0;">
+                    <p class="model-list-info-other">
                         <i class="fas fa-user fa-fw"></i>
-                        <span v-for="(author,index) in parent.showInfo.data['author']" :key="index">
+                        <span :key="index" v-for="(author,index) in parent.showInfo.data['author']">
                             {{author}}
                         </span>
                     </p>
-                    <p style="color: #848891; font-size: small; margin: 0;">
+                    <p class="model-list-info-other">
                         <i class="far fa-calendar-alt fa-fw"></i>
                         {{parent.showInfo.data["date"]}}
                     </p>
@@ -45,38 +42,32 @@
 
             <!-- Edit Info Button -->
             <div style="margin-top: 10px">
-                <button style="width: 100%" @click="clickEditPack"
-                        :class="{'inactive-tlm-edit-pack-button':isEditPackButtonActive}">
+                <button :class="{'inactive-edit-list-button':isEditListInfoButtonActive}" @click="clickEditInfo" style="width: 100%">
                     <i class="fas fa-edit"></i>
-                    {{tl("dialog.tlm_utils.load_pack.detail.edit_pack_info")}}
+                    {{tl("dialog.tlm_utils.load_pack.detail.edit_list_info")}}
                 </button>
             </div>
         </div>
 
         <!-- Model List Info Edit -->
-        <div v-if="isEditPackInfo" style="height: 100%; width: 100%; margin-top: 10px">
-            <div style="background-color: #21252b; width: 100%; height: 330px; overflow-y: auto; padding: 10px 20px">
+        <div class="model-list-edit" v-if="isEditModelListInfo">
+            <div class="model-list-edit-main">
                 <!-- Model List Name -->
                 <div>
-                    <p style="margin: 0; padding: 0; font-size: large">
-                        {{tl("dialog.tlm_utils.load_pack.edit.pack_name")}}</p>
-                    <p style="margin: 0; padding: 0; color: #6a6a6d">
-                        {{tl("dialog.tlm_utils.load_pack.edit.pack_name.desc")}}</p>
-                    <input style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:30px; font-size: 20px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
-                           v-model="editPackInfo.lang[packNameKey]" type="text">
+                    <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.pack_name")}}</p>
+                    <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.pack_name.desc")}}</p>
+                    <input class="model-list-edit-name-input" type="text" v-model="modelListInfo.lang[packNameKey]">
                 </div>
 
                 <!-- Model Icon -->
                 <div class="flex-edit-item">
-                    <button style="min-width: 50px; width: 125px; height: 125px; border-radius: 1px; margin: 0; padding: 0"
-                            @click="openIconPath">
-                        <div v-if="getIconPath(editPackInfo)" style="padding: 5px">
-                            <img :src="getIconPath(editPackInfo)" alt="" width="115x" height="115x">
-                        </div>
+                    <button class="model-list-edit-icon" @click="openIconPath">
+                        <img :src="getIconPath(modelListInfo)" style="padding: 5px" alt="" height="115x" width="115x" v-if="getIconPath(modelListInfo)">
                         <div v-else><i class="far fa-4x fa-images"></i></div>
                     </button>
+
                     <div style="margin-left: 20px">
-                        <h5 style="margin: 0; padding: 0"> {{tl("dialog.tlm_utils.load_pack.edit.icon")}}</h5>
+                        <h5 style="margin: 0; padding: 0">{{tl("dialog.tlm_utils.load_pack.edit.icon")}}</h5>
                         <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.load_pack.edit.icon.desc")}}</p>
                     </div>
                 </div>
@@ -84,94 +75,62 @@
                 <!-- Model Version -->
                 <div class="flex-edit-item">
                     <div class="version-input">
-                        <input v-model="editPackInfo.version[0]" placeholder="1" type="number"
-                               value="1" step="1" min="0">
+                        <input min="0" placeholder="1" step="1" type="number" v-model="modelListInfo.version[0]" value="1">
                         <p>.</p>
-                        <input v-model="editPackInfo.version[1]" placeholder="0" type="number"
-                               value="0" step="1" min="0">
+                        <input min="0" placeholder="0" step="1" type="number" v-model="modelListInfo.version[1]" value="0">
                         <p>.</p>
-                        <input v-model="editPackInfo.version[2]" placeholder="0" type="number"
-                               value="0" step="1" min="0">
+                        <input min="0" placeholder="0" step="1" type="number" v-model="modelListInfo.version[2]" value="0">
                     </div>
+
                     <div style="margin-left: 20px">
-                        <p style="margin: 0; padding: 0; font-size: large">
-                            {{tl("dialog.tlm_utils.load_pack.edit.version")}}
-                        </p>
-                        <p style="margin: 0; padding: 0; color: #6a6a6d">
-                            {{tl("dialog.tlm_utils.load_pack.edit.version.desc")}}
-                        </p>
+                        <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.version")}}</p>
+                        <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.version.desc")}}</p>
                     </div>
                 </div>
 
                 <!-- Model Date -->
                 <div class="flex-edit-item">
-                    <input type="date"
-                           style="border-radius: 1px; margin-top:5px; padding: 2px; width: 125px; height:30px; font-size: 13px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
-                           v-model="editPackInfo.data['date']">
+                    <input class="model-list-edit-date-input" type="date" v-model="modelListInfo.data['date']">
                     <div style="margin-left: 20px">
-                        <p style="margin: 0; padding: 0; font-size: large">
-                            {{tl("dialog.tlm_utils.load_pack.edit.date")}}</p>
-                        <p style="margin: 0; padding: 0; color: #6a6a6d">
-                            {{tl("dialog.tlm_utils.load_pack.edit.date.desc")}}</p>
+                        <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.date")}}</p>
+                        <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.date.desc")}}</p>
                     </div>
                 </div>
 
                 <!-- Model Author -->
                 <div class="flex-edit-item">
                     <div>
-                        <div v-for="(author, index) in editPackInfo.data['author']"
-                             :key="index">
-                            <div style="display: flex">
-                                <input type="text"
-                                       style="border-radius: 1px; margin-top:5px; padding: 2px; width: 90px; height:30px; font-size: 13px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
-                                       v-model="editPackInfo.data['author'][index]">
-                                <button style="width: 30px; min-width: 30px; height: 30px; min-height: 30px; margin: 5px 0 0 5px; display: flex; justify-content: center; align-items: center"
-                                        @click="deleteAuthor(index)">
-                                    <i class="fas fa-trash-alt fa-align-center"></i>
-                                </button>
-                            </div>
+                        <div :key="index" v-for="(author, index) in modelListInfo.data['author']" style="display: flex">
+                            <input class="model-list-edit-author-input" type="text" v-model="modelListInfo.data['author'][index]">
+                            <button @click="deleteAuthor(index)" class="model-list-edit-author-delete">
+                                <i class="fas fa-trash-alt fa-align-center"></i>
+                            </button>
                         </div>
-                        <button style="width: 127px; margin-top: 5px" @click="addAuthor">
+                        <button @click="addAuthor" style="width: 127px; margin-top: 5px">
                             <i class="fas fa-user-plus fa-fw"></i>
                         </button>
                     </div>
+
                     <div style="margin-left: 20px">
-                        <p style="margin: 0; padding: 0; font-size: large">
-                            {{tl("dialog.tlm_utils.load_pack.edit.author")}}
-                        </p>
-                        <p style="margin: 0; padding: 0; color: #6a6a6d">
-                            {{tl("dialog.tlm_utils.load_pack.edit.author.desc")}}
-                        </p>
+                        <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.author")}}</p>
+                        <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.author.desc")}}</p>
                     </div>
                 </div>
 
                 <!-- Model Description -->
                 <div style="margin-top: 20px">
-                    <p style="margin: 0; padding: 0; font-size: large">
-                        {{tl("dialog.tlm_utils.load_pack.edit.description")}}
-                    </p>
-                    <p style="margin: 0; padding: 0; color: #6a6a6d">
-                        {{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}
-                    </p>
-                    <div v-for="(key, index) in packDescKeys" :key="index">
-                        <input style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:30px; font-size: 20px; background-color: #1c2026; border-style: solid; border-width: 1px; border-color: #181a1f;"
-                               v-model="editPackInfo.lang[key]" type="text">
+                    <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.description")}}</p>
+                    <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}</p>
+                    <div :key="index" v-for="(key, index) in packDescKeys">
+                        <input class="model-list-edit-desc-input" type="text" v-model="modelListInfo.lang[key]">
                     </div>
                 </div>
             </div>
 
             <!-- Info Edit Confirm Button -->
-            <div style="display: flex; margin: 10px">
-                <div style="width: 50%">
-                    <button style="width: 98%" @click="clickConfirm">
-                        {{tl("button.tlm_utils.confirm")}}
-                    </button>
-                </div>
-                <div style="width: 50%">
-                    <button style="width: 98%; margin-left: 2%" @click="clickCancel">
-                        {{tl("button.tlm_utils.cancel")}}
-                    </button>
-                </div>
+            <div style="display: flex; margin-top: 10px;">
+                <button @click="clickConfirm" style="width: 48%">{{tl("button.tlm_utils.confirm")}}</button>
+                <button @click="clickCancel" style="width: 48%; margin-left: 2%">{{tl("button.tlm_utils.cancel")}}</button>
             </div>
         </div>
     </div>
@@ -186,22 +145,22 @@
             parent: {
                 type: Object,
                 required: true
-            },
+            }
         },
         data() {
             return {
-                editPackInfo: {},
+                modelListInfo: {},
                 selectedIconPath: "",
                 randomIconSuffix: 0,    // used to clean img cache
-                isEditPackInfo: false,
+                isEditModelListInfo: false
             };
         },
         methods: {
             tl: tl,
             reset: function () {
-                this.editPackInfo = {};
+                this.modelListInfo = {};
                 this.selectedIconPath = "";
-                this.isEditPackInfo = false;
+                this.isEditModelListInfo = false;
             },
             getIconPath: function (packInfo) {
                 if (this.selectedIconPath) {
@@ -248,15 +207,15 @@
                     }
                 }
             },
-            clickEditPack: function () {
-                if (!this.isEditPackInfo) {
-                    this.isEditPackInfo = true;
-                    this.editPackInfo = this.parent.showInfo;
-                    if (!this.editPackInfo.data["author"]) {
-                        this.editPackInfo.data["author"] = [];
+            clickEditInfo: function () {
+                if (!this.isEditModelListInfo) {
+                    this.isEditModelListInfo = true;
+                    this.modelListInfo = this.parent.showInfo;
+                    if (!this.modelListInfo.data["author"]) {
+                        this.modelListInfo.data["author"] = [];
                     }
-                    if (!this.editPackInfo.data["description"]) {
-                        this.editPackInfo.data["description"] = [];
+                    if (!this.modelListInfo.data["description"]) {
+                        this.modelListInfo.data["description"] = [];
                     }
                 }
             },
@@ -271,17 +230,17 @@
                 }
             },
             deleteAuthor: function (index) {
-                if (this.editPackInfo && this.editPackInfo.data && this.editPackInfo.data["author"]) {
-                    this.editPackInfo.data["author"].splice(index, 1);
+                if (this.modelListInfo && this.modelListInfo.data && this.modelListInfo.data["author"]) {
+                    this.modelListInfo.data["author"].splice(index, 1);
                     this.$forceUpdate();
                 }
             },
             addAuthor: function () {
-                if (this.editPackInfo && this.editPackInfo.data) {
-                    if (this.editPackInfo.data["author"] && this.editPackInfo.data["author"].length > 0) {
-                        this.editPackInfo.data["author"].push("");
+                if (this.modelListInfo && this.modelListInfo.data) {
+                    if (this.modelListInfo.data["author"] && this.modelListInfo.data["author"].length > 0) {
+                        this.modelListInfo.data["author"].push("");
                     } else {
-                        this.editPackInfo.data["author"] = [""];
+                        this.modelListInfo.data["author"] = [""];
                         this.$forceUpdate();
                     }
                 }
@@ -292,57 +251,57 @@
                 if (this.selectedIconPath) {
                     fs.writeFileSync(`${namespacePath}/textures/${this.parent.selected}_icon.png`, fs.readFileSync(this.selectedIconPath));
                 }
-                this.editPackInfo.data["icon"] = `${this.parent.openCategory}:textures/${this.parent.selected}_icon.png`;
-                this.editPackInfo.data["version"] = `${this.editPackInfo.version[0]}.${this.editPackInfo.version[1]}.${this.editPackInfo.version[2]}`;
-                if (this.editPackInfo.data["author"]) {
-                    for (let author of this.editPackInfo.data["author"]) {
+                this.modelListInfo.data["icon"] = `${this.parent.openCategory}:textures/${this.parent.selected}_icon.png`;
+                this.modelListInfo.data["version"] = `${this.modelListInfo.version[0]}.${this.modelListInfo.version[1]}.${this.modelListInfo.version[2]}`;
+                if (this.modelListInfo.data["author"]) {
+                    for (let author of this.modelListInfo.data["author"]) {
                         if (isEmpty(author)) {
-                            this.editPackInfo.data["author"].splice(this.editPackInfo.data["author"].indexOf(author));
+                            this.modelListInfo.data["author"].splice(this.modelListInfo.data["author"].indexOf(author));
                         }
                     }
-                    if (this.editPackInfo.data["author"].length < 1) {
-                        delete this.editPackInfo.data["author"];
+                    if (this.modelListInfo.data["author"].length < 1) {
+                        delete this.modelListInfo.data["author"];
                     }
                 }
-                if (this.editPackInfo.data["description"]) {
-                    for (let desc of this.editPackInfo.data["description"]) {
+                if (this.modelListInfo.data["description"]) {
+                    for (let desc of this.modelListInfo.data["description"]) {
                         let key = getTranslationKey(desc);
-                        if (isEmpty(this.editPackInfo.lang[key])) {
-                            delete this.editPackInfo.lang[key];
-                            this.editPackInfo.data["description"].splice(this.editPackInfo.data["description"].indexOf(desc));
+                        if (isEmpty(this.modelListInfo.lang[key])) {
+                            delete this.modelListInfo.lang[key];
+                            this.modelListInfo.data["description"].splice(this.modelListInfo.data["description"].indexOf(desc));
                         }
                     }
-                    if (this.editPackInfo.data["description"].length < 1) {
-                        delete this.editPackInfo.data["description"];
+                    if (this.modelListInfo.data["description"].length < 1) {
+                        delete this.modelListInfo.data["description"];
                     }
                 }
-                fs.writeFileSync(modelFile, autoStringify(this.editPackInfo.data));
-                writeLanguageFile("en_us", this.editPackInfo.langPath, this.editPackInfo.lang);
-                this.isEditPackInfo = false;
+                fs.writeFileSync(modelFile, autoStringify(this.modelListInfo.data));
+                writeLanguageFile("en_us", this.modelListInfo.langPath, this.modelListInfo.lang);
+                this.isEditModelListInfo = false;
                 this.selectedIconPath = "";
                 this.randomIconSuffix = Math.random();
             },
             clickCancel: function () {
-                this.isEditPackInfo = false;
+                this.isEditModelListInfo = false;
                 this.selectedIconPath = "";
                 this.parent.selected = this.parent.selected + " ";
                 this.parent.selected = this.parent.selected.trim();
-            },
+            }
         },
         computed: {
-            isEditPackButtonActive: function () {
-                return this.isEditPackInfo;
+            isEditListInfoButtonActive: function () {
+                return this.isEditModelListInfo;
             },
             packNameKey: function () {
-                if (this.editPackInfo && this.editPackInfo.data && this.editPackInfo.data["pack_name"]) {
-                    return getTranslationKey(this.editPackInfo.data["pack_name"]);
+                if (this.modelListInfo && this.modelListInfo.data && this.modelListInfo.data["pack_name"]) {
+                    return getTranslationKey(this.modelListInfo.data["pack_name"]);
                 }
             },
             packDescKeys: function () {
-                if (this.editPackInfo && this.editPackInfo.data) {
+                if (this.modelListInfo && this.modelListInfo.data) {
                     let output = [];
-                    if (this.editPackInfo.data["description"]) {
-                        for (let keyRaw of this.editPackInfo.data["description"]) {
+                    if (this.modelListInfo.data["description"]) {
+                        for (let keyRaw of this.modelListInfo.data["description"]) {
                             if (typeof keyRaw === "string") {
                                 output.push(getTranslationKey(keyRaw));
                             }
@@ -351,27 +310,156 @@
                     if (!output || output.length < 1) {
                         let key = `${this.parent.selected}_pack.${this.parent.openCategory}.desc`;
                         let keyRaw = `{${key}}`;
-                        this.editPackInfo.lang[key] = "";
-                        if (!this.editPackInfo.data["description"]) {
-                            this.editPackInfo.data["description"] = [];
+                        this.modelListInfo.lang[key] = "";
+                        if (!this.modelListInfo.data["description"]) {
+                            this.modelListInfo.data["description"] = [];
                         }
-                        this.editPackInfo.data["description"].push(keyRaw);
+                        this.modelListInfo.data["description"].push(keyRaw);
                         output.push(key);
                     }
                     return output;
                 }
-            },
+            }
         }
     };
 </script>
 
 <style scoped>
-    .inactive-tlm-selected-type-button {
+    .model-list-info {
         background-color: #21252b;
-        pointer-events: none;
+        padding: 10px;
+        margin-top: 10px
     }
 
-    .inactive-tlm-edit-pack-button {
+    .model-list-text {
+        padding-left: 10px;
+        width: 77%
+    }
+
+    .model-list-info-icon {
+        width: 100px;
+        height: 100px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #17191d
+    }
+
+    .model-list-info-icon-img {
+        width: 100%;
+        height: 100%;
+        padding: 5px
+    }
+
+    .model-list-info-icon-no-img {
+        width: 100%;
+        height: 100%;
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
+    .model-list-info-version {
+        font-size: small;
+        color: #848891;
+        margin-left: 5px;
+        background-color: #17191d;
+        border-radius: 2px;
+        padding: 0 5px
+    }
+
+    .model-list-info-other {
+        color: #848891;
+        font-size: small;
+        margin: 0;
+    }
+
+    .model-list-edit {
+        height: 100%;
+        width: 100%;
+        margin-top: 10px
+    }
+
+    .model-list-edit-main {
+        background-color: #21252b;
+        width: 100%;
+        height: 330px;
+        overflow-y: auto;
+        padding: 10px 20px
+    }
+
+    .model-list-edit-item-title {
+        margin: 0;
+        padding: 0;
+        font-size: large
+    }
+
+    .model-list-edit-item-desc {
+        margin: 0;
+        padding: 0;
+        color: #6a6a6d
+    }
+
+    .model-list-edit-icon {
+        min-width: 50px;
+        width: 125px;
+        height: 125px;
+        border-radius: 1px;
+        margin: 0;
+        padding: 0
+    }
+
+    .model-list-edit-name-input, .model-list-edit-desc-input {
+        border-radius: 1px;
+        margin-top: 5px;
+        padding: 5px;
+        width: 100%;
+        height: 30px;
+        font-size: 20px;
+        background-color: #1c2026;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #181a1f;
+    }
+
+    .model-list-edit-date-input {
+        border-radius: 1px;
+        margin-top: 5px;
+        padding: 2px;
+        width: 125px;
+        height: 30px;
+        font-size: 13px;
+        background-color: #1c2026;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #181a1f;
+    }
+
+    .model-list-edit-author-input {
+        border-radius: 1px;
+        margin-top: 5px;
+        padding: 2px;
+        width: 90px;
+        height: 30px;
+        font-size: 13px;
+        background-color: #1c2026;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #181a1f;
+    }
+
+    .model-list-edit-author-delete {
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        min-height: 30px;
+        margin: 5px 0 0 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
+    .inactive-edit-list-button {
         background-color: #1c2026;
         pointer-events: none;
     }

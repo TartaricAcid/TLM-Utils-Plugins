@@ -1,6 +1,6 @@
 import {isEmpty} from "../utils/string";
 import {join as pathJoin} from "path";
-import loadFileMainVue from "./load_file_main.vue";
+import loadPackMainVue from "./load_pack_main.vue";
 
 export var loadPackAction = new Action("tlm_utils.load_pack", {
     name: "menu.tlm_utils.load_pack",
@@ -35,6 +35,9 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
                         name: "menu.tlm_utils.load_pack.open_folder",
                         icon: "fa-folder-open",
                         click: function () {
+                            if (isEmpty(packEditDialog.sidebar.page)) {
+                                return;
+                            }
                             let openPath = pathJoin(assetsPath, packEditDialog.sidebar.page);
                             electron.shell.openPath(openPath).then(result => {
                             });
@@ -72,8 +75,9 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
                                 let delPath = pathJoin(assetsPath, page);
                                 electron.shell.trashItem(delPath).then(() => {
                                     delete pages[page];
-                                    if (pages && Object.keys(pages).length > 0) {
-                                        packEditDialog.sidebar.setPage(Object.keys(pages)[0]);
+                                    let pageKeys = Object.keys(pages);
+                                    if (pages && pageKeys.length > 0) {
+                                        packEditDialog.sidebar.setPage(pageKeys[0]);
                                     } else {
                                         packEditDialog.sidebar.setPage("");
                                     }
@@ -81,7 +85,7 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
                                 });
                             }
                         }
-                    }),
+                    })
                 ],
                 onPageSwitch(page) {
                     let child = packEditDialog.content_vue.$children[0];
@@ -105,8 +109,8 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
                         packEditDialog: packEditDialog
                     };
                 },
-                components: {loadFileMainVue},
-                template: "<loadFileMainVue :assetsPath='assetsPath' :namespaceMap='namespaceMap' :packEditDialog='packEditDialog'/>"
+                components: {loadPackMainVue},
+                template: "<loadPackMainVue :assetsPath='assetsPath' :namespaceMap='namespaceMap' :packEditDialog='packEditDialog'/>"
             }
         });
         packEditDialog.show();
