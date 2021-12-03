@@ -41,10 +41,13 @@
             </div>
 
             <!-- Edit Info Button -->
-            <div style="margin-top: 10px">
+            <div style="margin-top: 10px; display: flex">
                 <button :class="{'inactive-edit-list-button':isEditListInfoButtonActive}" @click="clickEditInfo" style="width: 100%">
                     <i class="fas fa-edit"></i>
                     {{tl("dialog.tlm_utils.load_pack.detail.edit_list_info")}}
+                </button>
+                <button class="model-list-edit-delete" @click="deleteModelList" :title="tl('dialog.tlm_utils.load_pack.list.delete')">
+                    <i class="fas fa-trash-alt"></i>
                 </button>
             </div>
         </div>
@@ -139,6 +142,8 @@
 <script>
     import {getTranslationKey, getTranslationResult, writeLanguageFile} from "../utils/language";
     import {isEmpty} from "../utils/string";
+    import {join as pathJoin} from "path";
+    import {mkdirs} from "../utils/filesystem";
 
     export default {
         props: {
@@ -286,6 +291,100 @@
                 this.selectedIconPath = "";
                 this.parent.selected = this.parent.selected + " ";
                 this.parent.selected = this.parent.selected.trim();
+            },
+            deleteModelList: function () {
+                let index = electron.dialog.showMessageBoxSync(currentwindow, {
+                    title: tl("dialog.tlm_utils.load_pack.list.delete"),
+                    message: tl("dialog.tlm_utils.load_pack.list.delete.desc"),
+                    type: "warning",
+                    buttons: [tl("button.tlm_utils.confirm"), tl("button.tlm_utils.cancel")],
+                    defaultId: 1,
+                    cancelId: 1,
+                    noLink: true
+                });
+                if (index === 0) {
+                    let namespacePath = pathJoin(this.parent.assetsPath, this.parent.openCategory);
+                    let selected = this.parent.selected;
+                    let maidFile = pathJoin(namespacePath, "maid_model.json");
+                    let chairFile = pathJoin(namespacePath, "maid_chair.json");
+                    let hasMaidFile = fs.existsSync(maidFile);
+                    let hasChairFile = fs.existsSync(chairFile);
+                    if (hasMaidFile && hasChairFile) {
+                        let file = selected === "maid" ? maidFile : chairFile;
+                        let text = fs.readFileSync(file, "utf8");
+                        if (text.charCodeAt(0) === 0xFEFF) {
+                            text = text.substr(1);
+                        }
+                        let data = JSON.parse(text);
+
+                        let pathDelete = [];
+
+                        // delete icon
+                        if (data["icon"]) {
+                            let iconPath = pathJoin(this.parent.assetsPath, data["icon"].replace(":", "/"));
+                            if (fs.existsSync(iconPath)) {
+                                pathDelete.push(iconPath);
+                            }
+                        }
+
+                        // check all model
+                        let modelList = data["model_list"];
+                        if (modelList) {
+                            for (let model of modelList) {
+                                // check model id
+                                if (!model["model_id"]) {
+                                    continue;
+                                }
+                                // delete all model
+                                if (model["model"]) {
+                                    let modelPath = pathJoin(this.parent.assetsPath, model["model"].replace(":", "/"));
+                                    if (fs.existsSync(modelPath)) {
+                                        pathDelete.push(modelPath);
+                                    }
+                                } else {
+                                    let split = model["model_id"].split(":", 2);
+                                    let modelPath = pathJoin(this.parent.assetsPath, split[0], "models", "entity", split[1] + ".json");
+                                    if (fs.existsSync(modelPath)) {
+                                        pathDelete.push(modelPath);
+                                    }
+                                }
+                                // delete all texture
+                                if (model["texture"]) {
+                                    let texturePath = pathJoin(this.parent.assetsPath, model["texture"].replace(":", "/"));
+                                    if (fs.existsSync(texturePath)) {
+                                        pathDelete.push(texturePath);
+                                    }
+                                } else {
+                                    let split = model["model_id"].split(":", 2);
+                                    let texturePath = pathJoin(this.parent.assetsPath, split[0], "textures", "entity", split[1] + ".png");
+                                    if (fs.existsSync(texturePath)) {
+                                        pathDelete.push(texturePath);
+                                    }
+                                }
+                            }
+                        }
+
+                        for (let deleteFile of pathDelete) {
+                            electron.shell.trashItem(deleteFile).then(() => {
+                            });
+                        }
+                        electron.shell.trashItem(file).then(() => {
+                            this.parent.selected = selected === "maid" ? "chair" : "maid";
+                            this.parent.$children.forEach(value => value.$forceUpdate());
+                        });
+                    } else {
+                        electron.shell.trashItem(namespacePath).then(() => {
+                            mkdirs(namespacePath);
+                            mkdirs(`${namespacePath}/animation`);
+                            mkdirs(`${namespacePath}/lang`);
+                            mkdirs(`${namespacePath}/models/entity`);
+                            mkdirs(`${namespacePath}/textures/entity`);
+                            this.parent.selected += " ";
+                            this.parent.selected = this.parent.selected.trim();
+                            this.parent.$children.forEach(value => value.$forceUpdate());
+                        });
+                    }
+                }
             }
         },
         computed: {
@@ -457,6 +556,15 @@
         display: flex;
         justify-content: center;
         align-items: center
+    }
+
+    .model-list-edit-delete {
+        min-width: 30px;
+        width: 30px;
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .inactive-edit-list-button {

@@ -3,7 +3,7 @@
         <div v-if="newSubModelPack">
             <newSubModelPackFormVue :parent="this"/>
         </div>
-        <div style="display:flex" v-else>
+        <div style="display:flex" v-else-if="!categoryIsEmpty">
             <div style="width: 70%">
                 <topTypeButtonVue :parent="this"/>
                 <modelListInfoVue :parent="this" v-if="isShowList"/>
@@ -103,6 +103,9 @@
             },
             isShowList: function () {
                 return this.showInfo && this.showInfo.data && this.showInfo.data["model_list"];
+            },
+            categoryIsEmpty: function () {
+                return isEmpty(this.openCategory);
             }
         }
     };

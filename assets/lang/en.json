@@ -61,6 +61,8 @@
   "dialog.tlm_utils.load_pack.new_sub_pack.warn.duplicate": "Model pack ID is duplicate",
   "dialog.tlm_utils.load_pack.new_list": "New Model List",
   "dialog.tlm_utils.load_pack.new_list.desc": "You will create a new model list",
+  "dialog.tlm_utils.load_pack.list.delete": "Delete Selected Model List?",
+  "dialog.tlm_utils.load_pack.list.delete.desc": "Please note! This will directly delete an entire selected model list!",
   "model.tlm_utils.maid.head": "Head",
   "model.tlm_utils.maid.blink": "Blink",
   "model.tlm_utils.maid.body": "Body",
