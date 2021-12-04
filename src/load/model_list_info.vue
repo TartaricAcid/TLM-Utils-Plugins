@@ -53,7 +53,7 @@
         </div>
 
         <!-- Model List Info Edit -->
-        <div class="model-list-edit" v-if="isEditModelListInfo">
+        <div class="model-list-edit" v-if="isEditModelListInfo && !isEditModelInfo">
             <div class="model-list-edit-main">
                 <!-- Model List Name -->
                 <div>
@@ -136,6 +136,211 @@
                 <button @click="clickCancel" style="width: 48%; margin-left: 2%">{{tl("button.tlm_utils.cancel")}}</button>
             </div>
         </div>
+
+        <!-- Model Info Edit -->
+        <div class="model-edit" v-if="!isEditModelListInfo && isEditModelInfo">
+            <div class="model-edit-main">
+                <details open>
+                    <summary class="summary-bar">
+                        <i class="fas fa-chevron-down fa-fw"></i>
+                        {{tl("dialog.tlm_utils.load_pack.edit.model.main")}}
+                    </summary>
+                    <div class="model-edit-main-sub" style="margin-top: 5px">
+                        <!-- Model Name -->
+                        <div>
+                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model_name")}}</p>
+                            <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.pack_name.desc")}}</p>
+                            <input class="model-edit-name-input" type="text" v-model="modelListInfo.lang[modelNameKey]">
+                        </div>
+
+                        <!-- Model Description -->
+                        <div style="margin-top: 20px; margin-bottom: 10px">
+                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model_description")}}</p>
+                            <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}</p>
+                            <div :key="index" v-for="(key, index) in modelDescKeys">
+                                <input class="model-edit-desc-input" type="text" v-model="modelListInfo.lang[key]">
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <details style="margin-top: 5px">
+                    <summary class="summary-bar">
+                        <i class="fas fa-chevron-down fa-fw"></i>
+                        {{tl("dialog.tlm_utils.load_pack.edit.model.scale")}}
+                    </summary>
+                    <div class="model-edit-main-sub" style="margin-top: 5px">
+                        <div style="display: flex; align-items: center">
+                            <div>
+                                <p class="model-edit-range-tip">{{modelInfo["render_item_scale"]}}</p>
+                                <input class="model-edit-range" max="2" min="0.05" step="0.05" type="range" v-model="modelInfo['render_item_scale']">
+                            </div>
+                            <div style="margin-left: 20px">
+                                <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.render_item_scale")}}</p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.render_item_scale.desc")}}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex-edit-item" style="margin-bottom: 10px">
+                            <div>
+                                <p class="model-edit-range-tip">{{modelInfo["render_entity_scale"]}}</p>
+                                <input class="model-edit-range" max="1.3" min="0.7" step="0.025" type="range" v-model="modelInfo['render_entity_scale']">
+                            </div>
+                            <div style="margin-left: 20px">
+                                <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.render_entity_scale")}}</p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.render_entity_scale.desc")}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <details style="margin-top: 5px" v-if="this.parent.selected==='chair'">
+                    <summary class="summary-bar">
+                        <i class="fas fa-chevron-down fa-fw"></i>
+                        {{tl("dialog.tlm_utils.load_pack.edit.model.chair_extra")}}
+                    </summary>
+                    <div class="model-edit-main-sub" style="margin-top: 5px">
+                        <div style="margin-bottom: 20px">
+                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.mounted_height")}}</p>
+                            <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.mounted_height.desc")}}</p>
+                            <div style="display: flex">
+                                <p class="model-edit-mounted-height-tip">{{modelInfo["mounted_height"]}}</p>
+                                <input class="model-edit-mounted-height" max="40" min="0" step="1" type="range" v-model="modelInfo['mounted_height']">
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center">
+                            <input class="model-edit-checkbox" type="checkbox" v-model="modelInfo['tameable_can_ride']">
+                            <div style="margin-left: 10px">
+                                <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.tameable_can_ride")}}</p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.tameable_can_ride.desc")}}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex-edit-item" style="margin-bottom: 5px">
+                            <input class="model-edit-checkbox" type="checkbox" v-model="modelInfo['no_gravity']">
+                            <div style="margin-left: 10px">
+                                <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.no_gravity")}}</p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.no_gravity.desc")}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <details style="margin-top: 5px" v-if="this.parent.selected==='maid'">
+                    <summary class="summary-bar">
+                        <i class="fas fa-chevron-down fa-fw"></i>
+                        {{tl("dialog.tlm_utils.load_pack.edit.model.compatibility")}}
+                    </summary>
+                    <div class="model-edit-main-sub" style="margin-top: 5px">
+                        <div style="display: flex; align-items: center">
+                            <input class="model-edit-checkbox" type="checkbox" v-model="modelInfo['show_backpack']">
+                            <div style="margin-left: 10px">
+                                <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.show_backpack")}}</p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.show_backpack.desc")}}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex-edit-item">
+                            <input class="model-edit-checkbox" type="checkbox" v-model="modelInfo['show_custom_head']">
+                            <div style="margin-left: 10px">
+                                <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.show_custom_head")}}</p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.show_custom_head.desc")}}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex-edit-item">
+                            <input class="model-edit-checkbox" type="checkbox" v-model="modelInfo['can_hold_trolley']">
+                            <div style="margin-left: 10px">
+                                <p class="model-list-edit-item-title">
+                                    {{tl("dialog.tlm_utils.load_pack.edit.model.can_hold_trolley")}}
+                                    <span style="font-size: x-small; color: #6a6a6d; font-style: italic">
+                                        <i class="fas fa-info-circle fa-fw"></i>
+                                        {{tl("dialog.tlm_utils.load_pack.edit.model.deprecated")}}
+                                    </span>
+                                </p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.can_hold_trolley.desc")}}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex-edit-item">
+                            <input class="model-edit-checkbox" type="checkbox" v-model="modelInfo['show_hata']">
+                            <div style="margin-left: 10px">
+                                <p class="model-list-edit-item-title">
+                                    {{tl("dialog.tlm_utils.load_pack.edit.model.show_hata")}}
+                                    <span style="font-size: x-small; color: #6a6a6d; font-style: italic">
+                                        <i class="fas fa-info-circle fa-fw"></i>
+                                        {{tl("dialog.tlm_utils.load_pack.edit.model.deprecated")}}
+                                    </span>
+                                </p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.show_hata.desc")}}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex-edit-item">
+                            <input class="model-edit-checkbox" type="checkbox" v-model="modelInfo['can_hold_trolley']">
+                            <div style="margin-left: 10px">
+                                <p class="model-list-edit-item-title">
+                                    {{tl("dialog.tlm_utils.load_pack.edit.model.can_hold_trolley")}}
+                                    <span style="font-size: x-small; color: #6a6a6d; font-style: italic">
+                                        <i class="fas fa-info-circle fa-fw"></i>
+                                        {{tl("dialog.tlm_utils.load_pack.edit.model.deprecated")}}
+                                    </span>
+                                </p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.can_hold_trolley.desc")}}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex-edit-item" style="margin-bottom: 5px">
+                            <input class="model-edit-checkbox" type="checkbox" v-model="modelInfo['can_riding_broom']">
+                            <div style="margin-left: 10px">
+                                <p class="model-list-edit-item-title">
+                                    {{tl("dialog.tlm_utils.load_pack.edit.model.can_riding_broom")}}
+                                    <span style="font-size: x-small; color: #6a6a6d; font-style: italic">
+                                        <i class="fas fa-info-circle fa-fw"></i>
+                                        {{tl("dialog.tlm_utils.load_pack.edit.model.deprecated")}}
+                                    </span>
+                                </p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.can_riding_broom.desc")}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <details style="margin-top: 5px" v-if="this.parent.selected==='maid'">
+                    <summary class="summary-bar">
+                        <i class="fas fa-chevron-down fa-fw"></i>
+                        {{tl("dialog.tlm_utils.load_pack.edit.model.easter_eggs")}}
+                    </summary>
+                    <div class="model-edit-main-sub" style="margin-top: 5px">
+                        <div v-if="modelInfo['easter_egg']['encrypt']">
+                            <p class="model-list-edit-item-title">
+                                {{tl("dialog.tlm_utils.load_pack.edit.model.easter_egg.tag")}}
+                                <span style="font-size: x-small; color: #6a6a6d; font-style: italic; margin-left: 10px">
+                                    <i class="fas fa-key"></i>
+                                    SHA-1:
+                                    {{sha1Egg}}
+                                </span>
+                            </p>
+                            <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.easter_egg.tag.desc")}}</p>
+                            <input @blur="setEncryptEgg(true)" class="model-edit-egg-input" type="text" v-model="tmpEncryptName">
+                        </div>
+                        <div v-else>
+                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.easter_egg.tag")}}</p>
+                            <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.easter_egg.tag.desc")}}</p>
+                            <input @blur="setEncryptEgg(false)" class="model-edit-egg-input" type="text" v-model="tmpEncryptName">
+                        </div>
+                        <div style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 5px">
+                            <input @click="clickEncryptInput" class="model-edit-checkbox" type="checkbox" v-model="modelInfo['easter_egg']['encrypt']">
+                            <div style="margin-left: 10px">
+                                <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.easter_egg.encrypt")}}</p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.easter_egg.encrypt.desc")}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -144,6 +349,7 @@
     import {isEmpty} from "../utils/string";
     import {join as pathJoin} from "path";
     import {mkdirs} from "../utils/filesystem";
+    import sha1 from "sha1";
 
     export default {
         props: {
@@ -155,17 +361,47 @@
         data() {
             return {
                 modelListInfo: {},
+                modelInfo: {},
                 selectedIconPath: "",
                 randomIconSuffix: 0,    // used to clean img cache
-                isEditModelListInfo: false
+                isEditModelListInfo: false,
+                tmpEncryptName: ""
             };
         },
         methods: {
             tl: tl,
             reset: function () {
                 this.modelListInfo = {};
+                this.modelInfo = {};
                 this.selectedIconPath = "";
                 this.isEditModelListInfo = false;
+                this.tmpEncryptName = "";
+            },
+            selectedModel: function (index) {
+                this.modelInfo = this.parent.showInfo.data["model_list"][index];
+                this.modelListInfo = this.parent.showInfo;
+                if (this.parent.selected === "maid") {
+                    if (this.modelInfo["easter_egg"]["encrypt"]) {
+                        this.tmpEncryptName = "";
+                    } else {
+                        this.tmpEncryptName = this.modelInfo["easter_egg"]["tag"];
+                    }
+                }
+            },
+            setEncryptEgg: function (encrypt) {
+                if (encrypt) {
+                    this.modelInfo["easter_egg"]["tag"] = this.sha1Egg;
+                } else {
+                    this.modelInfo["easter_egg"]["tag"] = this.tmpEncryptName;
+                }
+            },
+            clickEncryptInput: function () {
+                // FIXME: Because of the problem of data update and event triggering, the logic is just inverted...
+                if (!this.modelInfo["easter_egg"]["encrypt"]) {
+                    this.modelInfo["easter_egg"]["tag"] = this.sha1Egg;
+                } else {
+                    this.modelInfo["easter_egg"]["tag"] = this.tmpEncryptName;
+                }
             },
             getIconPath: function (packInfo) {
                 if (this.selectedIconPath) {
@@ -214,6 +450,9 @@
             },
             clickEditInfo: function () {
                 if (!this.isEditModelListInfo) {
+                    this.parent.reset();
+                    this.parent.selected = this.parent.selected + " ";
+                    this.parent.selected = this.parent.selected.trim();
                     this.isEditModelListInfo = true;
                     this.modelListInfo = this.parent.showInfo;
                     if (!this.modelListInfo.data["author"]) {
@@ -287,8 +526,7 @@
                 this.randomIconSuffix = Math.random();
             },
             clickCancel: function () {
-                this.isEditModelListInfo = false;
-                this.selectedIconPath = "";
+                this.reset();
                 this.parent.selected = this.parent.selected + " ";
                 this.parent.selected = this.parent.selected.trim();
             },
@@ -396,6 +634,17 @@
                     return getTranslationKey(this.modelListInfo.data["pack_name"]);
                 }
             },
+            modelNameKey: function () {
+                if (this.modelInfo && this.modelInfo["model_id"]) {
+                    let modelId = this.modelInfo["model_id"];
+                    let name = this.modelInfo["name"];
+                    if (isEmpty(name)) {
+                        return `model.${modelId.replace(":", ".")}.name`;
+                    } else {
+                        return getTranslationKey(name);
+                    }
+                }
+            },
             packDescKeys: function () {
                 if (this.modelListInfo && this.modelListInfo.data) {
                     let output = [];
@@ -418,12 +667,100 @@
                     }
                     return output;
                 }
+            },
+            modelDescKeys: function () {
+                if (this.modelListInfo && this.modelListInfo.data && this.modelInfo) {
+                    let output = [];
+                    if (this.modelInfo["description"]) {
+                        for (let keyRaw of this.modelInfo["description"]) {
+                            if (typeof keyRaw === "string") {
+                                output.push(getTranslationKey(keyRaw));
+                            }
+                        }
+                    }
+                    if (!output || output.length < 1) {
+                        let modelId = this.modelInfo["model_id"];
+                        let key = `model.${modelId.replace(":", ".")}.desc`;
+                        let keyRaw = `{${key}}`;
+                        this.modelListInfo.lang[key] = "";
+                        if (!this.modelInfo["description"]) {
+                            this.modelInfo["description"] = [];
+                        }
+                        this.modelInfo["description"].push(keyRaw);
+                        output.push(key);
+                    }
+                    return output;
+                }
+            },
+            isEditModelInfo: function () {
+                return this.parent.selectedId >= 0;
+            },
+            sha1Egg: function () {
+                return sha1(this.tmpEncryptName);
             }
         }
     };
 </script>
 
 <style scoped>
+    .model-edit-mounted-height-tip {
+        margin-right: 2%;
+        width: 8%;
+        text-align: center;
+        background-color: #1c2026;
+        font-size: larger;
+        color: #6a6a6d;
+        border-radius: 1px;
+        margin-top: 5px;
+        height: 30px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #181a1f;
+    }
+
+    .model-edit-mounted-height {
+        width: 85%;
+        background-color: #1c2026;
+        border-radius: 1px;
+        margin-top: 15px;
+        margin-left: 3%;
+        height: 10px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #181a1f;
+    }
+
+    .model-edit-range-tip {
+        margin-left: 50px;
+        margin-right: 50px;
+        margin-bottom: 2px;
+        width: 50px;
+        text-align: center;
+        background-color: #1c2026;
+        font-size: larger;
+        color: #6a6a6d;
+        border-radius: 1px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #181a1f;
+    }
+
+    .model-edit-range {
+        width: 150px;
+        background-color: #1c2026;
+        border-radius: 1px;
+        margin-top: 15px;
+        height: 10px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #181a1f;
+    }
+
+    .model-edit-checkbox {
+        width: 40px;
+        padding-left: 10px;
+    }
+
     .model-list-info {
         background-color: #21252b;
         padding: 10px;
@@ -473,7 +810,7 @@
         margin: 0;
     }
 
-    .model-list-edit {
+    .model-list-edit, .model-edit {
         height: 100%;
         width: 100%;
         margin-top: 10px
@@ -484,6 +821,17 @@
         width: 100%;
         height: 330px;
         overflow-y: auto;
+        padding: 10px 20px
+    }
+
+    .model-edit-main {
+        width: 100%;
+        height: 330px;
+        overflow-y: auto;
+    }
+
+    .model-edit-main-sub {
+        background-color: #21252b;
         padding: 10px 20px
     }
 
@@ -514,6 +862,19 @@
         padding: 5px;
         width: 100%;
         height: 30px;
+        font-size: 20px;
+        background-color: #1c2026;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #181a1f;
+    }
+
+    .model-edit-name-input, .model-edit-desc-input, .model-edit-egg-input {
+        border-radius: 1px;
+        margin-top: 5px;
+        padding: 5px;
+        width: 100%;
+        height: 20px;
         font-size: 20px;
         background-color: #1c2026;
         border-style: solid;
@@ -597,5 +958,18 @@
         font-weight: bold;
         font-size: 20px;
         margin: 10px 2px 2px;
+    }
+
+    .summary-bar {
+        background-color: #3a3f4b;
+        height: 28px;
+        width: 98%;
+        padding: 4px 0 0 10px;
+        font-size: medium;
+        cursor: pointer;
+    }
+
+    .summary-bar:hover {
+        color: #ffffff;
     }
 </style>

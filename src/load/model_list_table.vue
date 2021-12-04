@@ -7,12 +7,13 @@
             </button>
         </div>
         <ul style="max-height: 550px; overflow-y: auto; text-align: center;" v-sortable="{onUpdate: onUpdateSort, handle:'.handle'}">
-            <li :key="modelInfo['model_id']" class="model-item" v-for="modelInfo in parent.showInfo.data['model_list']">
+            <li :class="{'selected':index===parent.selectedId}" :key="modelInfo['model_id']" @click="parent.selectedModel(index)" class="model-item"
+                v-for="(modelInfo, index) in parent.showInfo.data['model_list']">
                 <p :title="tl('dialog.tlm_utils.load_pack.list.normal_egg')" class="egg" v-if="hasNormalEgg(modelInfo)">
                     <i class="fas fa-hashtag fa-fw"></i>
                     {{modelInfo["easter_egg"]["tag"]}}
                 </p>
-                <p  :title="tl('dialog.tlm_utils.load_pack.list.encrypt_egg')" class="egg" v-else-if="hasEncryptEgg(modelInfo)">
+                <p :title="tl('dialog.tlm_utils.load_pack.list.encrypt_egg')" class="egg" v-else-if="hasEncryptEgg(modelInfo)">
                     <i class="fas fa-asterisk fa-fw"></i>
                     {{modelInfo["easter_egg"]["tag"].substr(0,10)+"..."}}
                 </p>
@@ -67,10 +68,10 @@
                 fs.writeFileSync(modelListFile, autoStringify(previousData));
             },
             hasNormalEgg: function (modelInfo) {
-                return modelInfo["easter_egg"] && !modelInfo["easter_egg"]["encrypt"];
+                return modelInfo["easter_egg"] && modelInfo["easter_egg"]["tag"] && !isEmpty(modelInfo["easter_egg"]["tag"]) && !modelInfo["easter_egg"]["encrypt"];
             },
             hasEncryptEgg: function (modelInfo) {
-                return modelInfo["easter_egg"] && modelInfo["easter_egg"]["encrypt"];
+                return modelInfo["easter_egg"] && modelInfo["easter_egg"]["tag"] && !isEmpty(modelInfo["easter_egg"]["tag"]) && modelInfo["easter_egg"]["encrypt"];
             }
         }
     };
@@ -95,6 +96,18 @@
     .model-item:hover {
         background-color: #3e90ff;
         cursor: pointer;
+    }
+
+    .selected, .selected:hover {
+        background-color: #21252b;
+        pointer-events: none;
+        border-left-color: #23d400;
+        border-left-style: solid;
+        border-left-width: 5px;
+    }
+
+    .selected > i {
+        color: #3a3f4b;
     }
 
     .model-item > p {
