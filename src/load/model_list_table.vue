@@ -8,8 +8,16 @@
         </div>
         <ul style="max-height: 550px; overflow-y: auto; text-align: center;" v-sortable="{onUpdate: onUpdateSort, handle:'.handle'}">
             <li :key="modelInfo['model_id']" class="model-item" v-for="modelInfo in parent.showInfo.data['model_list']">
-                {{getLocalModelName(modelInfo)}}
-                <i class="fas fa-arrows-alt handle"></i>
+                <p :title="tl('dialog.tlm_utils.load_pack.list.normal_egg')" class="egg" v-if="hasNormalEgg(modelInfo)">
+                    <i class="fas fa-hashtag fa-fw"></i>
+                    {{modelInfo["easter_egg"]["tag"]}}
+                </p>
+                <p  :title="tl('dialog.tlm_utils.load_pack.list.encrypt_egg')" class="egg" v-else-if="hasEncryptEgg(modelInfo)">
+                    <i class="fas fa-asterisk fa-fw"></i>
+                    {{modelInfo["easter_egg"]["tag"].substr(0,10)+"..."}}
+                </p>
+                <p v-else>{{getLocalModelName(modelInfo)}}</p>
+                <i :title="tl('dialog.tlm_utils.load_pack.list.sort.move')" class="fas fa-arrows-alt handle"></i>
             </li>
         </ul>
     </div>
@@ -48,9 +56,21 @@
                 let info = this.parent.showInfo;
                 let modelList = info.data["model_list"];
                 modelList.splice(event.newIndex, 0, modelList.splice(event.oldIndex, 1)[0]);
+
                 let modelListFile = (info.type === "maid") ? `${info.namespacePath}/maid_model.json` : `${info.namespacePath}/maid_chair.json`;
-                // TODO: When edit pack is true
-                fs.writeFileSync(modelListFile, autoStringify(info.data));
+                let previousFile = fs.readFileSync(modelListFile, "utf8");
+                if (previousFile.charCodeAt(0) === 0xFEFF) {
+                    previousFile = previousFile.substr(1);
+                }
+                let previousData = JSON.parse(previousFile);
+                previousData["model_list"] = modelList;
+                fs.writeFileSync(modelListFile, autoStringify(previousData));
+            },
+            hasNormalEgg: function (modelInfo) {
+                return modelInfo["easter_egg"] && !modelInfo["easter_egg"]["encrypt"];
+            },
+            hasEncryptEgg: function (modelInfo) {
+                return modelInfo["easter_egg"] && modelInfo["easter_egg"]["encrypt"];
             }
         }
     };
@@ -64,15 +84,12 @@
     }
 
     .model-item {
-        position: relative;
-        display: block;
+        display: flex;
         width: 98%;
         height: 30px;
         margin: 1px;
-        padding: 5px 10px;
-        font-size: small;
-        text-align: left;
         background-color: #3a3f4b;
+        align-items: center;
     }
 
     .model-item:hover {
@@ -80,12 +97,20 @@
         cursor: pointer;
     }
 
+    .model-item > p {
+        width: 83%;
+        padding-left: 5%;
+        margin-right: 2%;
+        text-align: left;
+        font-size: small;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
     .handle {
-        position: relative;
-        display: inline-block;
-        margin-top: 2px;
+        width: 10%;
+        margin-right: 5%;
         font-size: medium;
-        float: right;
     }
 
     .handle:hover {
@@ -96,5 +121,10 @@
     .ghostClass, .sortable-drag, .sortable-chosen {
         background-color: darkred;
         cursor: grab;
+    }
+
+    .egg {
+        font-style: italic;
+        color: #92dcff;
     }
 </style>

@@ -46,7 +46,7 @@
                     <i class="fas fa-edit"></i>
                     {{tl("dialog.tlm_utils.load_pack.detail.edit_list_info")}}
                 </button>
-                <button class="model-list-edit-delete" @click="deleteModelList" :title="tl('dialog.tlm_utils.load_pack.list.delete')">
+                <button :title="tl('dialog.tlm_utils.load_pack.list.delete')" @click="deleteModelList" class="model-list-edit-delete">
                     <i class="fas fa-trash-alt"></i>
                 </button>
             </div>
@@ -64,8 +64,8 @@
 
                 <!-- Model Icon -->
                 <div class="flex-edit-item">
-                    <button class="model-list-edit-icon" @click="openIconPath">
-                        <img :src="getIconPath(modelListInfo)" style="padding: 5px" alt="" height="115x" width="115x" v-if="getIconPath(modelListInfo)">
+                    <button @click="openIconPath" class="model-list-edit-icon">
+                        <img :src="getIconPath(modelListInfo)" alt="" height="115x" style="padding: 5px" v-if="getIconPath(modelListInfo)" width="115x">
                         <div v-else><i class="far fa-4x fa-images"></i></div>
                     </button>
 
@@ -103,7 +103,7 @@
                 <!-- Model Author -->
                 <div class="flex-edit-item">
                     <div>
-                        <div :key="index" v-for="(author, index) in modelListInfo.data['author']" style="display: flex">
+                        <div :key="index" style="display: flex" v-for="(author, index) in modelListInfo.data['author']">
                             <input class="model-list-edit-author-input" type="text" v-model="modelListInfo.data['author'][index]">
                             <button @click="deleteAuthor(index)" class="model-list-edit-author-delete">
                                 <i class="fas fa-trash-alt fa-align-center"></i>

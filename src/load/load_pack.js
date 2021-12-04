@@ -89,15 +89,17 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
                 ],
                 onPageSwitch(page) {
                     let child = packEditDialog.content_vue.$children[0];
-                    child.openCategory = page;
-                    child.newSubModelPack = false;
-                    child.reset();
-                    if (child.hasModelListFile("maid")) {
-                        child.selected = "maid";
-                        return;
-                    }
-                    if (child.hasModelListFile("chair")) {
-                        child.selected = "chair";
+                    if (child.openCategory !== page) {
+                        child.openCategory = page;
+                        child.newSubModelPack = false;
+                        child.reset();
+                        if (child.hasModelListFile("maid")) {
+                            child.selected = "maid";
+                            return;
+                        }
+                        if (child.hasModelListFile("chair")) {
+                            child.selected = "chair";
+                        }
                     }
                 }
             },
