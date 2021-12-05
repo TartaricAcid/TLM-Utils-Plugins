@@ -1,0 +1,8 @@
+{
+  "touhou_little_maid:animation/maid/default/sit/default.js": {
+    "after": [
+      "touhou_little_maid:animation/maid/default/arm/default.js",
+      "touhou_little_maid:animation/maid/default/leg/default.js"
+    ]
+  }
+}

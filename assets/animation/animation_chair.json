@@ -1,0 +1,30 @@
+[
+  {
+    "bone": "passengerRotationYaw",
+    "name": "passenger_rotation_yaw",
+    "color": "#fe9750",
+    "group": "passenger",
+    "path": "touhou_little_maid:animation/chair/passenger/rotation.js"
+  },
+  {
+    "bone": "passengerRotationPitch",
+    "name": "passenger_rotation_pitch",
+    "color": "#fe9750",
+    "group": "passenger",
+    "path": "touhou_little_maid:animation/chair/passenger/rotation.js"
+  },
+  {
+    "bone": "passengerHidden",
+    "name": "passenger_hidden",
+    "color": "#84B1ED",
+    "group": "passenger",
+    "path": "touhou_little_maid:animation/chair/passenger/hidden.js"
+  },
+  {
+    "bone": "passengerShow",
+    "name": "passenger_show",
+    "color": "#84B1ED",
+    "group": "passenger",
+    "path": "touhou_little_maid:animation/chair/passenger/hidden.js"
+  }
+]

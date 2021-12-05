@@ -38,57 +38,57 @@ export var defaultMaidModelDialog = new Dialog({
     },
     form: {
         head: {
-            label: "model.tlm_utils.maid.head",
+            label: "model.tlm_utils.preset.head",
             type: "checkbox",
             value: true
         },
         blink: {
-            label: "model.tlm_utils.maid.blink",
+            label: "model.tlm_utils.preset.blink",
             type: "checkbox",
             value: true
         },
         body: {
-            label: "model.tlm_utils.maid.body",
+            label: "model.tlm_utils.preset.body",
             type: "checkbox",
             value: true
         },
         armLeft: {
-            label: "model.tlm_utils.maid.arm_left",
+            label: "model.tlm_utils.preset.arm_left",
             type: "checkbox",
             value: true
         },
         armRight: {
-            label: "model.tlm_utils.maid.arm_right",
+            label: "model.tlm_utils.preset.arm_right",
             type: "checkbox",
             value: true
         },
         legLeft: {
-            label: "model.tlm_utils.maid.leg_left",
+            label: "model.tlm_utils.preset.leg_left",
             type: "checkbox",
             value: true
         },
         legRight: {
-            label: "model.tlm_utils.maid.leg_right",
+            label: "model.tlm_utils.preset.leg_right",
             type: "checkbox",
             value: true
         },
         wingLeft: {
-            label: "model.tlm_utils.maid.wing_left",
+            label: "model.tlm_utils.preset.wing_left",
             type: "checkbox",
             value: false
         },
         wingRight: {
-            label: "model.tlm_utils.maid.wing_right",
+            label: "model.tlm_utils.preset.wing_right",
             type: "checkbox",
             value: false
         },
         tail: {
-            label: "model.tlm_utils.maid.tail",
+            label: "model.tlm_utils.preset.tail",
             type: "checkbox",
             value: false
         },
         ahoge: {
-            label: "model.tlm_utils.maid.ahoge",
+            label: "model.tlm_utils.preset.ahoge",
             type: "checkbox",
             value: false
         }
@@ -119,37 +119,37 @@ var sr2MaidModelDialog = new Dialog({
     },
     form: {
         head: {
-            label: "model.tlm_utils.maid.head",
+            label: "model.tlm_utils.preset.head",
             type: "checkbox",
             value: true
         },
         blink: {
-            label: "model.tlm_utils.maid.blink",
+            label: "model.tlm_utils.preset.blink",
             type: "checkbox",
             value: true
         },
         body: {
-            label: "model.tlm_utils.maid.body",
+            label: "model.tlm_utils.preset.body",
             type: "checkbox",
             value: true
         },
         armLeft: {
-            label: "model.tlm_utils.maid.arm_left",
+            label: "model.tlm_utils.preset.arm_left",
             type: "checkbox",
             value: true
         },
         armRight: {
-            label: "model.tlm_utils.maid.arm_right",
+            label: "model.tlm_utils.preset.arm_right",
             type: "checkbox",
             value: true
         },
         legLeft: {
-            label: "model.tlm_utils.maid.leg_left",
+            label: "model.tlm_utils.preset.leg_left",
             type: "checkbox",
             value: true
         },
         legRight: {
-            label: "model.tlm_utils.maid.leg_right",
+            label: "model.tlm_utils.preset.leg_right",
             type: "checkbox",
             value: true
         }

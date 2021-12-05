@@ -148,18 +148,54 @@
                     <div class="model-edit-main-sub" style="margin-top: 5px">
                         <!-- Model Name -->
                         <div>
-                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model_name")}}</p>
+                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.name")}}</p>
                             <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.pack_name.desc")}}</p>
                             <input class="model-edit-name-input" type="text" v-model="modelListInfo.lang[modelNameKey]">
                         </div>
 
                         <!-- Model Description -->
                         <div style="margin-top: 20px; margin-bottom: 10px">
-                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model_description")}}</p>
+                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.description")}}</p>
                             <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}</p>
                             <div :key="index" v-for="(key, index) in modelDescKeys">
                                 <input class="model-edit-desc-input" type="text" v-model="modelListInfo.lang[key]">
                             </div>
+                        </div>
+                    </div>
+                </details>
+
+                <details style="margin-top: 5px">
+                    <summary class="summary-bar">
+                        <i class="fas fa-chevron-down fa-fw"></i>
+                        {{tl("dialog.tlm_utils.load_pack.edit.model.animation")}}
+                    </summary>
+                    <div class="model-edit-main-sub" style="margin-top: 5px">
+                        <div style="margin-bottom: 5px">
+                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.preset_animation")}}</p>
+                            <p class="model-list-edit-item-desc" style="margin-bottom: 10px">{{tl("dialog.tlm_utils.load_pack.edit.model.preset_animation.desc")}}</p>
+                            <div :key="index" style="display: flex" v-for="(animation, index) in modelInfo['animation']" v-if="presetAnimations.has(animation)">
+                                <input class="model-edit-animation-input" readonly type="text" v-model="modelInfo['animation'][index]">
+                                <div @click="deleteAnimation(index)" class="model-edit-animation-item-button"><i class="fas fa-trash-alt"></i></div>
+                                <div :title="getPresentAnimationInfo(animation)" class="model-edit-animation-item-button">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                            </div>
+                            <button style="height: 25px; width: 92.75%; font-size: small; margin-top: 5px">
+                                {{tl("dialog.tlm_utils.load_pack.edit.model.preset_animation.analyze")}}
+                            </button>
+                        </div>
+
+                        <div style="margin-top: 20px; margin-bottom: 10px">
+                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.custom_animation")}}</p>
+                            <p class="model-list-edit-item-desc" style="margin-bottom: 5px">{{tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.desc")}}</p>
+                            <div :key="index" style="display: flex" v-for="(animation, index) in modelInfo['animation']" v-if="!presetAnimations.has(animation)">
+                                <input class="model-edit-animation-input" readonly type="text" v-model="modelInfo['animation'][index]">
+                                <div @click="deleteAnimation(index)" class="model-edit-animation-item-button"><i class="fas fa-trash-alt"></i></div>
+                                <div class="model-edit-animation-item-button"><i class="fas fa-cog"></i></div>
+                            </div>
+                            <button @click="addAnimation" style="height: 25px; width: 92.75%; font-size: small; margin-top: 5px">
+                                {{tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.add")}}
+                            </button>
                         </div>
                     </div>
                 </details>
@@ -350,6 +386,7 @@
     import {join as pathJoin} from "path";
     import {mkdirs} from "../utils/filesystem";
     import sha1 from "sha1";
+    import {CHAIR_ANIMATION_REFERENCES, MAID_ANIMATION_REFERENCES} from "../animation/manger";
 
     export default {
         props: {
@@ -376,6 +413,36 @@
                 this.selectedIconPath = "";
                 this.isEditModelListInfo = false;
                 this.tmpEncryptName = "";
+            },
+            getPresentAnimationInfo: function (animation) {
+                let info = this.presetAnimations.get(animation);
+                if (info && info.name && info.desc) {
+                    return `${info.name}\n${info.desc}`;
+                }
+            },
+            deleteAnimation: function (index) {
+                if (this.modelInfo && this.modelInfo["animation"]) {
+                    this.modelInfo["animation"].splice(index, 1);
+                }
+            },
+            addAnimation: function () {
+                let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+                    properties: ["openFile"],
+                    title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.add.title"),
+                    filters: [{name: "JavaScript", extensions: ["js"]}]
+                });
+                if (filePaths) {
+                    let file = filePaths[0];
+                    let animationPath = this.modelListInfo["animationPath"];
+                    let newName = pathToName(file).toLowerCase().replace(/\s|-/g, "_");
+                    if (!(/^[\w.]+$/.test(newName))) {
+                        newName = sha1(newName).substr(0, 20);
+                    }
+                    newName += ".js";
+                    fs.writeFileSync(pathJoin(animationPath, newName), fs.readFileSync(file));
+                    let animationRef = `${this.modelListInfo["namespace"]}:animation/${newName}`;
+                    this.modelInfo["animation"].push(animationRef);
+                }
             },
             selectedModel: function (index) {
                 this.modelInfo = this.parent.showInfo.data["model_list"][index];
@@ -697,6 +764,13 @@
             },
             sha1Egg: function () {
                 return sha1(this.tmpEncryptName);
+            },
+            presetAnimations: function () {
+                if (this.parent.selected === "maid") {
+                    return MAID_ANIMATION_REFERENCES;
+                } else {
+                    return CHAIR_ANIMATION_REFERENCES;
+                }
             }
         }
     };
@@ -876,6 +950,37 @@
         width: 100%;
         height: 20px;
         font-size: 20px;
+        background-color: #1c2026;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #181a1f;
+    }
+
+    .model-edit-animation-item-button {
+        margin: 3px 1px 1px;
+        width: 21px;
+        height: 21px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #3a3f4b;
+        font-size: small;
+        border-width: 1px;
+    }
+
+    .model-edit-animation-item-button:hover {
+        background-color: #3e90ff;
+        color: #1c2026;
+    }
+
+    .model-edit-animation-input {
+        border-radius: 1px;
+        margin-top: 3px;
+        margin-right: 3px;
+        padding: 2px;
+        width: 100%;
+        height: 16px;
+        font-size: 12px;
         background-color: #1c2026;
         border-style: solid;
         border-width: 1px;

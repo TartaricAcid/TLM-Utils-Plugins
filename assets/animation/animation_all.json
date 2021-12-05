@@ -1,0 +1,28 @@
+[
+  {
+    "bone": [
+      "sinFloat",
+      "cosFloat",
+      "_sinFloat",
+      "_cosFloat"
+    ],
+    "name": "float",
+    "color": "#fe9750",
+    "group": "float",
+    "path": "touhou_little_maid:animation/base/float/default.js"
+  },
+  {
+    "bone": "overWorldHidden",
+    "name": "over_world_hidden",
+    "color": "#ff7473",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": "overWorldShow",
+    "name": "over_world_show",
+    "color": "#ff7473",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  }
+]

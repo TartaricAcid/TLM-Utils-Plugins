@@ -1,0 +1,274 @@
+[
+  {
+    "bone": "head",
+    "name": "head",
+    "color": "#718c00",
+    "parents": [],
+    "group": "head",
+    "path": [
+      "touhou_little_maid:animation/maid/default/head/default.js",
+      "touhou_little_maid:animation/maid/default/head/beg.js",
+      "touhou_little_maid:animation/maid/default/head/music_shake.js"
+    ]
+  },
+  {
+    "bone": [
+      "headExtraA",
+      "headExtraB",
+      "headExtraC"
+    ],
+    "name": "head_extra",
+    "color": "#718c00",
+    "parents": [],
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/extra.js"
+  },
+  {
+    "bone": "armLeft",
+    "name": "arm_left",
+    "color": "#718c00",
+    "parents": [],
+    "group": "arm",
+    "path": [
+      "touhou_little_maid:animation/maid/default/arm/default.js",
+      "touhou_little_maid:animation/maid/default/arm/swing.js",
+      "touhou_little_maid:animation/maid/default/sit/default.js"
+    ]
+  },
+  {
+    "bone": "armLeftVertical",
+    "name": "arm_left_vertical",
+    "color": "#718c00",
+    "parents": [
+      "armLeft"
+    ],
+    "group": "arm",
+    "path": "touhou_little_maid:animation/maid/default/arm/vertical.js"
+  },
+  {
+    "bone": "armLeftExtraA",
+    "name": "arm_left_extra",
+    "color": "#718c00",
+    "parents": [],
+    "group": "arm",
+    "path": "touhou_little_maid:animation/maid/default/arm/extra.js"
+  },
+  {
+    "bone": "armRight",
+    "name": "arm_right",
+    "color": "#30A9DE",
+    "parents": [],
+    "group": "arm",
+    "path": [
+      "touhou_little_maid:animation/maid/default/arm/default.js",
+      "touhou_little_maid:animation/maid/default/arm/swing.js",
+      "touhou_little_maid:animation/maid/default/sit/default.js"
+    ]
+  },
+  {
+    "bone": "armRightVertical",
+    "name": "arm_right_vertical",
+    "color": "#30A9DE",
+    "parents": [
+      "armRight"
+    ],
+    "group": "arm",
+    "path": "touhou_little_maid:animation/maid/default/arm/vertical.js"
+  },
+  {
+    "bone": "armRightExtraA",
+    "name": "arm_right_extra",
+    "color": "#30A9DE",
+    "parents": [],
+    "group": "arm",
+    "path": "touhou_little_maid:animation/maid/default/arm/extra.js"
+  },
+  {
+    "bone": "legLeft",
+    "name": "leg_left",
+    "color": "#718c00",
+    "parents": [],
+    "group": "leg",
+    "path": [
+      "touhou_little_maid:animation/maid/default/leg/default.js",
+      "touhou_little_maid:animation/maid/default/sit/default.js"
+    ]
+  },
+  {
+    "bone": "legLeftVertical",
+    "name": "leg_left_vertical",
+    "color": "#718c00",
+    "parents": [
+      "legLeft"
+    ],
+    "group": "leg",
+    "path": "touhou_little_maid:animation/maid/default/leg/vertical.js"
+  },
+  {
+    "bone": "legLeftExtraA",
+    "name": "leg_left_extra",
+    "color": "#718c00",
+    "parents": [],
+    "group": "leg",
+    "path": "touhou_little_maid:animation/maid/default/leg/extra.js"
+  },
+  {
+    "bone": "legRight",
+    "name": "leg_right",
+    "color": "#30A9DE",
+    "parents": [],
+    "group": "leg",
+    "path": [
+      "touhou_little_maid:animation/maid/default/leg/default.js",
+      "touhou_little_maid:animation/maid/default/sit/default.js"
+    ]
+  },
+  {
+    "bone": "legRightVertical",
+    "name": "leg_right_vertical",
+    "color": "#30A9DE",
+    "parents": [
+      "legRight"
+    ],
+    "group": "leg",
+    "path": "touhou_little_maid:animation/maid/default/leg/vertical.js"
+  },
+  {
+    "bone": "legRightExtraA",
+    "name": "leg_right_extra",
+    "color": "#30A9DE",
+    "parents": [],
+    "group": "leg",
+    "path": "touhou_little_maid:animation/maid/default/leg/extra.js"
+  },
+  {
+    "bone": "wingLeft",
+    "name": "wing_left",
+    "color": "#fe9750",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/wing/default.js"
+  },
+  {
+    "bone": "wingRight",
+    "name": "wing_right",
+    "color": "#fe9750",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/wing/default.js"
+  },
+  {
+    "bone": "ahoge",
+    "name": "ahoge",
+    "color": "#A593E0",
+    "parents": [
+      "head"
+    ],
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/beg.js"
+  },
+  {
+    "bone": "blink",
+    "name": "blink",
+    "color": "#fe9750",
+    "parents": [
+      "head"
+    ],
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/blink.js"
+  },
+  {
+    "bone": "_blink",
+    "name": "reverse_blink",
+    "color": "#fe9750",
+    "parents": [
+      "head"
+    ],
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/reverse_blink.js"
+  },
+  {
+    "bone": "hurtBlink",
+    "name": "hurt_blink",
+    "color": "#fe9750",
+    "parents": [
+      "head"
+    ],
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/hurt.js"
+  },
+  {
+    "bone": "tail",
+    "name": "tail",
+    "color": "#D499B9",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/tail/default.js"
+  },
+  {
+    "bone": "sittingRotationSkirt",
+    "name": "sitting_rotation_skirt",
+    "color": "#58C9B9",
+    "group": "sit",
+    "path": "touhou_little_maid:animation/maid/default/sit/skirt_rotation.js"
+  },
+  {
+    "bone": "sittingHiddenSkirt",
+    "name": "sitting_hidden_skirt",
+    "color": "#fe9750",
+    "group": "sit",
+    "path": "touhou_little_maid:animation/maid/default/sit/skirt_hidden.js"
+  },
+  {
+    "bone": "_sittingHiddenSkirt",
+    "name": "sitting_show_skirt",
+    "color": "#fe9750",
+    "group": "sit",
+    "path": "touhou_little_maid:animation/maid/default/sit/skirt_hidden.js"
+  },
+  {
+    "bone": "helmet",
+    "name": "helmet",
+    "color": "#66cccc",
+    "group": "armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/default.js"
+  },
+  {
+    "bone": [
+      "chestPlate",
+      "chestPlateLeft",
+      "chestPlateMiddle",
+      "chestPlateRight"
+    ],
+    "name": "chest_plate",
+    "color": "#66cccc",
+    "group": "armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/default.js"
+  },
+  {
+    "bone": [
+      "leggings",
+      "leggingsLeft",
+      "leggingsMiddle",
+      "leggingsRight"
+    ],
+    "name": "leggings",
+    "color": "#66cccc",
+    "group": "armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/default.js"
+  },
+  {
+    "bone": [
+      "bootsLeft",
+      "bootsRight"
+    ],
+    "name": "boots",
+    "color": "#66cccc",
+    "group": "armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/default.js"
+  },
+  {
+    "bone": "_helmet",
+    "name": "reverse_helmet",
+    "color": "#6699cc",
+    "group": "hide_armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/reverse.js"
+  }
+]

@@ -3,6 +3,7 @@ import TLM from "../package.json";
 import {createDefaultAction} from "./init/create_default";
 import {createNewPackAction} from "./pack/create_pack";
 import {loadPackAction} from "./load/load_pack";
+import {initPresentAnimations} from "./animation/manger";
 
 (function () {
     Plugin.register(TLM.name, {
@@ -15,6 +16,7 @@ import {loadPackAction} from "./load/load_pack";
         min_version: "4.0.0",
         onload() {
             loadTLMLanguage();
+            initPresentAnimations();
             new BarMenu("tlm_utils", [
                 "tlm_utils.create_new_model",
                 "_",
