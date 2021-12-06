@@ -82,6 +82,8 @@
   "dialog.tlm_utils.load_pack.edit.model.custom_animation.desc": "Custom animation script references",
   "dialog.tlm_utils.load_pack.edit.model.custom_animation.add": "Add Custom Animation",
   "dialog.tlm_utils.load_pack.edit.model.custom_animation.add.title": "Select an animation file",
+  "dialog.tlm_utils.load_pack.edit.model.animation.delete": "Delete Animation",
+  "dialog.tlm_utils.load_pack.edit.model.animation.replace": "Replace Animation",
   "dialog.tlm_utils.load_pack.edit.model.show_backpack": "Show Backpack",
   "dialog.tlm_utils.load_pack.edit.model.show_backpack.desc": "Whether to prevent displaying of backpack?",
   "dialog.tlm_utils.load_pack.edit.model.show_custom_head": "Show Custom Head",

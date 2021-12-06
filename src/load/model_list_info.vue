@@ -175,12 +175,14 @@
                             <p class="model-list-edit-item-desc" style="margin-bottom: 10px">{{tl("dialog.tlm_utils.load_pack.edit.model.preset_animation.desc")}}</p>
                             <div :key="index" style="display: flex" v-for="(animation, index) in modelInfo['animation']" v-if="presetAnimations.has(animation)">
                                 <input class="model-edit-animation-input" readonly type="text" v-model="modelInfo['animation'][index]">
-                                <div @click="deleteAnimation(index)" class="model-edit-animation-item-button"><i class="fas fa-trash-alt"></i></div>
+                                <div :title="tl('dialog.tlm_utils.load_pack.edit.model.animation.delete')" @click="deleteAnimation(index)"
+                                     class="model-edit-animation-item-button">
+                                    <i class="fas fa-trash-alt"></i></div>
                                 <div :title="getPresentAnimationInfo(animation)" class="model-edit-animation-item-button">
                                     <i class="fas fa-info-circle"></i>
                                 </div>
                             </div>
-                            <button style="height: 25px; width: 92.75%; font-size: small; margin-top: 5px">
+                            <button @click="analyzePresentAnimation" style="height: 25px; width: 92.75%; font-size: small; margin-top: 5px">
                                 {{tl("dialog.tlm_utils.load_pack.edit.model.preset_animation.analyze")}}
                             </button>
                         </div>
@@ -190,8 +192,14 @@
                             <p class="model-list-edit-item-desc" style="margin-bottom: 5px">{{tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.desc")}}</p>
                             <div :key="index" style="display: flex" v-for="(animation, index) in modelInfo['animation']" v-if="!presetAnimations.has(animation)">
                                 <input class="model-edit-animation-input" readonly type="text" v-model="modelInfo['animation'][index]">
-                                <div @click="deleteAnimation(index)" class="model-edit-animation-item-button"><i class="fas fa-trash-alt"></i></div>
-                                <div class="model-edit-animation-item-button"><i class="fas fa-cog"></i></div>
+                                <div :title="tl('dialog.tlm_utils.load_pack.edit.model.animation.delete')" @click="deleteAnimation(index)"
+                                     class="model-edit-animation-item-button">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                                <div :title="tl('dialog.tlm_utils.load_pack.edit.model.animation.replace')" @click="changeAnimation(index)"
+                                     class="model-edit-animation-item-button">
+                                    <i class="fas fa-file-import"></i>
+                                </div>
                             </div>
                             <button @click="addAnimation" style="height: 25px; width: 92.75%; font-size: small; margin-top: 5px">
                                 {{tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.add")}}
@@ -386,7 +394,7 @@
     import {join as pathJoin} from "path";
     import {mkdirs} from "../utils/filesystem";
     import sha1 from "sha1";
-    import {CHAIR_ANIMATION_REFERENCES, MAID_ANIMATION_REFERENCES} from "../animation/manger";
+    import {CHAIR_ANIMATION_BONES, CHAIR_ANIMATION_REFERENCES, MAID_ANIMATION_BONES, MAID_ANIMATION_REFERENCES, REFERENCES_ORDER} from "../animation/manger";
 
     export default {
         props: {
@@ -414,11 +422,101 @@
                 this.isEditModelListInfo = false;
                 this.tmpEncryptName = "";
             },
+            getModelPath: function () {
+                if (this.modelInfo && this.modelListInfo) {
+                    let modelId = this.modelInfo["model_id"];
+                    let model = this.modelInfo["model"];
+                    if (model) {
+                        let res = model.split(":", 2);
+                        if (res.length > 1) {
+                            return pathJoin(this.modelListInfo.namespacePath, res[1]);
+                        }
+                    } else {
+                        let res = modelId.split(":", 2);
+                        if (res.length > 1) {
+                            return pathJoin(this.modelListInfo.modelsPath, res[1] + ".json");
+                        }
+                    }
+                }
+            },
             getPresentAnimationInfo: function (animation) {
                 let info = this.presetAnimations.get(animation);
                 if (info && info.name && info.desc) {
                     return `${info.name}\n${info.desc}`;
                 }
+            },
+            analyzePresentAnimation: function () {
+                let path = this.getModelPath();
+                if (!path || !fs.existsSync(path)) {
+                    electron.dialog.showErrorBox("Error", "No File");
+                    return;
+                }
+                let data = autoParseJSON(fs.readFileSync(path, "utf-8"), false);
+                let version = data["format_version"];
+                let refs = new Set();
+                if (version === "1.10.0") {
+                    let geo = data["geometry.model"];
+                    if (!geo) {
+                        electron.dialog.showErrorBox("Error", "No Geo");
+                    }
+                    let bones = geo["bones"];
+                    if (bones && Array.isArray(bones)) {
+                        bones.forEach(bone => {
+                            let name = bone["name"];
+                            if (!isEmpty(name) && this.presetBones.has(name)) {
+                                this.presetBones.get(name)["ref"].forEach(v => refs.add(v));
+                            }
+                        });
+                    }
+                } else if (version === "1.12.0") {
+                    let geoArr = data["minecraft:geometry"];
+                    if (!geoArr || !Array.isArray(geoArr) || geoArr.length < 1) {
+                        electron.dialog.showErrorBox("Error", "No Geo");
+                    }
+                    let bones = geoArr[0]["bones"];
+                    if (bones && Array.isArray(bones)) {
+                        bones.forEach(bone => {
+                            let name = bone["name"];
+                            if (!isEmpty(name) && this.presetBones.has(name)) {
+                                this.presetBones.get(name)["ref"].forEach(v => refs.add(v));
+                            }
+                        });
+                    }
+                } else {
+                    electron.dialog.showErrorBox("Error", "Version Error");
+                    return;
+                }
+                if (this.modelInfo) {
+                    let animation = this.modelInfo["animation"];
+                    if (!animation) {
+                        animation = [];
+                    }
+                    animation.forEach(v => {
+                        if (!this.presetAnimations.has(v)) {
+                            refs.add(v);
+                        }
+                    });
+                    let result = Array.from(refs);
+                    result.slice().forEach(current => {
+                        if (REFERENCES_ORDER[current]) {
+                            let afters = REFERENCES_ORDER[current]["after"];
+                            afters.forEach(after => {
+                                let currentIndex = result.indexOf(current);
+                                let afterIndex = result.indexOf(after);
+                                if (afterIndex > currentIndex) {
+                                    this.swap(afterIndex, currentIndex, result);
+                                }
+                            });
+                        }
+                    });
+                    this.modelInfo["animation"] = result;
+                    this.$forceUpdate();
+                }
+            },
+            swap: function (indexA, indexB, array) {
+                let tmp = array[indexB];
+                array[indexB] = array[indexA];
+                array[indexA] = tmp;
             },
             deleteAnimation: function (index) {
                 if (this.modelInfo && this.modelInfo["animation"]) {
@@ -442,6 +540,21 @@
                     fs.writeFileSync(pathJoin(animationPath, newName), fs.readFileSync(file));
                     let animationRef = `${this.modelListInfo["namespace"]}:animation/${newName}`;
                     this.modelInfo["animation"].push(animationRef);
+                }
+            },
+            changeAnimation: function (index) {
+                let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+                    properties: ["openFile"],
+                    title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.add.title"),
+                    filters: [{name: "JavaScript", extensions: ["js"]}]
+                });
+                if (filePaths) {
+                    let file = filePaths[0];
+                    let res = this.modelInfo["animation"][index].split(":", 2);
+                    if (res.length > 1) {
+                        let path = pathJoin(this.modelListInfo.namespacePath, res[1]);
+                        fs.writeFileSync(path, fs.readFileSync(file));
+                    }
                 }
             },
             selectedModel: function (index) {
@@ -770,6 +883,13 @@
                     return MAID_ANIMATION_REFERENCES;
                 } else {
                     return CHAIR_ANIMATION_REFERENCES;
+                }
+            },
+            presetBones: function () {
+                if (this.parent.selected === "maid") {
+                    return MAID_ANIMATION_BONES;
+                } else {
+                    return CHAIR_ANIMATION_BONES;
                 }
             }
         }
