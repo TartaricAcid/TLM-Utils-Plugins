@@ -87,6 +87,9 @@
                         egg["tag"] = "";
                     }
                 }
+                if (!modelInfo.hasOwnProperty("animation")) {
+                    // TODO: Add default animation
+                }
             },
             addChairDefaultModelData: function (modelInfo) {
                 if (!modelInfo.hasOwnProperty("mounted_height")) {
@@ -96,6 +99,9 @@
                     modelInfo["no_gravity"] = false;
                 }
                 this.addDefaultModelData(modelInfo, "tameable_can_ride");
+                if (!modelInfo.hasOwnProperty("animation")) {
+                    modelInfo["animation"] = [];
+                }
             },
             selectedModel: function (index) {
                 this.reset();
@@ -112,6 +118,9 @@
                         }
                         if (!modelInfo.hasOwnProperty("render_entity_scale")) {
                             modelInfo["render_entity_scale"] = 1.0;
+                        }
+                        if (modelInfo.hasOwnProperty("description") && Array.isArray(modelInfo["description"]) && modelInfo["description"].length < 1) {
+                            delete modelInfo["description"];
                         }
                         if (this.selected === "maid") {
                             this.addMaidDefaultModelData(modelInfo);

@@ -154,12 +154,33 @@
                         </div>
 
                         <!-- Model Description -->
-                        <div style="margin-top: 20px; margin-bottom: 10px">
+                        <div style="margin-top: 20px">
                             <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.description")}}</p>
                             <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}</p>
-                            <div :key="index" v-for="(key, index) in modelDescKeys">
-                                <input class="model-edit-desc-input" type="text" v-model="modelListInfo.lang[key]">
+                            <div v-if="modelInfo['description']">
+                                <div :key="index" v-for="(key, index) in modelDescKeys">
+                                    <input class="model-edit-desc-input" type="text" v-model="modelListInfo.lang[key]">
+                                </div>
                             </div>
+                            <div v-else>
+                                <button @click="addModelDesc" style="width: 95%; height: 30px; margin-top: 5px">
+                                    {{tl("dialog.tlm_utils.load_pack.edit.model.add_description")}}
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Model Path -->
+                        <div style="margin-top: 20px">
+                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model_path.name")}}</p>
+                            <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model_path.desc")}}</p>
+                            <input class="model-edit-name-input" disabled style="font-size: small" type="text" v-model="modelPathRes">
+                        </div>
+
+                        <!-- Model Texture -->
+                        <div style="margin-top: 20px; margin-bottom: 10px">
+                            <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.texture_path.name")}}</p>
+                            <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.texture_path.desc")}}</p>
+                            <input class="model-edit-name-input" disabled style="font-size: small" type="text" v-model="texturePathRes">
                         </div>
                     </div>
                 </details>
@@ -384,6 +405,13 @@
                     </div>
                 </details>
             </div>
+
+            <!-- Model Edit Confirm Button -->
+            <div style="display: flex; margin-top: 10px; font-size: small">
+                <button @click="clickModelSave" style="width: 32%">{{tl("button.tlm_utils.save")}}</button>
+                <button @click="clickOpenModel" style="width: 32%; margin-left: 1%">{{tl("button.tlm_utils.save_open")}}</button>
+                <button @click="clickModelCancel" style="width: 32%; margin-left: 1%">{{tl("button.tlm_utils.cancel")}}</button>
+            </div>
         </div>
     </div>
 </template>
@@ -422,6 +450,81 @@
                 this.isEditModelListInfo = false;
                 this.tmpEncryptName = "";
             },
+            clickModelSave: function () {
+                let namespacePath = `${this.parent.assetsPath}/${this.parent.openCategory}`;
+                let modelListFile = (this.parent.selected === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
+                // Remove some data
+                if (typeof this.modelInfo["render_item_scale"] === "string") {
+                    this.modelInfo["render_item_scale"] = Number.parseFloat(this.modelInfo["render_item_scale"]);
+                }
+                if (typeof this.modelInfo["render_entity_scale"] === "string") {
+                    this.modelInfo["render_entity_scale"] = Number.parseFloat(this.modelInfo["render_entity_scale"]);
+                }
+                if (typeof this.modelInfo["mounted_height"] === "string") {
+                    this.modelInfo["mounted_height"] = Number.parseFloat(this.modelInfo["mounted_height"]);
+                }
+                if (this.modelInfo["render_item_scale"] === 1) {
+                    delete this.modelInfo["render_item_scale"];
+                }
+                if (this.modelInfo["render_entity_scale"] === 1) {
+                    delete this.modelInfo["render_entity_scale"];
+                }
+                if (this.modelInfo["mounted_height"] === 3) {
+                    delete this.modelInfo["mounted_height"];
+                }
+                if (this.modelInfo["show_backpack"]) {
+                    delete this.modelInfo["show_backpack"];
+                }
+                if (this.modelInfo["show_custom_head"]) {
+                    delete this.modelInfo["show_custom_head"];
+                }
+                if (this.modelInfo["can_hold_trolley"]) {
+                    delete this.modelInfo["can_hold_trolley"];
+                }
+                if (this.modelInfo["show_hata"]) {
+                    delete this.modelInfo["show_hata"];
+                }
+                if (this.modelInfo["can_hold_vehicle"]) {
+                    delete this.modelInfo["can_hold_vehicle"];
+                }
+                if (this.modelInfo["can_riding_broom"]) {
+                    delete this.modelInfo["can_riding_broom"];
+                }
+                if (this.modelInfo["tameable_can_ride"]) {
+                    delete this.modelInfo["tameable_can_ride"];
+                }
+                if (!this.modelInfo["no_gravity"]) {
+                    delete this.modelInfo["no_gravity"];
+                }
+                if (this.modelInfo["easter_egg"] && isEmpty(this.modelInfo["easter_egg"]["tag"])) {
+                    delete this.modelInfo["easter_egg"];
+                }
+                fs.writeFileSync(modelListFile, autoStringify(this.modelListInfo.data), "utf8");
+                writeLanguageFile("en_us", this.modelListInfo.langPath, this.modelListInfo.lang);
+                this.clickModelCancel();
+            },
+            clickModelCancel: function () {
+                this.parent.selectedId = -1;
+                this.parent.selected = this.parent.selected + " ";
+                this.parent.selected = this.parent.selected.trim();
+            },
+            clickOpenModel: function () {
+                this.clickModelSave();
+                let model = this.getModelPath();
+                if (model) {
+                    Blockbench.read(model, {readtype: "text"}, (files) => {
+                        loadModelFile(files[0]);
+                        let texture = this.getTexturePath();
+                        if (Project && Project.selected && texture) {
+                            Blockbench.read(texture, {readtype: "image"}, (files) => {
+                                new Texture().fromFile(files[0]).add();
+                                Project["tlm_list_info"] = this.modelListInfo;
+                                Project["tlm_model_info"] = this.modelInfo;
+                            });
+                        }
+                    });
+                }
+            },
             getModelPath: function () {
                 if (this.modelInfo && this.modelListInfo) {
                     let modelId = this.modelInfo["model_id"];
@@ -435,6 +538,23 @@
                         let res = modelId.split(":", 2);
                         if (res.length > 1) {
                             return pathJoin(this.modelListInfo.modelsPath, res[1] + ".json");
+                        }
+                    }
+                }
+            },
+            getTexturePath: function () {
+                if (this.modelInfo && this.modelListInfo) {
+                    let modelId = this.modelInfo["model_id"];
+                    let texture = this.modelInfo["texture"];
+                    if (texture) {
+                        let res = texture.split(":", 2);
+                        if (res.length > 1) {
+                            return pathJoin(this.modelListInfo.namespacePath, res[1]);
+                        }
+                    } else {
+                        let res = modelId.split(":", 2);
+                        if (res.length > 1) {
+                            return pathJoin(this.modelListInfo.texturesPath, res[1] + ".png");
                         }
                     }
                 }
@@ -803,6 +923,19 @@
                         });
                     }
                 }
+            },
+            addModelDesc() {
+                if (this.modelListInfo && this.modelListInfo.data && this.modelInfo) {
+                    let modelId = this.modelInfo["model_id"];
+                    let key = `model.${modelId.replace(":", ".")}.desc`;
+                    let keyRaw = `{${key}}`;
+                    this.modelListInfo.lang[key] = "";
+                    if (!this.modelInfo["description"]) {
+                        this.modelInfo["description"] = [];
+                    }
+                    this.modelInfo["description"].push(keyRaw);
+                    this.$forceUpdate();
+                }
             }
         },
         computed: {
@@ -849,25 +982,12 @@
                 }
             },
             modelDescKeys: function () {
-                if (this.modelListInfo && this.modelListInfo.data && this.modelInfo) {
+                if (this.modelListInfo && this.modelListInfo.data && this.modelInfo && this.modelInfo["description"]) {
                     let output = [];
-                    if (this.modelInfo["description"]) {
-                        for (let keyRaw of this.modelInfo["description"]) {
-                            if (typeof keyRaw === "string") {
-                                output.push(getTranslationKey(keyRaw));
-                            }
+                    for (let keyRaw of this.modelInfo["description"]) {
+                        if (typeof keyRaw === "string") {
+                            output.push(getTranslationKey(keyRaw));
                         }
-                    }
-                    if (!output || output.length < 1) {
-                        let modelId = this.modelInfo["model_id"];
-                        let key = `model.${modelId.replace(":", ".")}.desc`;
-                        let keyRaw = `{${key}}`;
-                        this.modelListInfo.lang[key] = "";
-                        if (!this.modelInfo["description"]) {
-                            this.modelInfo["description"] = [];
-                        }
-                        this.modelInfo["description"].push(keyRaw);
-                        output.push(key);
                     }
                     return output;
                 }
@@ -890,6 +1010,34 @@
                     return MAID_ANIMATION_BONES;
                 } else {
                     return CHAIR_ANIMATION_BONES;
+                }
+            },
+            modelPathRes: function () {
+                if (this.modelInfo && this.modelListInfo) {
+                    let modelId = this.modelInfo["model_id"];
+                    let model = this.modelInfo["model"];
+                    if (model) {
+                        return model;
+                    } else {
+                        let res = modelId.split(":", 2);
+                        if (res.length > 1) {
+                            return `${res[0]}:models/entity/${res[1]}.json`;
+                        }
+                    }
+                }
+            },
+            texturePathRes: function () {
+                if (this.modelInfo && this.modelListInfo) {
+                    let modelId = this.modelInfo["model_id"];
+                    let texture = this.modelInfo["texture"];
+                    if (texture) {
+                        return texture;
+                    } else {
+                        let res = modelId.split(":", 2);
+                        if (res.length > 1) {
+                            return `${res[0]}:textures/entity/${res[1]}.png`;
+                        }
+                    }
                 }
             }
         }

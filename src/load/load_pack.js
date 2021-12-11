@@ -112,7 +112,7 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
                     };
                 },
                 components: {loadPackMainVue},
-                template: "<loadPackMainVue :assetsPath='assetsPath' :namespaceMap='namespaceMap' :packEditDialog='packEditDialog'/>"
+                template: "<loadPackMainVue class='tlm-load-pack-main' :assetsPath='assetsPath' :namespaceMap='namespaceMap' :packEditDialog='packEditDialog'/>"
             }
         });
         packEditDialog.show();

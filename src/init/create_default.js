@@ -1,6 +1,5 @@
-import defaultMaidModel from "../../assets/model/maid/default.json";
-import sr2MaidModel from "../../assets/model/maid/sr2.json";
 import maidModelChooseVue from "./maid_model.vue";
+import {defaultModelInfo, sr2ModelInfo} from "../model/preset";
 
 export var createDefaultAction = new Action("tlm_utils.create_new_model", {
     name: "menu.tlm_utils.create_new_model",
@@ -36,66 +35,10 @@ export var defaultMaidModelDialog = new Dialog({
             }
         }
     },
-    form: {
-        head: {
-            label: "model.tlm_utils.preset.head",
-            type: "checkbox",
-            value: true
-        },
-        blink: {
-            label: "model.tlm_utils.preset.blink",
-            type: "checkbox",
-            value: true
-        },
-        body: {
-            label: "model.tlm_utils.preset.body",
-            type: "checkbox",
-            value: true
-        },
-        armLeft: {
-            label: "model.tlm_utils.preset.arm_left",
-            type: "checkbox",
-            value: true
-        },
-        armRight: {
-            label: "model.tlm_utils.preset.arm_right",
-            type: "checkbox",
-            value: true
-        },
-        legLeft: {
-            label: "model.tlm_utils.preset.leg_left",
-            type: "checkbox",
-            value: true
-        },
-        legRight: {
-            label: "model.tlm_utils.preset.leg_right",
-            type: "checkbox",
-            value: true
-        },
-        wingLeft: {
-            label: "model.tlm_utils.preset.wing_left",
-            type: "checkbox",
-            value: false
-        },
-        wingRight: {
-            label: "model.tlm_utils.preset.wing_right",
-            type: "checkbox",
-            value: false
-        },
-        tail: {
-            label: "model.tlm_utils.preset.tail",
-            type: "checkbox",
-            value: false
-        },
-        ahoge: {
-            label: "model.tlm_utils.preset.ahoge",
-            type: "checkbox",
-            value: false
-        }
-    },
+    form: defaultModelInfo.form,
     onConfirm: function (formData) {
         this.hide();
-        createPresetModelWorkspace(formData, defaultMaidModel);
+        createPresetModelWorkspace(formData, defaultModelInfo.model);
     }
 });
 
@@ -117,46 +60,10 @@ var sr2MaidModelDialog = new Dialog({
             }
         }
     },
-    form: {
-        head: {
-            label: "model.tlm_utils.preset.head",
-            type: "checkbox",
-            value: true
-        },
-        blink: {
-            label: "model.tlm_utils.preset.blink",
-            type: "checkbox",
-            value: true
-        },
-        body: {
-            label: "model.tlm_utils.preset.body",
-            type: "checkbox",
-            value: true
-        },
-        armLeft: {
-            label: "model.tlm_utils.preset.arm_left",
-            type: "checkbox",
-            value: true
-        },
-        armRight: {
-            label: "model.tlm_utils.preset.arm_right",
-            type: "checkbox",
-            value: true
-        },
-        legLeft: {
-            label: "model.tlm_utils.preset.leg_left",
-            type: "checkbox",
-            value: true
-        },
-        legRight: {
-            label: "model.tlm_utils.preset.leg_right",
-            type: "checkbox",
-            value: true
-        }
-    },
+    form: sr2ModelInfo.form,
     onConfirm: function (formData) {
         this.hide();
-        createPresetModelWorkspace(formData, sr2MaidModel);
+        createPresetModelWorkspace(formData, sr2ModelInfo.model);
     }
 });
 
