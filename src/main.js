@@ -2,7 +2,7 @@ import {loadTLMLanguage} from "./utils/i18nloader";
 import TLM from "../package.json";
 import {createDefaultAction} from "./init/create_default";
 import {createNewPackAction} from "./pack/create_pack";
-import {loadPackAction} from "./load/load_pack";
+import {CACHE_TLM_PACK_ACTION, initCacheTlmPackAction, loadPackAction} from "./load/load_pack";
 import {initPresentAnimations} from "./animation/manger";
 
 (function () {
@@ -17,11 +17,13 @@ import {initPresentAnimations} from "./animation/manger";
         onload() {
             loadTLMLanguage();
             initPresentAnimations();
+            initCacheTlmPackAction();
             new BarMenu("tlm_utils", [
                 "tlm_utils.create_new_model",
                 "_",
                 "tlm_utils.create_new_pack",
-                "tlm_utils.load_pack"
+                "tlm_utils.load_pack",
+                CACHE_TLM_PACK_ACTION
             ]);
             MenuBar.update();
         },

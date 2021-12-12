@@ -22,6 +22,10 @@
                         <div style="margin-left: 10px">
                             <p style="margin: 0; padding: 0; font-size: large">
                                 {{tl("dialog.tlm_utils.create_new_model.use_project")}}
+                                <span style="font-size: x-small; color: #6a6a6d; font-style: italic" v-if="projectHasInfo">
+                                    <i class="fas fa-info-circle fa-fw"></i>
+                                    {{tl("dialog.tlm_utils.create_new_model.use_project.has_info")}}
+                                </span>
                             </p>
                             <p style="margin: 0; padding: 0; color: #6a6a6d">
                                 {{tl("dialog.tlm_utils.create_new_model.use_project.desc")}}
@@ -64,13 +68,18 @@
                 v-for="(modelInfo, index) in parent.showInfo.data['model_list']">
                 <p :title="tl('dialog.tlm_utils.load_pack.list.normal_egg')" class="egg" v-if="hasNormalEgg(modelInfo)">
                     <i class="fas fa-hashtag fa-fw"></i>
+                    <i class="fas fa-thumbtack fa-fw project-is-the-button" v-if="projectIsTheButton(modelInfo)"></i>
                     {{modelInfo["easter_egg"]["tag"]}}
                 </p>
                 <p :title="tl('dialog.tlm_utils.load_pack.list.encrypt_egg')" class="egg" v-else-if="hasEncryptEgg(modelInfo)">
                     <i class="fas fa-asterisk fa-fw"></i>
+                    <i class="fas fa-thumbtack fa-fw project-is-the-button" v-if="projectIsTheButton(modelInfo)"></i>
                     {{modelInfo["easter_egg"]["tag"].substr(0,10)+"..."}}
                 </p>
-                <p v-else>{{getLocalModelName(modelInfo)}}</p>
+                <p v-else>
+                    <i class="fas fa-thumbtack fa-fw project-is-the-button" v-if="projectIsTheButton(modelInfo)"></i>
+                    {{getLocalModelName(modelInfo)}}
+                </p>
                 <i :title="tl('dialog.tlm_utils.load_pack.model.delete')" @click.stop="deleteModel" class="fas fa-trash-alt delete" v-if="index===parent.selectedId"></i>
                 <i :title="tl('dialog.tlm_utils.load_pack.list.sort.move')" class="fas fa-arrows-alt handle" v-if="index!==parent.selectedId"></i>
             </li>
@@ -128,10 +137,27 @@
                 }
                 return false;
             },
+            projectIsTheButton: function (modelInfo) {
+                if (this.projectHasInfo()) {
+                    let info = this.parent.showInfo;
+                    let projectInfo = Project["tlm_list_info"];
+                    let projectModelInfo = Project["tlm_model_info"];
+                    return modelInfo["model_id"] === projectModelInfo["model_id"]
+                        && info.type === projectInfo.type
+                        && info.namespacePath === projectInfo.namespacePath;
+                }
+                return false;
+            },
+            projectHasInfo: function () {
+                return Project && Project["tlm_list_info"] && Project["tlm_model_info"];
+            },
             saveProject: function () {
                 let codec = Project.format.codec;
                 Project.save_path = this.getModelPath();
                 codec.write(codec.compile(), Project.save_path);
+                Project["tlm_list_info"] = this.parent.showInfo;
+                let modelList = this.parent.showInfo.data["model_list"];
+                Project["tlm_model_info"] = modelList[modelList.length - 1];
 
                 let textures = Project.textures;
                 if (textures.length > 0) {
@@ -513,5 +539,9 @@
     .egg {
         font-style: italic;
         color: #92dcff;
+    }
+
+    .project-is-the-button {
+        color: red;
     }
 </style>
