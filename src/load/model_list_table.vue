@@ -4,7 +4,7 @@
             <div class="bg" v-if="newModel"></div>
             <div :class="[newModel?'show':'hidden']" id="tlm-draggable">
                 <div class="tlm-draggable-handle">
-                    <p style="width: 100%">New Model Dialog</p>
+                    <p style="width: 100%">{{tl("dialog.tlm_utils.create_new_model.title")}}</p>
                     <i @click="closeNewModel" class="fas fa-window-close fa-fw"></i>
                 </div>
                 <div style="padding: 20px">
@@ -14,26 +14,41 @@
                             <span style="color: #ff0000">*</span>
                         </h5>
                         <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.create_new_model.id.desc")}}</p>
-                        <input @blur="checkNewModelId" class="new-model-id-input" required type="text" v-model="newModelId">
+                        <input @blur="checkNewModelId" class="new-model-id-input" required type="text" v-model.trim="newModelId">
                     </div>
-                    <div style="margin-top: 10px; height: 20px">
-                        <p style="color: red">{{newModelIdTip}}</p>
+
+                    <div class="flex-edit-item" v-if="hasProject">
+                        <input style="width: 40px; padding-left: 10px;" type="checkbox" v-model="useProject">
+                        <div style="margin-left: 10px">
+                            <p style="margin: 0; padding: 0; font-size: large">
+                                {{tl("dialog.tlm_utils.create_new_model.use_project")}}
+                            </p>
+                            <p style="margin: 0; padding: 0; color: #6a6a6d">
+                                {{tl("dialog.tlm_utils.create_new_model.use_project.desc")}}
+                            </p>
+                        </div>
                     </div>
-                    <div style="margin-top: 10px" v-if="isMaid">
+
+                    <div style="margin-top: 10px" v-if="isMaid && !useProject">
                         <h5 style="margin: 0; padding: 0">
                             {{tl("dialog.tlm_utils.create_new_model.present")}}
                         </h5>
                         <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.create_new_model.present.desc")}}</p>
                         <select class="new-model-present-select" v-model="selected">
-                            <option :key="key" :value="key" v-for="(value,key) in presentType">{{tl(value.name)}}</option>
+                            <option :key="key" :value="key" v-for="(value,key) in presentTypes">{{tl(value.name)}}</option>
                         </select>
                         <div class="present">
-                            <label :for="key" :key="key" v-for="(value,key) in present.form">
+                            <label :for="key" :key="key" v-for="(value,key) in selectedPresent.form">
                                 <input :id="key" :value="key" type="checkbox" v-model="selectedPresentGroups">
                                 {{tl(value.label)}}
                             </label>
                         </div>
                     </div>
+
+                    <div style="margin-top: 10px; height: 20px">
+                        <p style="color: red">{{newModelIdTip}}</p>
+                    </div>
+
                     <div style="display: flex; margin-top: 20px">
                         <button @click="confirmNewModel" style="width: 49%; height: 30px">{{tl("button.tlm_utils.confirm")}}</button>
                         <button @click="closeNewModel" style="width: 49%; height: 30px; margin-left: 2%">{{tl("button.tlm_utils.cancel")}}</button>
@@ -81,7 +96,9 @@
                 newModel: false,
                 newModelId: "",
                 newModelIdTip: "",
-                presentType: presentModel,
+                hasProject: false,
+                useProject: false,
+                presentTypes: presentModel,
                 selected: "default",
                 selectedPresentGroups: []
             };
@@ -89,17 +106,49 @@
         methods: {
             tl: tl,
             reset: function () {
-                this.newModel = false;
                 this.newModelId = "";
                 this.newModelIdTip = "";
                 this.selectedPresentGroups.length = 0;
-                let selectedModel = presentModel[this.selected];
-                this.selectedPresentGroups.length = 0;
+                this.useProject = false;
+                let selectedModel = this.presentTypes[this.selected];
                 for (let key of Object.keys(selectedModel.form)) {
                     if (selectedModel.form[key].value) {
                         this.selectedPresentGroups.push(key);
                     }
                 }
+            },
+            checkProject: function () {
+                if (Project && Project.selected && Project.format) {
+                    let format = Project.format;
+                    if (format.id !== "bedrock_old" && format.id !== "bedrock") {
+                        return false;
+                    }
+                    return !(Project.groups.length === 0 && Project.elements.length === 0);
+
+                }
+                return false;
+            },
+            saveProject: function () {
+                let codec = Project.format.codec;
+                Project.save_path = this.getModelPath();
+                codec.write(codec.compile(), Project.save_path);
+
+                let textures = Project.textures;
+                if (textures.length > 0) {
+                    this.saveTexture(textures[0]);
+                }
+            },
+            saveTexture: function (texture) {
+                texture.path = this.getTexturePath();
+                let image;
+                if (texture.mode === "link") {
+                    image = electron.nativeImage.createFromPath(texture.source.replace(/\?\d+$/, "")).toPNG();
+                } else {
+                    image = electron.nativeImage.createFromDataURL(texture.source).toPNG();
+                }
+                fs.writeFile(texture.path, image, () => {
+                    texture.fromPath(texture.path);
+                });
             },
             checkNewModelId: function () {
                 this.newModelId = this.newModelId.toLowerCase().replace(/\s|-/g, "_");
@@ -118,6 +167,41 @@
                 this.newModelIdTip = "";
                 return true;
             },
+            copyPresentModel: function () {
+                let copyModel = JSON.parse(JSON.stringify(this.selectedPresent.model));
+                if (copyModel["geometry.model"] && copyModel["geometry.model"]["bones"]) {
+                    let unselected = [];
+                    let bones = copyModel["geometry.model"]["bones"];
+                    for (let key of Object.keys(this.selectedPresent.form)) {
+                        if (!this.selectedPresentGroups.includes(key)) {
+                            unselected.push(key);
+                        }
+                    }
+                    let bonesOut = [];
+                    bones.forEach(bone => {
+                        if (!unselected.includes(bone["name"])) {
+                            bonesOut.push(bone);
+                        }
+                    });
+                    copyModel["geometry.model"]["bones"] = bonesOut;
+                }
+                let modelPath = this.getModelPath();
+                if (modelPath) {
+                    fs.writeFileSync(modelPath, autoStringify(copyModel), "utf8");
+                }
+            },
+            getModelPath: function () {
+                if (this.parent.showInfo && !isEmpty(this.newModelId)) {
+                    let info = this.parent.showInfo;
+                    return pathJoin(info.modelsPath, this.newModelId + ".json");
+                }
+            },
+            getTexturePath: function () {
+                if (this.parent.showInfo && !isEmpty(this.newModelId)) {
+                    let info = this.parent.showInfo;
+                    return pathJoin(info.texturesPath, this.newModelId + ".png");
+                }
+            },
             confirmNewModel: function () {
                 if (this.checkNewModelId()) {
                     let info = this.parent.showInfo;
@@ -127,16 +211,23 @@
                     });
                     let modelListFile = (info.type === "maid") ? `${info.namespacePath}/maid_model.json` : `${info.namespacePath}/maid_chair.json`;
                     fs.writeFileSync(modelListFile, autoStringify(info.data));
+                    if (this.hasProject && this.useProject) {
+                        this.saveProject();
+                    } else {
+                        this.copyPresentModel();
+                    }
                     this.parent.selectedModel(this.parent.showInfo.data["model_list"].length - 1);
                     this.closeNewModel();
                 }
             },
             closeNewModel: function () {
-                this.reset();
+                this.newModel = false;
                 $("#tlm-draggable").draggable("destroy");
             },
             addNewModel: function () {
+                this.reset();
                 this.newModel = true;
+                this.hasProject = this.checkProject();
                 let div = $("#tlm-draggable");
                 div.draggable({
                     containment: [80, 30, 700, 550],
@@ -240,11 +331,13 @@
                             }
                         }
 
-                        if (shouldDelModel) {
-                            electron.shell.trashItem(this.resToPath(delModelRes));
+                        let delModelPath = this.resToPath(delModelRes);
+                        if (shouldDelModel && fs.existsSync(delModelPath)) {
+                            electron.shell.trashItem(delModelPath);
                         }
-                        if (shouldDelTexture) {
-                            electron.shell.trashItem(this.resToPath(delTextureRes));
+                        let delTexturePath = this.resToPath(delTextureRes);
+                        if (shouldDelTexture && fs.existsSync(delTexturePath)) {
+                            electron.shell.trashItem(delTexturePath);
                         }
 
                         this.parent.reset();
@@ -270,15 +363,8 @@
                 }
                 return output;
             },
-            present: function () {
-                let selectedModel = presentModel[this.selected];
-                this.selectedPresentGroups.length = 0;
-                for (let key of Object.keys(selectedModel.form)) {
-                    if (selectedModel.form[key].value) {
-                        this.selectedPresentGroups.push(key);
-                    }
-                }
-                return selectedModel;
+            selectedPresent: function () {
+                return presentModel[this.selected];
             },
             isMaid: function () {
                 return this.parent.showInfo.type === "maid";
@@ -288,6 +374,12 @@
 </script>
 
 <style scoped>
+    .flex-edit-item {
+        display: flex;
+        align-items: center;
+        margin-top: 20px
+    }
+
     .models-table-top {
         height: 32px;
         margin-bottom: 8px;
@@ -328,7 +420,7 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-gap: 2px;
-        margin-top: 10px
+        padding: 10px;
     }
 
     .hidden {

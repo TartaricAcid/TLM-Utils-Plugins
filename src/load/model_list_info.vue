@@ -59,7 +59,7 @@
                 <div>
                     <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.pack_name")}}</p>
                     <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.pack_name.desc")}}</p>
-                    <input class="model-list-edit-name-input" type="text" v-model="modelListInfo.lang[packNameKey]">
+                    <input class="model-list-edit-name-input" type="text" v-model.trim="modelListInfo.lang[packNameKey]">
                 </div>
 
                 <!-- Model Icon -->
@@ -104,7 +104,7 @@
                 <div class="flex-edit-item">
                     <div>
                         <div :key="index" style="display: flex" v-for="(author, index) in modelListInfo.data['author']">
-                            <input class="model-list-edit-author-input" type="text" v-model="modelListInfo.data['author'][index]">
+                            <input class="model-list-edit-author-input" type="text" v-model.trim="modelListInfo.data['author'][index]">
                             <button @click="deleteAuthor(index)" class="model-list-edit-author-delete">
                                 <i class="fas fa-trash-alt fa-align-center"></i>
                             </button>
@@ -150,7 +150,7 @@
                         <div>
                             <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.name")}}</p>
                             <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.pack_name.desc")}}</p>
-                            <input class="model-edit-name-input" type="text" v-model="modelListInfo.lang[modelNameKey]">
+                            <input class="model-edit-name-input" type="text" v-model.trim="modelListInfo.lang[modelNameKey]">
                         </div>
 
                         <!-- Model Description -->
@@ -238,7 +238,7 @@
                         <div style="display: flex; align-items: center">
                             <div>
                                 <p class="model-edit-range-tip">{{modelInfo["render_item_scale"]}}</p>
-                                <input class="model-edit-range" max="2" min="0.05" step="0.05" type="range" v-model="modelInfo['render_item_scale']">
+                                <input class="model-edit-range" max="2" min="0.05" step="0.05" type="range" v-model.number="modelInfo['render_item_scale']">
                             </div>
                             <div style="margin-left: 20px">
                                 <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.render_item_scale")}}</p>
@@ -249,7 +249,7 @@
                         <div class="flex-edit-item" style="margin-bottom: 10px">
                             <div>
                                 <p class="model-edit-range-tip">{{modelInfo["render_entity_scale"]}}</p>
-                                <input class="model-edit-range" max="1.3" min="0.7" step="0.025" type="range" v-model="modelInfo['render_entity_scale']">
+                                <input class="model-edit-range" max="1.3" min="0.7" step="0.025" type="range" v-model.number="modelInfo['render_entity_scale']">
                             </div>
                             <div style="margin-left: 20px">
                                 <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.render_entity_scale")}}</p>
@@ -270,7 +270,7 @@
                             <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.mounted_height.desc")}}</p>
                             <div style="display: flex">
                                 <p class="model-edit-mounted-height-tip">{{modelInfo["mounted_height"]}}</p>
-                                <input class="model-edit-mounted-height" max="40" min="0" step="1" type="range" v-model="modelInfo['mounted_height']">
+                                <input class="model-edit-mounted-height" max="40" min="0" step="1" type="range" v-model.number="modelInfo['mounted_height']">
                             </div>
                         </div>
 
@@ -388,12 +388,12 @@
                                 </span>
                             </p>
                             <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.easter_egg.tag.desc")}}</p>
-                            <input @blur="setEncryptEgg(true)" class="model-edit-egg-input" type="text" v-model="tmpEncryptName">
+                            <input @blur="setEncryptEgg(true)" class="model-edit-egg-input" type="text" v-model.trim="tmpEncryptName">
                         </div>
                         <div v-else>
                             <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.easter_egg.tag")}}</p>
                             <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.easter_egg.tag.desc")}}</p>
-                            <input @blur="setEncryptEgg(false)" class="model-edit-egg-input" type="text" v-model="tmpEncryptName">
+                            <input @blur="setEncryptEgg(false)" class="model-edit-egg-input" type="text" v-model.trim="tmpEncryptName">
                         </div>
                         <div style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 5px">
                             <input @click="clickEncryptInput" class="model-edit-checkbox" type="checkbox" v-model="modelInfo['easter_egg']['encrypt']">
@@ -454,15 +454,6 @@
                 let namespacePath = `${this.parent.assetsPath}/${this.parent.openCategory}`;
                 let modelListFile = (this.parent.selected === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
                 // Remove some data
-                if (typeof this.modelInfo["render_item_scale"] === "string") {
-                    this.modelInfo["render_item_scale"] = Number.parseFloat(this.modelInfo["render_item_scale"]);
-                }
-                if (typeof this.modelInfo["render_entity_scale"] === "string") {
-                    this.modelInfo["render_entity_scale"] = Number.parseFloat(this.modelInfo["render_entity_scale"]);
-                }
-                if (typeof this.modelInfo["mounted_height"] === "string") {
-                    this.modelInfo["mounted_height"] = Number.parseFloat(this.modelInfo["mounted_height"]);
-                }
                 if (this.modelInfo["render_item_scale"] === 1) {
                     delete this.modelInfo["render_item_scale"];
                 }
@@ -512,15 +503,21 @@
                 this.clickModelSave();
                 let model = this.getModelPath();
                 if (model) {
+                    this.parent.packEditDialog.hide();
                     Blockbench.read(model, {readtype: "text"}, (files) => {
                         loadModelFile(files[0]);
                         let texture = this.getTexturePath();
                         if (Project && Project.selected && texture) {
-                            Blockbench.read(texture, {readtype: "image"}, (files) => {
-                                new Texture().fromFile(files[0]).add();
+                            if (fs.existsSync(texture)) {
+                                Blockbench.read(texture, {readtype: "image"}, (files) => {
+                                    new Texture().fromFile(files[0]).add();
+                                    Project["tlm_list_info"] = this.modelListInfo;
+                                    Project["tlm_model_info"] = this.modelInfo;
+                                });
+                            } else {
                                 Project["tlm_list_info"] = this.modelListInfo;
                                 Project["tlm_model_info"] = this.modelInfo;
-                            });
+                            }
                         }
                     });
                 }

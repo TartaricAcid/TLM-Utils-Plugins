@@ -6,7 +6,7 @@
                 <span style="color: #ff0000">*</span>
             </h5>
             <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.create_new_pack.pack_id.desc")}}</p>
-            <input @blur="checkNewSubModelPackId" class="new-sub-model-pack-form-input" type="text" v-model="newSubModelPackId" required>
+            <input @blur="checkNewSubModelPackId" class="new-sub-model-pack-form-input" type="text" v-model.trim="newSubModelPackId" required>
         </div>
         <div style="margin-top: 10px; height: 20px">
             <p style="color: red">{{newSubModelPackIdTip}}</p>
