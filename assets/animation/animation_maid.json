@@ -270,5 +270,716 @@
     "color": "#6699cc",
     "group": "hide_armor",
     "path": "touhou_little_maid:animation/maid/default/armor/reverse.js"
+  },
+  {
+    "bone": [
+      "_chestPlate",
+      "_chestPlateLeft",
+      "_chestPlateMiddle",
+      "_chestPlateRight"
+    ],
+    "name": "reverse_chest_plate",
+    "color": "#6699cc",
+    "group": "hide_armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/reverse.js"
+  },
+  {
+    "bone": [
+      "_leggings",
+      "_leggingsLeft",
+      "_leggingsMiddle",
+      "_leggingsRight"
+    ],
+    "name": "reverse_leggings",
+    "color": "#6699cc",
+    "group": "hide_armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/reverse.js"
+  },
+  {
+    "bone": [
+      "_bootsLeft",
+      "_bootsRight"
+    ],
+    "name": "reverse_boots",
+    "color": "#6699cc",
+    "group": "hide_armor",
+    "path": "touhou_little_maid:animation/maid/default/armor/reverse.js"
+  },
+  {
+    "bone": "armLeftPositioningBone",
+    "name": "arm_left_positioning_bone",
+    "color": "#cc99cc",
+    "parents": [
+      "armLeft"
+    ],
+    "group": "position",
+    "path": ""
+  },
+  {
+    "bone": "armRightPositioningBone",
+    "name": "arm_right_positioning_bone",
+    "color": "#cc99cc",
+    "parents": [
+      "armRight"
+    ],
+    "group": "position",
+    "path": ""
+  },
+  {
+    "bone": "backpackPositioningBone",
+    "name": "backpack_positioning_bone",
+    "color": "#28b463",
+    "parents": [],
+    "group": "position",
+    "path": ""
+  },
+  {
+    "bone": "backpackLevelEmpty",
+    "name": "backpack_level_empty",
+    "color": "#FDD692",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack_level.js"
+  },
+  {
+    "bone": "backpackLevelSmall",
+    "name": "backpack_level_small",
+    "color": "#FDD692",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack_level.js"
+  },
+  {
+    "bone": "backpackLevelMiddle",
+    "name": "backpack_level_middle",
+    "color": "#FDD692",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack_level.js"
+  },
+  {
+    "bone": "backpackLevelBig",
+    "name": "backpack_level_big",
+    "color": "#FDD692",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack_level.js"
+  },
+  {
+    "bone": "backpackShow",
+    "name": "backpack_show",
+    "color": "#791E94",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack.js"
+  },
+  {
+    "bone": "backpackHidden",
+    "name": "backpack_hidden",
+    "color": "#791E94",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/backpack.js"
+  },
+  {
+    "bone": "sasimonoShow",
+    "name": "sasimono_show",
+    "color": "#fe9750",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/sasimono.js"
+  },
+  {
+    "bone": "sasimonoHidden",
+    "name": "sasimono_hidden",
+    "color": "#fe9750",
+    "group": "extra",
+    "path": "touhou_little_maid:animation/maid/default/status/sasimono.js"
+  },
+  {
+    "bone": "helmetWeatherRaining",
+    "name": "helmet_weather_raining",
+    "color": "#66cccc",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/weather/raining.js"
+  },
+  {
+    "bone": [
+      "chestPlateWeatherRaining",
+      "chestPlateLeftWeatherRaining",
+      "chestPlateMiddleWeatherRaining",
+      "chestPlateRightWeatherRaining"
+    ],
+    "name": "chest_plate_weather_raining",
+    "color": "#66cccc",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/weather/raining.js"
+  },
+  {
+    "bone": [
+      "leggingsWeatherRaining",
+      "leggingsLeftWeatherRaining",
+      "leggingsMiddleWeatherRaining",
+      "leggingsRightWeatherRaining"
+    ],
+    "name": "leggings_weather_raining",
+    "color": "#66cccc",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/weather/raining.js"
+  },
+  {
+    "bone": [
+      "bootsLeftWeatherRaining",
+      "bootsRightWeatherRaining"
+    ],
+    "name": "boots_weather_raining",
+    "color": "#66cccc",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/weather/raining.js"
+  },
+  {
+    "bone": "attackHidden",
+    "name": "attack_hidden",
+    "color": "#0000AA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/attack.js"
+  },
+  {
+    "bone": "attackShow",
+    "name": "attack_show",
+    "color": "#0000AA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/attack.js"
+  },
+  {
+    "bone": "cocoaHidden",
+    "name": "cocoa_hidden",
+    "color": "#00AA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/cocoa.js"
+  },
+  {
+    "bone": "cocoaShow",
+    "name": "cocoa_show",
+    "color": "#00AA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/cocoa.js"
+  },
+  {
+    "bone": "danmakuAttackHidden",
+    "name": "danmaku_attack_hidden",
+    "color": "#00AAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/danmaku_attack.js"
+  },
+  {
+    "bone": "danmakuAttackShow",
+    "name": "danmaku_attack_show",
+    "color": "#00AAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/danmaku_attack.js"
+  },
+  {
+    "bone": "extinguishingHidden",
+    "name": "extinguishing_hidden",
+    "color": "#AA0000",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/extinguishing.js"
+  },
+  {
+    "bone": "extinguishingShow",
+    "name": "extinguishing_show",
+    "color": "#AA0000",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/extinguishing.js"
+  },
+  {
+    "bone": "farmHidden",
+    "name": "farm_hidden",
+    "color": "#AA00AA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/farm.js"
+  },
+  {
+    "bone": "farmShow",
+    "name": "farm_show",
+    "color": "#AA00AA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/farm.js"
+  },
+  {
+    "bone": "feedHidden",
+    "name": "feed_hidden",
+    "color": "#FFAA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/feed.js"
+  },
+  {
+    "bone": "feedShow",
+    "name": "feed_show",
+    "color": "#FFAA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/feed.js"
+  },
+  {
+    "bone": "feedAnimalHidden",
+    "name": "feed_animal_hidden",
+    "color": "#AAAAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/feed_animal.js"
+  },
+  {
+    "bone": "feedAnimalShow",
+    "name": "feed_animal_show",
+    "color": "#AAAAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/feed_animal.js"
+  },
+  {
+    "bone": "grassHidden",
+    "name": "grass_hidden",
+    "color": "#5555FF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/grass.js"
+  },
+  {
+    "bone": "grassShow",
+    "name": "grass_show",
+    "color": "#5555FF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/grass.js"
+  },
+  {
+    "bone": "idleHidden",
+    "name": "idle_hidden",
+    "color": "#55FF55",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/idle.js"
+  },
+  {
+    "bone": "idleShow",
+    "name": "idle_show",
+    "color": "#55FF55",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/idle.js"
+  },
+  {
+    "bone": "melonHidden",
+    "name": "melon_hidden",
+    "color": "#55FFFF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/melon.js"
+  },
+  {
+    "bone": "melonShow",
+    "name": "melon_show",
+    "color": "#55FFFF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/melon.js"
+  },
+  {
+    "bone": "milkHidden",
+    "name": "milk_hidden",
+    "color": "#FF5555",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/milk.js"
+  },
+  {
+    "bone": "milkShow",
+    "name": "milk_show",
+    "color": "#FF5555",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/milk.js"
+  },
+  {
+    "bone": "rangedAttackHidden",
+    "name": "ranged_attack_hidden",
+    "color": "#FF55FF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/ranged_attack.js"
+  },
+  {
+    "bone": "rangedAttackShow",
+    "name": "ranged_attack_show",
+    "color": "#FF55FF",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/ranged_attack.js"
+  },
+  {
+    "bone": "shearsHidden",
+    "name": "shears_hidden",
+    "color": "#FFFF55",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/shears.js"
+  },
+  {
+    "bone": "shearsShow",
+    "name": "shears_show",
+    "color": "#FFFF55",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/shears.js"
+  },
+  {
+    "bone": "snowHidden",
+    "name": "snow_hidden",
+    "color": "#fe9750",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/snow.js"
+  },
+  {
+    "bone": "snowShow",
+    "name": "snow_show",
+    "color": "#fe9750",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/snow.js"
+  },
+  {
+    "bone": "sugarCaneHidden",
+    "name": "sugar_cane_hidden",
+    "color": "#00AA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/sugar_cane.js"
+  },
+  {
+    "bone": "sugarCaneShow",
+    "name": "sugar_cane_show",
+    "color": "#00AA00",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/sugar_cane.js"
+  },
+  {
+    "bone": "torchHidden",
+    "name": "torch_hidden",
+    "color": "#00AAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/torch.js"
+  },
+  {
+    "bone": "torchShow",
+    "name": "torch_show",
+    "color": "#00AAAA",
+    "group": "task",
+    "path": "touhou_little_maid:animation/maid/default/task/torch.js"
+  },
+  {
+    "bone": "helmetTempCold",
+    "name": "helmet_temp_cold",
+    "color": "#5555FF",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/cold.js"
+  },
+  {
+    "bone": [
+      "chestPlateTempCold",
+      "chestPlateLeftTempCold",
+      "chestPlateMiddleTempCold",
+      "chestPlateRightTempCold"
+    ],
+    "name": "chest_plate_temp_cold",
+    "color": "#5555FF",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/cold.js"
+  },
+  {
+    "bone": [
+      "leggingsTempCold",
+      "leggingsLeftTempCold",
+      "leggingsMiddleTempCold",
+      "leggingsRightTempCold"
+    ],
+    "name": "leggings_temp_cold",
+    "color": "#5555FF",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/cold.js"
+  },
+  {
+    "bone": [
+      "bootsLeftTempCold",
+      "bootsRightTempCold"
+    ],
+    "name": "boots_temp_cold",
+    "color": "#5555FF",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/cold.js"
+  },
+  {
+    "bone": "helmetTempMedium",
+    "name": "helmet_temp_medium",
+    "color": "#00AA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/medium.js"
+  },
+  {
+    "bone": [
+      "chestPlateTempMedium",
+      "chestPlateLeftTempMedium",
+      "chestPlateMiddleTempMedium",
+      "chestPlateRightTempMedium"
+    ],
+    "name": "chest_plate_temp_medium",
+    "color": "#00AA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/medium.js"
+  },
+  {
+    "bone": [
+      "leggingsTempMedium",
+      "leggingsLeftTempMedium",
+      "leggingsMiddleTempMedium",
+      "leggingsRightTempMedium"
+    ],
+    "name": "leggings_temp_medium",
+    "color": "#00AA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/medium.js"
+  },
+  {
+    "bone": [
+      "bootsLeftTempMedium",
+      "bootsRightTempMedium"
+    ],
+    "name": "boots_temp_medium",
+    "color": "#00AA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/medium.js"
+  },
+  {
+    "bone": "helmetTempOcean",
+    "name": "helmet_temp_ocean",
+    "color": "#00AAAA",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/ocean.js"
+  },
+  {
+    "bone": [
+      "chestPlateTempOcean",
+      "chestPlateLeftTempOcean",
+      "chestPlateMiddleTempOcean",
+      "chestPlateRightTempOcean"
+    ],
+    "name": "chest_plate_temp_ocean",
+    "color": "#00AAAA",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/ocean.js"
+  },
+  {
+    "bone": [
+      "leggingsTempOcean",
+      "leggingsLeftTempOcean",
+      "leggingsMiddleTempOcean",
+      "leggingsRightTempOcean"
+    ],
+    "name": "leggings_temp_ocean",
+    "color": "#00AAAA",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/ocean.js"
+  },
+  {
+    "bone": [
+      "bootsLeftTempOcean",
+      "bootsRightTempOcean"
+    ],
+    "name": "boots_temp_ocean",
+    "color": "#00AAAA",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/ocean.js"
+  },
+  {
+    "bone": "helmetTempWarm",
+    "name": "helmet_temp_warm",
+    "color": "#FFAA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/warm.js"
+  },
+  {
+    "bone": [
+      "chestPlateTempWarm",
+      "chestPlateLeftTempWarm",
+      "chestPlateMiddleTempWarm",
+      "chestPlateRightTempWarm"
+    ],
+    "name": "chest_plate_temp_warm",
+    "color": "#FFAA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/warm.js"
+  },
+  {
+    "bone": [
+      "leggingsTempWarm",
+      "leggingsLeftTempWarm",
+      "leggingsMiddleTempWarm",
+      "leggingsRightTempWarm"
+    ],
+    "name": "leggings_temp_warm",
+    "color": "#FFAA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/warm.js"
+  },
+  {
+    "bone": [
+      "bootsLeftTempWarm",
+      "bootsRightTempWarm"
+    ],
+    "name": "boots_temp_warm",
+    "color": "#FFAA00",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/temp/warm.js"
+  },
+  {
+    "bone": "helmetValueFull",
+    "name": "helmet_value_full",
+    "color": "#808000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_full.js"
+  },
+  {
+    "bone": [
+      "chestPlateValueFull",
+      "chestPlateLeftValueFull",
+      "chestPlateMiddleValueFull",
+      "chestPlateRightValueFull"
+    ],
+    "name": "chest_plate_value_full",
+    "color": "#808000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_full.js"
+  },
+  {
+    "bone": [
+      "leggingsValueFull",
+      "leggingsLeftValueFull",
+      "leggingsMiddleValueFull",
+      "leggingsRightValueFull"
+    ],
+    "name": "leggings_value_full",
+    "color": "#808000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_full.js"
+  },
+  {
+    "bone": [
+      "bootsLeftValueFull",
+      "bootsRightValueFull"
+    ],
+    "name": "boots_value_full",
+    "color": "#808000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_full.js"
+  },
+  {
+    "bone": "helmetValueHigh",
+    "name": "helmet_value_high",
+    "color": "#008000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_high.js"
+  },
+  {
+    "bone": [
+      "chestPlateValueHigh",
+      "chestPlateLeftValueHigh",
+      "chestPlateMiddleValueHigh",
+      "chestPlateRightValueHigh"
+    ],
+    "name": "chest_plate_value_high",
+    "color": "#008000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_high.js"
+  },
+  {
+    "bone": [
+      "leggingsValueHigh",
+      "leggingsLeftValueHigh",
+      "leggingsMiddleValueHigh",
+      "leggingsRightValueHigh"
+    ],
+    "name": "leggings_value_high",
+    "color": "#008000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_high.js"
+  },
+  {
+    "bone": [
+      "bootsLeftValueHigh",
+      "bootsRightValueHigh"
+    ],
+    "name": "boots_value_high",
+    "color": "#008000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_high.js"
+  },
+  {
+    "bone": "helmetValueNormal",
+    "name": "helmet_value_normal",
+    "color": "#800000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_normal.js"
+  },
+  {
+    "bone": [
+      "chestPlateValueNormal",
+      "chestPlateLeftValueNormal",
+      "chestPlateMiddleValueNormal",
+      "chestPlateRightValueNormal"
+    ],
+    "name": "chest_plate_value_normal",
+    "color": "#800000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_normal.js"
+  },
+  {
+    "bone": [
+      "leggingsValueNormal",
+      "leggingsLeftValueNormal",
+      "leggingsMiddleValueNormal",
+      "leggingsRightValueNormal"
+    ],
+    "name": "leggings_value_normal",
+    "color": "#800000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_normal.js"
+  },
+  {
+    "bone": [
+      "bootsLeftValueNormal",
+      "bootsRightValueNormal"
+    ],
+    "name": "boots_value_normal",
+    "color": "#800000",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_normal.js"
+  },
+  {
+    "bone": "helmetValueLow",
+    "name": "helmet_value_low",
+    "color": "#800080",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_low.js"
+  },
+  {
+    "bone": [
+      "chestPlateValueLow",
+      "chestPlateLeftValueLow",
+      "chestPlateMiddleValueLow",
+      "chestPlateRightValueLow"
+    ],
+    "name": "chest_plate_value_low",
+    "color": "#800080",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_low.js"
+  },
+  {
+    "bone": [
+      "leggingsValueLow",
+      "leggingsLeftValueLow",
+      "leggingsMiddleValueLow",
+      "leggingsRightValueLow"
+    ],
+    "name": "leggings_value_low",
+    "color": "#800080",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_low.js"
+  },
+  {
+    "bone": [
+      "bootsLeftValueLow",
+      "bootsRightValueLow"
+    ],
+    "name": "boots_value_low",
+    "color": "#800080",
+    "group": "armor_special",
+    "path": "touhou_little_maid:animation/maid/default/armor/value/value_low.js"
   }
 ]

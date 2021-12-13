@@ -24,5 +24,290 @@
     "color": "#ff7473",
     "group": "dimension",
     "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": "netherWorldHidden",
+    "name": "nether_world_hidden",
+    "color": "#47b8e0",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": "netherWorldShow",
+    "name": "nether_world_show",
+    "color": "#47b8e0",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": "endWorldHidden",
+    "name": "end_world_hidden",
+    "color": "#34314c",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": "endWorldShow",
+    "name": "end_world_show",
+    "color": "#34314c",
+    "group": "dimension",
+    "path": "touhou_little_maid:animation/base/dimension/default.js"
+  },
+  {
+    "bone": [
+      "xRotationLowA",
+      "xRotationLowB",
+      "xRotationLowC",
+      "xRotationLowD",
+      "xRotationLowE"
+    ],
+    "name": "x_rotation_low",
+    "color": "#663300",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/x_low_speed.js"
+  },
+  {
+    "bone": [
+      "yRotationLowA",
+      "yRotationLowB",
+      "yRotationLowC",
+      "yRotationLowD",
+      "yRotationLowE"
+    ],
+    "name": "y_rotation_low",
+    "color": "#663300",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/y_low_speed.js"
+  },
+  {
+    "bone": [
+      "zRotationLowA",
+      "zRotationLowB",
+      "zRotationLowC",
+      "zRotationLowD",
+      "zRotationLowE"
+    ],
+    "name": "z_rotation_low",
+    "color": "#663300",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/z_low_speed.js"
+  },
+  {
+    "bone": [
+      "xRotationNormalA",
+      "xRotationNormalB",
+      "xRotationNormalC",
+      "xRotationNormalD",
+      "xRotationNormalE"
+    ],
+    "name": "x_rotation_normal",
+    "color": "#CC9900",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/x_normal_speed.js"
+  },
+  {
+    "bone": [
+      "yRotationNormalA",
+      "yRotationNormalB",
+      "yRotationNormalC",
+      "yRotationNormalD",
+      "yRotationNormalE"
+    ],
+    "name": "y_rotation_normal",
+    "color": "#CC9900",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/y_normal_speed.js"
+  },
+  {
+    "bone": [
+      "zRotationNormalA",
+      "zRotationNormalB",
+      "zRotationNormalC",
+      "zRotationNormalD",
+      "zRotationNormalE"
+    ],
+    "name": "z_rotation_normal",
+    "color": "#CC9900",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/z_normal_speed.js"
+  },
+  {
+    "bone": [
+      "xRotationHighA",
+      "xRotationHighB",
+      "xRotationHighC",
+      "xRotationHighD",
+      "xRotationHighE"
+    ],
+    "name": "x_rotation_high",
+    "color": "#CC6600",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/x_high_speed.js"
+  },
+  {
+    "bone": [
+      "yRotationHighA",
+      "yRotationHighB",
+      "yRotationHighC",
+      "yRotationHighD",
+      "yRotationHighE"
+    ],
+    "name": "y_rotation_high",
+    "color": "#CC6600",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/y_high_speed.js"
+  },
+  {
+    "bone": [
+      "zRotationHighA",
+      "zRotationHighB",
+      "zRotationHighC",
+      "zRotationHighD",
+      "zRotationHighE"
+    ],
+    "name": "z_rotation_high",
+    "color": "#CC6600",
+    "group": "rotation",
+    "path": "touhou_little_maid:animation/base/rotation/z_high_speed.js"
+  },
+  {
+    "bone": "xReciprocate",
+    "name": "x_reciprocate",
+    "color": "#fe9750",
+    "group": "reciprocate",
+    "path": "touhou_little_maid:animation/base/rotation/reciprocate.js"
+  },
+  {
+    "bone": "yReciprocate",
+    "name": "y_reciprocate",
+    "color": "#fe9750",
+    "group": "reciprocate",
+    "path": "touhou_little_maid:animation/base/rotation/reciprocate.js"
+  },
+  {
+    "bone": "zReciprocate",
+    "name": "z_reciprocate",
+    "color": "#fe9750",
+    "group": "reciprocate",
+    "path": "touhou_little_maid:animation/base/rotation/reciprocate.js"
+  },
+  {
+    "bone": "dayShow",
+    "name": "day_show",
+    "color": "#fe9750",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/day_night_hidden.js"
+  },
+  {
+    "bone": "nightShow",
+    "name": "night_show",
+    "color": "#fe9750",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/day_night_hidden.js"
+  },
+  {
+    "bone": "gameHourRotationX",
+    "name": "game_hour_rotation_x",
+    "color": "#587058",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "gameMinuteRotationX",
+    "name": "game_minute_rotation_x",
+    "color": "#587058",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "gameHourRotationY",
+    "name": "game_hour_rotation_y",
+    "color": "#587498",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "gameMinuteRotationY",
+    "name": "game_minute_rotation_y",
+    "color": "#587498",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "gameHourRotationZ",
+    "name": "game_hour_rotation_z",
+    "color": "#E86850",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "gameMinuteRotationZ",
+    "name": "game_minute_rotation_z",
+    "color": "#E86850",
+    "group": "game_time",
+    "path": "touhou_little_maid:animation/base/time/game_rotation.js"
+  },
+  {
+    "bone": "systemHourRotationX",
+    "name": "system_hour_rotation_x",
+    "color": "#2B4162",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemMinuteRotationX",
+    "name": "system_minute_rotation_x",
+    "color": "#2B4162",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemSecondRotationX",
+    "name": "system_second_rotation_x",
+    "color": "#2B4162",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemHourRotationY",
+    "name": "system_hour_rotation_y",
+    "color": "#629460",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemMinuteRotationY",
+    "name": "system_minute_rotation_y",
+    "color": "#629460",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemSecondRotationY",
+    "name": "system_second_rotation_y",
+    "color": "#629460",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemHourRotationZ",
+    "name": "system_hour_rotation_z",
+    "color": "#bea32e",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemMinuteRotationZ",
+    "name": "system_minute_rotation_z",
+    "color": "#bea32e",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
+  },
+  {
+    "bone": "systemSecondRotationZ",
+    "name": "system_second_rotation_z",
+    "color": "#bea32e",
+    "group": "sys_time",
+    "path": "touhou_little_maid:animation/base/time/system_rotation.js"
   }
 ]
