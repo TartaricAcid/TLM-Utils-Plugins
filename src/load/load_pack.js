@@ -35,26 +35,34 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
             return;
         }
         let path = filePaths[0];
-        if (!path || path.length < 1) {
-            return;
-        }
-        let data = getPackFolderData(path);
-        if (!data) {
-            return;
-        }
-        let cacheTlmPacks = localStorage.getItem("cacheTlmPacks");
-        if (isEmpty(cacheTlmPacks)) {
-            cacheTlmPacks = {};
-        } else {
-            cacheTlmPacks = JSON.parse(cacheTlmPacks);
-        }
-        let name = pathToName(path, true);
-        cacheTlmPacks[name] = path;
-        localStorage.setItem("cacheTlmPacks", JSON.stringify(cacheTlmPacks));
-        addCacheTlmPackAction(name, path);
-        openLoadPackDialog(data);
+        cacheAndOpenLoadPackDialog(path);
     }
 });
+
+export function cacheAndOpenLoadPackDialog(path) {
+    if (isEmpty(path)) {
+        return;
+    }
+    let data = getPackFolderData(path);
+    if (!data) {
+        return;
+    }
+    addToCache(path);
+    openLoadPackDialog(data);
+}
+
+function addToCache(path) {
+    let cacheTlmPacks = localStorage.getItem("cacheTlmPacks");
+    if (isEmpty(cacheTlmPacks)) {
+        cacheTlmPacks = {};
+    } else {
+        cacheTlmPacks = JSON.parse(cacheTlmPacks);
+    }
+    let name = pathToName(path, true);
+    cacheTlmPacks[name] = path;
+    localStorage.setItem("cacheTlmPacks", JSON.stringify(cacheTlmPacks));
+    addCacheTlmPackAction(name, path);
+}
 
 function openLoadPackDialog(data) {
     let namespaceMap = data.namespaceMap;
@@ -242,9 +250,15 @@ export function initCacheTlmPackAction() {
     cacheTlmPacks = JSON.parse(cacheTlmPacks);
     if (cacheTlmPacks) {
         for (let name of Object.keys(cacheTlmPacks)) {
-            addCacheTlmPackAction(name, cacheTlmPacks[name]);
+            let path = cacheTlmPacks[name];
+            if (fs.existsSync(path)) {
+                addCacheTlmPackAction(name, path);
+            } else {
+                delete cacheTlmPacks[name];
+            }
         }
     }
+    localStorage.setItem("cacheTlmPacks", JSON.stringify(cacheTlmPacks));
 }
 
 function addCacheTlmPackAction(name, desc) {

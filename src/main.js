@@ -4,6 +4,7 @@ import {createDefaultAction} from "./init/create_default";
 import {createNewPackAction} from "./pack/create_pack";
 import {CACHE_TLM_PACK_ACTION, initCacheTlmPackAction, loadPackAction} from "./load/load_pack";
 import {initPresentAnimations} from "./animation/manger";
+import {registerTextureEvent, removeTextureEvent} from "./event/texture_save";
 
 (function () {
     Plugin.register(TLM.name, {
@@ -18,16 +19,18 @@ import {initPresentAnimations} from "./animation/manger";
             loadTLMLanguage();
             initPresentAnimations();
             initCacheTlmPackAction();
+            registerTextureEvent();
             new BarMenu("tlm_utils", [
                 "tlm_utils.create_new_model",
-                "_",
                 "tlm_utils.create_new_pack",
+                "_",
                 "tlm_utils.load_pack",
                 CACHE_TLM_PACK_ACTION
             ]);
             MenuBar.update();
         },
         onunload() {
+            removeTextureEvent();
             delete MenuBar.menues["tlm_utils"];
             MenuBar.update();
             createDefaultAction.delete();

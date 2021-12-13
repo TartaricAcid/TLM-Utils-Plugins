@@ -6,7 +6,9 @@
             <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.create_new_pack.pack_id.desc")}}</p>
             <input :style="{'border-color': packIdBorderColor, 'border-width': this.packIdBorderSize}"
                    @blur="checkId"
-                   placeholder="" required style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:50px; font-size: 30px; background-color: #1c2026; border-style: solid" type="text" v-model="packId">
+                   placeholder="" required
+                   style="border-radius: 1px; margin-top:5px; padding: 5px; width: 100%; height:50px; font-size: 30px; background-color: #1c2026; border-style: solid" type="text"
+                   v-model="packId">
         </div>
         <div style="margin-top: 20px;">
             <div style="display: flex; align-items: center;">
@@ -28,13 +30,19 @@
         <div style="margin-top: 20px">
             <div style="display: flex; align-items: center">
                 <input min="0"
-                       placeholder="1" step="1" style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid" type="number" v-model="packVersion[0]" value="1">
+                       placeholder="1" step="1"
+                       style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid"
+                       type="number" v-model="packVersion[0]" value="1">
                 <p style="font-weight: bold; font-size: 30px; margin: 20px 2px 2px;">.</p>
                 <input min="0"
-                       placeholder="0" step="1" style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid" type="number" v-model="packVersion[1]" value="0">
+                       placeholder="0" step="1"
+                       style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid"
+                       type="number" v-model="packVersion[1]" value="0">
                 <p style="font-weight: bold; font-size: 30px; margin: 20px 2px 2px;">.</p>
                 <input min="0"
-                       placeholder="0" step="1" style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid" type="number" v-model="packVersion[2]" value="0">
+                       placeholder="0" step="1"
+                       style="border-radius: 1px; margin-top:5px; padding: 2px; width: 35px; height:50px; font-size: 30px; background-color: #1c2026; border: #17191d 1px solid"
+                       type="number" v-model="packVersion[2]" value="0">
                 <div style="margin-left: 20px">
                     <h5 style="margin: 0; padding: 0">{{tl("dialog.tlm_utils.create_new_pack.pack_version")}}</h5>
                     <p style="color: #6a6a6d">{{tl("dialog.tlm_utils.create_new_pack.pack_version.desc")}}</p>
@@ -56,6 +64,7 @@
     import {isEmpty} from "../utils/string";
     import {mkdirs} from "../utils/filesystem";
     import {clearNewPackDialogData, createNewPackDialog} from "./create_pack";
+    import {cacheAndOpenLoadPackDialog} from "../load/load_pack";
 
     export default {
         name: "create_dialog",
@@ -142,7 +151,8 @@
                         createNewPackDialog.hide();
                         clearNewPackDialogData(this);
                         Blockbench.notification(tl("dialog.tlm_utils.create_new_pack.success.title"),
-                            tl("dialog.tlm_utils.create_new_pack.success.desc", path));
+                            tl("dialog.tlm_utils.create_new_pack.success.desc", [path]));
+                        cacheAndOpenLoadPackDialog(root);
                     }
                 }
             },
