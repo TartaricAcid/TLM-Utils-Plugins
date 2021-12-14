@@ -343,16 +343,16 @@
                         </div>
 
                         <div class="flex-edit-item">
-                            <input class="model-edit-checkbox" type="checkbox" v-model="modelInfo['can_hold_trolley']">
+                            <input class="model-edit-checkbox" type="checkbox" v-model="modelInfo['can_hold_vehicle']">
                             <div style="margin-left: 10px">
                                 <p class="model-list-edit-item-title">
-                                    {{tl("dialog.tlm_utils.load_pack.edit.model.can_hold_trolley")}}
+                                    {{tl("dialog.tlm_utils.load_pack.edit.model.can_hold_vehicle")}}
                                     <span style="font-size: x-small; color: #6a6a6d; font-style: italic">
                                         <i class="fas fa-info-circle fa-fw"></i>
                                         {{tl("dialog.tlm_utils.load_pack.edit.model.deprecated")}}
                                     </span>
                                 </p>
-                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.can_hold_trolley.desc")}}</p>
+                                <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.model.can_hold_vehicle.desc")}}</p>
                             </div>
                         </div>
 
