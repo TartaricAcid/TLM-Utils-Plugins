@@ -12,6 +12,89 @@
     "path": "touhou_little_maid:animation/base/float/default.js"
   },
   {
+    "bone": [
+      "randomSelect1",
+      "randomSelect2",
+      "randomSelect3",
+      "randomSelect4",
+      "randomSelect5"
+    ],
+    "name": "random_select",
+    "color": "#3e64c9",
+    "group": "random",
+    "path": "touhou_little_maid:animation/base/random/select.js"
+  },
+  {
+    "bone": "newYearShow",
+    "name": "new_year_show",
+    "color": "#fc7a5b",
+    "group": "festival",
+    "path": "touhou_little_maid:animation/base/festival/new_year.js"
+  },
+  {
+    "bone": "newYearHidden",
+    "name": "new_year_hidden",
+    "color": "#fc7a5b",
+    "group": "festival",
+    "path": "touhou_little_maid:animation/base/festival/new_year.js"
+  },
+  {
+    "bone": "christmasShow",
+    "name": "christmas_show",
+    "color": "#fc7a5b",
+    "group": "festival",
+    "path": "touhou_little_maid:animation/base/festival/christmas.js"
+  },
+  {
+    "bone": "springFestivalHidden",
+    "name": "christmas_hidden",
+    "color": "#fc7a5b",
+    "group": "festival",
+    "path": "touhou_little_maid:animation/base/festival/christmas.js"
+  },
+  {
+    "bone": "springFestivalShow",
+    "name": "spring_festival_show",
+    "color": "#fc7a5b",
+    "group": "festival",
+    "path": "touhou_little_maid:animation/base/festival/spring_festival.js"
+  },
+  {
+    "bone": "springFestivalHidden",
+    "name": "spring_festival_hidden",
+    "color": "#fc7a5b",
+    "group": "festival",
+    "path": "touhou_little_maid:animation/base/festival/spring_festival.js"
+  },
+  {
+    "bone": "duanwuShow",
+    "name": "duanwu_show",
+    "color": "#fc7a5b",
+    "group": "festival",
+    "path": "touhou_little_maid:animation/base/festival/duanwu.js"
+  },
+  {
+    "bone": "duanwuHidden",
+    "name": "duanwu_hidden",
+    "color": "#fc7a5b",
+    "group": "festival",
+    "path": "touhou_little_maid:animation/base/festival/duanwu.js"
+  },
+  {
+    "bone": "midAutumnShow",
+    "name": "mid_autumn_show",
+    "color": "#fc7a5b",
+    "group": "festival",
+    "path": "touhou_little_maid:animation/base/festival/mid_autumn.js"
+  },
+  {
+    "bone": "midAutumnHidden",
+    "name": "mid_autumn_hidden",
+    "color": "#fc7a5b",
+    "group": "festival",
+    "path": "touhou_little_maid:animation/base/festival/mid_autumn.js"
+  },
+  {
     "bone": "overWorldHidden",
     "name": "over_world_hidden",
     "color": "#ff7473",

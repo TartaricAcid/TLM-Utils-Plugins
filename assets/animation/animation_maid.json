@@ -12,6 +12,41 @@
     ]
   },
   {
+    "bone": "earLeftShake",
+    "name": "ear_left_shake",
+    "color": "#718c00",
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/ear_shake.js"
+  },
+  {
+    "bone": "earRightShake",
+    "name": "ear_right_shake",
+    "color": "#718c00",
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/ear_shake.js"
+  },
+  {
+    "bone": "hairLeftSwing",
+    "name": "hair_left_swing",
+    "color": "#718c00",
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/hair_swing.js"
+  },
+  {
+    "bone": "hairRightSwing",
+    "name": "hair_right_swing",
+    "color": "#718c00",
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/hair_swing.js"
+  },
+  {
+    "bone": "hairPonytailSwing",
+    "name": "hair_ponytail_swing",
+    "color": "#718c00",
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/hair_ponytail_swing.js"
+  },
+  {
     "bone": [
       "headExtraA",
       "headExtraB",
@@ -166,6 +201,13 @@
     "path": "touhou_little_maid:animation/maid/default/head/beg.js"
   },
   {
+    "bone": "begShow",
+    "name": "beg_show",
+    "color": "#A593E0",
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/beg.js"
+  },
+  {
     "bone": "blink",
     "name": "blink",
     "color": "#fe9750",
@@ -203,6 +245,13 @@
     "path": "touhou_little_maid:animation/maid/default/tail/default.js"
   },
   {
+    "bone": "sittingRotationSwingSkirt",
+    "name": "sitting_rotation_swing_skirt",
+    "color": "#58C9B9",
+    "group": "sit",
+    "path": "touhou_little_maid:animation/maid/default/sit/skirt_rotation_swing.js"
+  },
+  {
     "bone": "sittingRotationSkirt",
     "name": "sitting_rotation_skirt",
     "color": "#58C9B9",
@@ -222,6 +271,20 @@
     "color": "#fe9750",
     "group": "sit",
     "path": "touhou_little_maid:animation/maid/default/sit/skirt_hidden.js"
+  },
+  {
+    "bone": "sleepHide",
+    "name": "sleep_hide",
+    "color": "#2a9d8f",
+    "group": "sleep",
+    "path": "touhou_little_maid:animation/maid/default/sleep/default.js"
+  },
+  {
+    "bone": "sleepShow",
+    "name": "sleep_show",
+    "color": "#2a9d8f",
+    "group": "sleep",
+    "path": "touhou_little_maid:animation/maid/default/sleep/default.js"
   },
   {
     "bone": "helmet",
@@ -304,6 +367,55 @@
     "color": "#6699cc",
     "group": "hide_armor",
     "path": "touhou_little_maid:animation/maid/default/armor/reverse.js"
+  },
+  {
+    "bone": "healthLessQuarterShow",
+    "name": "health_less_quarter_show",
+    "color": "#4a25b0",
+    "group": "health",
+    "path": "touhou_little_maid:animation/maid/default/health/less_show.js"
+  },
+  {
+    "bone": "healthLessHalfShow",
+    "name": "health_less_half_show",
+    "color": "#4a25b0",
+    "group": "health",
+    "path": "touhou_little_maid:animation/maid/default/health/less_show.js"
+  },
+  {
+    "bone": "healthLessThreeQuartersShow",
+    "name": "health_less_three_quarters_show",
+    "color": "#4a25b0",
+    "group": "health",
+    "path": "touhou_little_maid:animation/maid/default/health/less_show.js"
+  },
+  {
+    "bone": "healthMoreQuarterShow",
+    "name": "health_more_quarter_show",
+    "color": "#fc4e8b",
+    "group": "health",
+    "path": "touhou_little_maid:animation/maid/default/health/more_show.js"
+  },
+  {
+    "bone": "healthMoreHalfShow",
+    "name": "health_more_half_show",
+    "color": "#fc4e8b",
+    "group": "health",
+    "path": "touhou_little_maid:animation/maid/default/health/more_show.js"
+  },
+  {
+    "bone": "healthMoreThreeQuartersShow",
+    "name": "health_more_three_quarters_show",
+    "color": "#fc4e8b",
+    "group": "health",
+    "path": "touhou_little_maid:animation/maid/default/health/more_show.js"
+  },
+  {
+    "bone": "healthRotationX90",
+    "name": "health_rotation_x90",
+    "color": "#ffe8d6",
+    "group": "health",
+    "path": "touhou_little_maid:animation/maid/default/health/rotation.js"
   },
   {
     "bone": "armLeftPositioningBone",

@@ -5,6 +5,7 @@ import {createNewPackAction} from "./pack/create_pack";
 import {CACHE_TLM_PACK_ACTION, initCacheTlmPackAction, loadPackAction} from "./load/load_pack";
 import {initPresentAnimations} from "./animation/manger";
 import {registerTextureEvent, removeTextureEvent} from "./event/texture_save";
+import {addChairMenu, addMaidMenu} from "./part/present_groups";
 
 (function () {
     Plugin.register(TLM.name, {
@@ -28,6 +29,11 @@ import {registerTextureEvent, removeTextureEvent} from "./event/texture_save";
                 CACHE_TLM_PACK_ACTION
             ]);
             MenuBar.update();
+
+            Group.prototype.menu.structure.push(addMaidMenu);
+            Group.prototype.menu.structure.push(addChairMenu);
+            Interface.Panels.outliner.menu.structure.push(addMaidMenu);
+            Interface.Panels.outliner.menu.structure.push(addChairMenu);
         },
         onunload() {
             removeTextureEvent();
@@ -36,6 +42,9 @@ import {registerTextureEvent, removeTextureEvent} from "./event/texture_save";
             createDefaultAction.delete();
             createNewPackAction.delete();
             loadPackAction.delete();
+
+            deleteMenu(Group.prototype.menu.structure);
+            deleteMenu(Interface.Panels.outliner.menu.structure);
         }
     });
 })();
