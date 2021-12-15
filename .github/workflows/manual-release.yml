@@ -1,0 +1,43 @@
+name: Manual Release
+
+on:
+  workflow_dispatch:
+    branches:
+      - 2.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Build with Node JS
+        run: |
+          npm install
+          npm run build
+
+      - name: Copy to folder
+        run: |
+          mkdir release
+          cp tlm-utils.js release
+
+      - name: Create timestamp
+        id: create_timestamp
+        run: echo "::set-output name=timestamp::$(date '+%Y%m%d%H%M%s')"
+        shell: bash
+
+      - name: Send file to release Branch
+        uses: s0/git-publish-subdir-action@develop
+        with:
+          REPO: self
+          BRANCH: release
+          FOLDER: release
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "Build: ${{ steps.create_timestamp.outputs.timestamp }}"
