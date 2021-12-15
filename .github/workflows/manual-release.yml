@@ -33,9 +33,9 @@ jobs:
         run: echo "::set-output name=timestamp::$(date '+%Y%m%d%H%M%s')"
         shell: bash
 
-      - name: Send file to release Branch
+      - name: Send file to release branch
         uses: s0/git-publish-subdir-action@develop
-        with:
+        env:
           REPO: self
           BRANCH: release
           FOLDER: release
