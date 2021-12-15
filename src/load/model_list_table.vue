@@ -153,12 +153,11 @@
             },
             saveProject: function () {
                 let codec = Project.format.codec;
-                Project.save_path = this.getModelPath();
-                codec.write(codec.compile(), Project.save_path);
-                Project["tlm_list_info"] = this.parent.showInfo;
-                let modelList = this.parent.showInfo.data["model_list"];
-                Project["tlm_model_info"] = modelList[modelList.length - 1];
-
+                let model = this.getModelPath();
+                if (codec.id === "bedrock_old") {
+                    Project.geometry_name = "model";
+                }
+                codec.write(codec.compile(), model);
                 let textures = Project.textures;
                 if (textures.length > 0) {
                     this.saveTexture(textures[0]);

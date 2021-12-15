@@ -159,6 +159,13 @@
                             <p class="model-list-edit-item-desc">{{tl("dialog.tlm_utils.load_pack.edit.description.desc")}}</p>
                             <div v-if="modelInfo['description']">
                                 <div :key="index" v-for="(key, index) in modelDescKeys">
+                                    <i :style="{'color': color.rgb}" :title="getColorCodeName(name)" @click="addColorCode(color.code, key)"
+                                       class="fas fa-square-full add-color" v-for="(color, name) in colorList"></i>
+                                    <i :title="tl('style.tlm_utils.bold.name')" @click="addStyleCode('§l', key)" class="fas fa-bold add-style"></i>
+                                    <i :title="tl('style.tlm_utils.strikethrough.name')" @click="addStyleCode('§m', key)" class="fas fa-strikethrough add-style"></i>
+                                    <i :title="tl('style.tlm_utils.underline.name')" @click="addStyleCode('§n', key)" class="fas fa-underline add-style"></i>
+                                    <i :title="tl('style.tlm_utils.italic.name')" @click="addStyleCode('§o', key)" class="fas fa-italic add-style"></i>
+                                    <i :title="tl('style.tlm_utils.reset.name')" @click="addStyleCode('§r', key)" class="fas fa-eraser add-style"></i>
                                     <input class="model-edit-desc-input" type="text" v-model="modelListInfo.lang[key]">
                                 </div>
                             </div>
@@ -438,7 +445,73 @@
                 selectedIconPath: "",
                 randomIconSuffix: 0,    // used to clean img cache
                 isEditModelListInfo: false,
-                tmpEncryptName: ""
+                tmpEncryptName: "",
+                colorList: {
+                    "black": {
+                        "code": "§0",
+                        "rgb": "#000000"
+                    },
+                    "dark_blue": {
+                        "code": "§1",
+                        "rgb": "#0000AA"
+                    },
+                    "dark_green": {
+                        "code": "§2",
+                        "rgb": "#00AA00"
+                    },
+                    "dark_aqua": {
+                        "code": "§3",
+                        "rgb": "#00AAAA"
+                    },
+                    "dark_red": {
+                        "code": "§4",
+                        "rgb": "#AA0000"
+                    },
+                    "dark_purple": {
+                        "code": "§5",
+                        "rgb": "#AA00AA"
+                    },
+                    "gold": {
+                        "code": "§6",
+                        "rgb": "#FFAA00"
+                    },
+                    "gray": {
+                        "code": "§7",
+                        "rgb": "#AAAAAA"
+                    },
+                    "dark_gray": {
+                        "code": "§8",
+                        "rgb": "#555555"
+                    },
+                    "blue": {
+                        "code": "§9",
+                        "rgb": "#5555FF"
+                    },
+                    "green": {
+                        "code": "§a",
+                        "rgb": "#55FF55"
+                    },
+                    "aqua": {
+                        "code": "§b",
+                        "rgb": "#55FFFF"
+                    },
+                    "red": {
+                        "code": "§c",
+                        "rgb": "#FF5555"
+                    },
+                    "light_purple": {
+                        "code": "§d",
+                        "rgb": "#FF55FF"
+                    },
+                    "yellow": {
+                        "code": "§e",
+                        "rgb": "#FFFF55"
+                    },
+                    "white": {
+                        "code": "§f",
+                        "rgb": "#FFFFFF"
+                    }
+                }
             };
         },
         methods: {
@@ -574,33 +647,36 @@
                 if (version === "1.10.0") {
                     let geo = data["geometry.model"];
                     if (!geo) {
-                        electron.dialog.showErrorBox("Error", "No Geo");
+                        electron.dialog.showErrorBox(tl("dialog.tlm_utils.analyze_present_animation.error"),
+                            tl("dialog.tlm_utils.analyze_present_animation.no_geometry"));
                     }
                     let bones = geo["bones"];
                     if (bones && Array.isArray(bones)) {
                         bones.forEach(bone => {
                             let name = bone["name"];
                             if (!isEmpty(name) && this.presetBones.has(name)) {
-                                this.presetBones.get(name)["ref"].forEach(v => refs.add(v));
+                                this.presetBones.get(name)["ref"].filter(i => !isEmpty(i)).forEach(v => refs.add(v));
                             }
                         });
                     }
                 } else if (version === "1.12.0") {
                     let geoArr = data["minecraft:geometry"];
                     if (!geoArr || !Array.isArray(geoArr) || geoArr.length < 1) {
-                        electron.dialog.showErrorBox("Error", "No Geo");
+                        electron.dialog.showErrorBox(tl("dialog.tlm_utils.analyze_present_animation.error"),
+                            tl("dialog.tlm_utils.analyze_present_animation.no_geometry"));
                     }
                     let bones = geoArr[0]["bones"];
                     if (bones && Array.isArray(bones)) {
                         bones.forEach(bone => {
                             let name = bone["name"];
                             if (!isEmpty(name) && this.presetBones.has(name)) {
-                                this.presetBones.get(name)["ref"].forEach(v => refs.add(v));
+                                this.presetBones.get(name)["ref"].filter(i => !isEmpty(i)).forEach(v => refs.add(v));
                             }
                         });
                     }
                 } else {
-                    electron.dialog.showErrorBox("Error", "Version Error");
+                    electron.dialog.showErrorBox(tl("dialog.tlm_utils.analyze_present_animation.error"),
+                        tl("dialog.tlm_utils.analyze_present_animation.version_error"));
                     return;
                 }
                 if (this.modelInfo) {
@@ -933,6 +1009,16 @@
                     this.modelInfo["description"].push(keyRaw);
                     this.$forceUpdate();
                 }
+            },
+            addColorCode: function (code, key) {
+                this.addStyleCode(code, key);
+            },
+            addStyleCode: function (code, key) {
+                this.modelListInfo.lang[key] += code;
+                this.$forceUpdate();
+            },
+            getColorCodeName: function (name) {
+                return tl(`color.tlm_utils.${name}.name`);
             }
         },
         computed: {
@@ -1042,6 +1128,23 @@
 </script>
 
 <style scoped>
+    .add-color {
+        border-color: gray;
+        border-width: 1px;
+        border-style: solid;
+        margin: 2px;
+    }
+
+    .add-color:hover {
+        border-color: red;
+        border-width: 1px;
+        border-style: solid;
+    }
+
+    .add-style:hover {
+        color: red;
+    }
+
     .model-edit-mounted-height-tip {
         margin-right: 2%;
         width: 8%;
