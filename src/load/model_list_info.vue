@@ -256,7 +256,7 @@
                         <div class="flex-edit-item" style="margin-bottom: 10px">
                             <div>
                                 <p class="model-edit-range-tip">{{modelInfo["render_entity_scale"]}}</p>
-                                <input class="model-edit-range" max="1.3" min="0.7" step="0.025" type="range" v-model.number="modelInfo['render_entity_scale']">
+                                <input class="model-edit-range" max="2.0" min="0.2" step="0.05" type="range" v-model.number="modelInfo['render_entity_scale']">
                             </div>
                             <div style="margin-left: 20px">
                                 <p class="model-list-edit-item-title">{{tl("dialog.tlm_utils.load_pack.edit.model.render_entity_scale")}}</p>

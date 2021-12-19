@@ -19,6 +19,20 @@
     "path": "touhou_little_maid:animation/maid/default/head/ear_shake.js"
   },
   {
+    "bone": "earRightBegShake",
+    "name": "ear_right_beg_shake",
+    "color": "#718c00",
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/ear_beg_shake.js"
+  },
+  {
+    "bone": "earLeftBegShake",
+    "name": "ear_left_beg_shake",
+    "color": "#718c00",
+    "group": "head",
+    "path": "touhou_little_maid:animation/maid/default/head/ear_beg_shake.js"
+  },
+  {
     "bone": "earRightShake",
     "name": "ear_right_shake",
     "color": "#718c00",
