@@ -1,5 +1,5 @@
-import TLM_EN from "../../assets/lang/en.json";
-import TLM_ZH from "../../assets/lang/zh.json";
+import TLM_EN from "../../assets/lang/en_us.json";
+import TLM_ZH from "../../assets/lang/zh_cn.json";
 
 Language.addTranslations("en", TLM_EN);
 Language.addTranslations("zh", TLM_ZH);
