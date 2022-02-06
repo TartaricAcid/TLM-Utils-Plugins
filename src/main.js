@@ -6,6 +6,7 @@ import {CACHE_TLM_PACK_ACTION, initCacheTlmPackAction, loadPackAction} from "./l
 import {initPresentAnimations} from "./animation/manger";
 import {registerTextureEvent, removeTextureEvent} from "./event/texture_save";
 import {addChairMenu, addMaidMenu} from "./part/present_groups";
+import {addPresent} from "./part/add_present";
 
 (function () {
     Plugin.register(TLM.name, {
@@ -30,8 +31,12 @@ import {addChairMenu, addMaidMenu} from "./part/present_groups";
             ]);
             MenuBar.update();
 
+            Group.prototype.menu.structure.push("_");
+            Group.prototype.menu.structure.push(addPresent);
             Group.prototype.menu.structure.push(addMaidMenu);
             Group.prototype.menu.structure.push(addChairMenu);
+            Interface.Panels.outliner.menu.structure.push("_");
+            Interface.Panels.outliner.menu.structure.push(addPresent);
             Interface.Panels.outliner.menu.structure.push(addMaidMenu);
             Interface.Panels.outliner.menu.structure.push(addChairMenu);
         },
