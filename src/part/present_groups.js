@@ -6,7 +6,7 @@ export var addMaidMenu = {
     is_tlm_add_menu: true,
     icon: "fa-chart-pie",
     name: "menu.tlm_utils.add_present_group.maid.title",
-    condition: {modes: ["edit"]},
+    condition: () => Modes.edit && (Format.id === "bedrock" || Format.id === "bedrock_old"),
     children: function () {
         return getMaidMenu();
     }
@@ -16,7 +16,7 @@ export var addChairMenu = {
     is_tlm_add_menu: true,
     icon: "fa-chart-pie",
     name: "menu.tlm_utils.add_present_group.chair.title",
-    condition: {modes: ["edit"]},
+    condition: () => Modes.edit && (Format.id === "bedrock" || Format.id === "bedrock_old"),
     children: function () {
         return getChairMenu();
     }
@@ -252,7 +252,7 @@ function getMenu(menu) {
     return {
         icon: "fa-chevron-circle-right",
         name: `model.tlm_utils.preset.${menu.name}`,
-        condition: {modes: ["edit"]},
+        condition: () => Modes.edit && (Format.id === "bedrock" || Format.id === "bedrock_old"),
         description: `model.tlm_utils.preset.${menu.name}.desc`,
         color: menu.color,
         click: function (group) {

@@ -1,4 +1,4 @@
-export function addTlmCube(group, start, size) {
+export function addTlmCube(group, start, size, inflate) {
     let baseCube = new Cube({
         autouv: (settings.autouv.value ? 1 : 0)
     }).init();
@@ -9,6 +9,7 @@ export function addTlmCube(group, start, size) {
             baseCube.extend({
                 from: [start[0], start[1], start[2]],
                 to: [start[0] + size[0], start[1] + size[1], start[2] + size[2]],
+                inflate: inflate ? inflate : 0,
                 origin: originPos.slice()
             });
         }
