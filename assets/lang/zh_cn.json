@@ -21,6 +21,7 @@
   "dialog.tlm_utils.create_new_model.choose_type.chair": "坐垫",
   "dialog.tlm_utils.create_new_model.maid.title": "选择你想创建的",
   "dialog.tlm_utils.create_new_model.maid.default": "默认",
+  "dialog.tlm_utils.create_new_model.maid.little_maid_sr2": "SR2",
   "dialog.tlm_utils.create_new_model.maid.empty": "空",
   "menu.tlm_utils.create_new_pack": "创建新的模型包",
   "dialog.tlm_utils.create_new_pack.title": "设置模型包参数",
