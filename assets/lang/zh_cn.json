@@ -177,7 +177,6 @@
   "dialog.tlm_utils.add_present.square_skirt.deg.title": "斜度",
   "dialog.tlm_utils.add_present.square_skirt.deg.desc": "方裙的侧边斜度",
   "dialog.tlm_utils.add_present.custom": "自定义",
-  "dialog.tlm_utils.add_present.custom.collapse": "折叠示例代码",
   "dialog.tlm_utils.add_present.custom.example.root_group": "提供的一个变量，是一个空组",
   "dialog.tlm_utils.add_present.custom.example.add_group": "返回所创建的组",
   "dialog.tlm_utils.add_present.custom.example.add_cube": "无返回",
