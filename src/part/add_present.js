@@ -1,6 +1,7 @@
 import polygonVue from "./polygon.vue";
 import pleatedSkirtVue from "./pleated_skirt.vue";
 import squareSkirtVue from "./square_skirt.vue";
+import pyramidVue from "./pyramid.vue";
 import customVue from "./custom.vue";
 
 export var addPresent = {
@@ -11,7 +12,7 @@ export var addPresent = {
     click: function (group) {
         let dialog = new Dialog({
             title: "dialog.tlm_utils.add_present",
-            width: 1200,
+            width: 750,
             singleButton: true,
             onCancel: function () {
                 if (dialog.content_vue.isPreview.data && dialog.content_vue.isPreview.group) {
@@ -23,6 +24,7 @@ export var addPresent = {
                     "polygon": tl("dialog.tlm_utils.add_present.polygon"),
                     "pleated_skirt": tl("dialog.tlm_utils.add_present.pleated_skirt"),
                     "square_skirt": tl("dialog.tlm_utils.add_present.square_skirt"),
+                    "pyramid": tl("dialog.tlm_utils.add_present.pyramid"),
                     "custom": tl("dialog.tlm_utils.add_present.custom")
                 },
                 page: "polygon",
@@ -47,7 +49,7 @@ export var addPresent = {
                         }
                     };
                 },
-                components: {polygonVue, pleatedSkirtVue, squareSkirtVue, customVue},
+                components: {polygonVue, pleatedSkirtVue, squareSkirtVue, pyramidVue, customVue},
                 template: `
                     <div>
                         <polygonVue v-if="openCategory==='polygon'" :group='group' :isPreview="isPreview"
@@ -56,6 +58,8 @@ export var addPresent = {
                                          :dialog="dialog"/>
                         <squareSkirtVue v-if="openCategory==='square_skirt'" :group='group' :isPreview="isPreview"
                                         :dialog="dialog"/>
+                        <pyramidVue v-if="openCategory==='pyramid'" :group='group' :isPreview="isPreview"
+                                    :dialog="dialog"/>
                         <customVue v-if="openCategory==='custom'" :group='group' :isPreview="isPreview"
                                    :dialog="dialog"/>
                     </div>`
