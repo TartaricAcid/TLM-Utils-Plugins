@@ -3,12 +3,14 @@
   "button.tlm_utils.confirm": "Onayla",
   "button.tlm_utils.save": "Kaydet",
   "button.tlm_utils.preview": "Önizleme",
-  "button.tlm_utils.save_open": "Kaydet & Modeli aç",
+  "button.tlm_utils.save_open": "Kaydet & Modeli Aç",
   "button.tlm_utils.cancel": "İptal et",
-  "button.tlm_utils.new_model": "Yeni model",
+  "button.tlm_utils.new_model": "Yeni Model",
   "dialog.tlm_utils.create_new_model.choose_type.chair": "Sandalye",
   "dialog.tlm_utils.create_new_model.maid.empty": "Boş",
-  "menu.tlm_utils.create_new_pack": "Yeni bir model paketi oluştur",
-  "dialog.tlm_utils.create_new_pack.pack_id": "Model paketi kimliği",
-  "dialog.tlm_utils.create_new_pack.pack_icon": "Model paketi ikonu"
+  "menu.tlm_utils.create_new_pack": "Yeni Bir Model Paketi Oluştur",
+  "dialog.tlm_utils.create_new_pack.pack_id": "Model Paketi Kimliği",
+  "dialog.tlm_utils.create_new_pack.pack_icon": "Model Paketi İkonu",
+  "dialog.tlm_utils.create_new_pack.create": "Kurulumu Tamamla",
+  "dialog.tlm_utils.load_pack.edit.pack_name": "Model Paketi İsmi"
 }
