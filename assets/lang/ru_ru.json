@@ -1,1 +1,10 @@
-{}
+{
+  "info.tlm_utils.title": "Плагин Blockbench для Touhou Little Maid Mod",
+  "menu.tlm_utils": "TLM",
+  "button.tlm_utils.warning": "Предупреждение",
+  "button.tlm_utils.confirm": "Подтвердить",
+  "button.tlm_utils.save": "Сохранить",
+  "button.tlm_utils.preview": "Предпросмотр",
+  "button.tlm_utils.save_open": "Сохранить и открыть модель",
+  "button.tlm_utils.cancel": "Отменить"
+}
