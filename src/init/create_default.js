@@ -27,6 +27,7 @@ export var defaultMaidModelDialog = new Dialog({
         page: "default",
         onPageSwitch(page) {
             if (page === "sr2") {
+                defaultMaidModelDialog.hide();
                 sr2MaidModelDialog.show();
                 for (let k in sr2MaidModelDialog.sidebar["page_menu"]) {
                     let li = sr2MaidModelDialog.sidebar["page_menu"][k];
@@ -52,6 +53,7 @@ var sr2MaidModelDialog = new Dialog({
         page: "sr2",
         onPageSwitch(page) {
             if (page === "default") {
+                sr2MaidModelDialog.hide();
                 defaultMaidModelDialog.show();
                 for (let k in defaultMaidModelDialog.sidebar["page_menu"]) {
                     let li = defaultMaidModelDialog.sidebar["page_menu"][k];
