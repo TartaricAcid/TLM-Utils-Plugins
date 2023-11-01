@@ -160,6 +160,10 @@ function openLoadPackDialog(data) {
         }
     });
     packEditDialog.show();
+    if (packEditDialog.object && packEditDialog.object.style) {
+        packEditDialog.object.style["max-width"] = "1280px"
+        packEditDialog.object.style["min-height"] = "800px"
+    }
 }
 
 function getPackFolderData(path) {
