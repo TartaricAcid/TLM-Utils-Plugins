@@ -136,17 +136,21 @@ export default {
 
 <template>
     <div @click="clickKey=''">
-        <div style="margin-bottom: 20px; text-align: center">
-            <button style="width: 200px; margin-left: 5px" @click="clickLanguageButton('en_us')"
+        <div style="margin-bottom: 0; text-align: center">
+            <button style="width: 200px; margin-left: 5px" :class="{'language-button-selected': language==='en_us'}"
+                    @click="clickLanguageButton('en_us')"
                     :disabled="language==='en_us'">{{ tl("dialog.tlm_utils.language_edit.language.en_us") }}
             </button>
-            <button style="width: 200px; margin-left: 5px" @click="clickLanguageButton('zh_cn')"
+            <button style="width: 200px; margin-left: 5px" :class="{'language-button-selected': language==='zh_cn'}"
+                    @click="clickLanguageButton('zh_cn')"
                     :disabled="language==='zh_cn'">{{ tl("dialog.tlm_utils.language_edit.language.zh_cn") }}
             </button>
-            <button style="width: 200px; margin-left: 5px" @click="clickLanguageButton('ru_ru')"
+            <button style="width: 200px; margin-left: 5px" :class="{'language-button-selected': language==='ru_ru'}"
+                    @click="clickLanguageButton('ru_ru')"
                     :disabled="language==='ru_ru'">{{ tl("dialog.tlm_utils.language_edit.language.ru_ru") }}
             </button>
-            <button style="width: 200px; margin-left: 5px" @click="clickLanguageButton('ja_jp')"
+            <button style="width: 200px; margin-left: 5px" :class="{'language-button-selected': language==='ja_jp'}"
+                    @click="clickLanguageButton('ja_jp')"
                     :disabled="language==='ja_jp'">{{ tl("dialog.tlm_utils.language_edit.language.ja_jp") }}
             </button>
         </div>
@@ -184,7 +188,7 @@ export default {
 
         <div style="margin-top: 20px">
             <button style="width: 98%; height: 40px; font-size: 20px" @click="saveLanguageButton">
-                {{ tl("dialog.save")}}
+                {{ tl("dialog.save") }}
             </button>
         </div>
     </div>
@@ -198,6 +202,12 @@ export default {
     margin-top: 10px;
     padding: 10px;
     border-radius: 5px;
+}
+
+.language-button-selected {
+    background-color: #17191d;
+    height: 50px;
+    max-height: 50px;
 }
 
 .language-edit-element-key {
