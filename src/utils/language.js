@@ -43,7 +43,7 @@ export function getTranslationResult(keyRaw, langMap) {
     }
 }
 
-function readLanguageFile(langFile, langMap) {
+export function readLanguageFile(langFile, langMap) {
     if (fs.existsSync(langFile) && fs.statSync(langFile).isFile()) {
         let allText = fs.readFileSync(langFile, "utf8");
         if (allText.charCodeAt(0) === 0xFEFF) {

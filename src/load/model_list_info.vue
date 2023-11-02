@@ -188,7 +188,8 @@
                                        class="fas fa-italic add-style"></i>
                                     <i :title="tl('style.tlm_utils.reset.name')" @click="addStyleCode('§r', key)"
                                        class="fas fa-eraser add-style"></i>
-                                    <input class="model-edit-desc-input" type="text" v-model="modelListInfo.lang[key]">
+                                    <input class="model-edit-desc-input" type="text" v-model="modelListInfo.lang[key]"
+                                           @blur="getBlurCodeIndex">
                                 </div>
                             </div>
                             <div v-else>
@@ -621,7 +622,8 @@ export default {
                     "code": "§f",
                     "rgb": "#FFFFFF"
                 }
-            }
+            },
+            blurCodeIndex: 0,
         };
     },
     methods: {
@@ -697,15 +699,27 @@ export default {
                         if (fs.existsSync(texture)) {
                             Blockbench.read(texture, {readtype: "image"}, (files) => {
                                 new Texture().fromFile(files[0]).add();
+                                this.loadBedrockAnimation();
                                 Project["tlm_list_info"] = this.modelListInfo;
                                 Project["tlm_model_info"] = this.modelInfo;
                             });
                         } else {
                             Project["tlm_list_info"] = this.modelListInfo;
                             Project["tlm_model_info"] = this.modelInfo;
+                            this.loadBedrockAnimation();
                         }
                     }
                 });
+            }
+        },
+        loadBedrockAnimation: function () {
+            if (this.isGeckoModel) {
+                let outPaths = this.getBedrockAnimationPath();
+                if (outPaths) {
+                    Blockbench.readFile(outPaths, {readtype: "text"}, files => {
+                        files.forEach(file => Animator.loadFile(file))
+                    });
+                }
             }
         },
         getModelPath: function () {
@@ -741,6 +755,24 @@ export default {
                     }
                 }
             }
+        },
+        getBedrockAnimationPath: function () {
+            let outBedrockAnimationPath = []
+            if (this.modelInfo && this.modelListInfo) {
+                let animations = this.modelInfo["animation"];
+                if (animations) {
+                    animations.forEach(a => {
+                        let res = a.split(":", 2);
+                        if (res.length > 1) {
+                            let path = pathJoin(this.modelListInfo.namespacePath, res[1]);
+                            if (fs.existsSync(path)) {
+                                outBedrockAnimationPath.push(path);
+                            }
+                        }
+                    })
+                }
+            }
+            return outBedrockAnimationPath;
         },
         getPresentAnimationInfo: function (animation) {
             let info = this.presetAnimations.get(animation);
@@ -1191,11 +1223,15 @@ export default {
             this.addStyleCode(code, key);
         },
         addStyleCode: function (code, key) {
-            this.modelListInfo.lang[key] += code;
+            let rawText = this.modelListInfo.lang[key];
+            this.modelListInfo.lang[key] = rawText.slice(0, this.blurCodeIndex) + code + rawText.slice(this.blurCodeIndex)
             this.$forceUpdate();
         },
         getColorCodeName: function (name) {
             return tl(`color.tlm_utils.${name}.name`);
+        },
+        getBlurCodeIndex: function (e) {
+            this.blurCodeIndex = e.srcElement.selectionStart;
         }
     },
     computed: {

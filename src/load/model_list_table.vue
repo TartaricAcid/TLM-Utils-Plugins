@@ -88,22 +88,19 @@
                 @click="parent.selectedModel(index)" class="model-item"
                 v-for="(modelInfo, index) in parent.showInfo.data['model_list']">
                 <p :title="tl('dialog.tlm_utils.load_pack.list.normal_egg')" class="egg" v-if="hasNormalEgg(modelInfo)">
-                    <i class="icon-format_bedrock" v-if="hasBedrockAnimation(modelInfo)"></i>
                     <i class="fas fa-hashtag fa-fw"></i>
                     <i class="fas fa-thumbtack fa-fw project-is-the-button" v-if="projectIsTheButton(modelInfo)"></i>
                     {{ modelInfo["easter_egg"]["tag"] }}
                 </p>
                 <p :title="tl('dialog.tlm_utils.load_pack.list.encrypt_egg')" class="egg"
                    v-else-if="hasEncryptEgg(modelInfo)">
-                    <i class="icon-format_bedrock" v-if="hasBedrockAnimation(modelInfo)"></i>
                     <i class="fas fa-asterisk fa-fw"></i>
                     <i class="fas fa-thumbtack fa-fw project-is-the-button" v-if="projectIsTheButton(modelInfo)"></i>
-                    {{ modelInfo["easter_egg"]["tag"].substr(0, 10) + "..." }}
+                    {{ modelInfo["easter_egg"]["tag"].substr(0, 20) + "..." }}
                 </p>
                 <p v-else>
-                    <i class="icon-format_bedrock" v-if="hasBedrockAnimation(modelInfo)"></i>
                     <i class="fas fa-thumbtack fa-fw project-is-the-button" v-if="projectIsTheButton(modelInfo)"></i>
-                    {{ getLocalModelName(modelInfo).substr(0, 10) }}
+                    {{ getLocalModelName(modelInfo) }}
                 </p>
                 <i :title="tl('dialog.tlm_utils.load_pack.model.delete')" @click.stop="deleteModel"
                    class="fas fa-trash-alt delete" v-if="index===parent.selectedId"></i>
@@ -397,9 +394,6 @@ export default {
                     this.parent.reset();
                 }
             }
-        },
-        hasBedrockAnimation: function (modelInfo) {
-            return modelInfo["is_gecko"];
         },
         hasNormalEgg: function (modelInfo) {
             return modelInfo["easter_egg"] && modelInfo["easter_egg"]["tag"] && !isEmpty(modelInfo["easter_egg"]["tag"]) && !modelInfo["easter_egg"]["encrypt"];

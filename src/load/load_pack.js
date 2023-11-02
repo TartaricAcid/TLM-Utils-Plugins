@@ -1,6 +1,8 @@
 import {isEmpty} from "../utils/string";
 import {join as pathJoin} from "path";
 import loadPackMainVue from "./load_pack_main.vue";
+import languageEditVue from "./language_edit.vue";
+import {readLanguageFile} from "../utils/language";
 
 var CACHE_TLM_PACK = [];
 export var CACHE_TLM_PACK_ACTION = {
@@ -69,12 +71,47 @@ function openLoadPackDialog(data) {
     let assetsPath = data.assetsPath;
     let packEditDialog = new Dialog({
         title: "dialog.tlm_utils.load_pack.detail",
-        width: 1280,
+        width: 1000,
         singleButton: true,
+        cancel_on_click_outside: false,
         sidebar: {
             pages: namespaceMap,
             page: Object.keys(namespaceMap)[0],
             actions: [
+                new Action("tlm_utils.load_pack.language", {
+                    name: "menu.tlm_utils.load_pack.language_edit",
+                    icon: "fa-language",
+                    click: function () {
+                        if (isEmpty(packEditDialog.sidebar.page)) {
+                            return;
+                        }
+                        let enLangPath = pathJoin(assetsPath, `${packEditDialog.sidebar.page}/lang/en_us.lang`);
+                        let languageMaps = {};
+                        readLanguageFile(enLangPath, languageMaps);
+                        let languageEdit = new Dialog({
+                            title: "menu.tlm_utils.load_pack.language_edit",
+                            cancel_on_click_outside: false,
+                            width: 1000,
+                            singleButton: true,
+                            component: {
+                                data() {
+                                    return {
+                                        assetsPath: assetsPath,
+                                        languageMaps: languageMaps,
+                                        packEditDialog: packEditDialog
+                                    };
+                                },
+                                components: {languageEditVue},
+                                template: "<languageEditVue :assetsPath='assetsPath' :languageMaps='languageMaps' :packEditDialog='packEditDialog'/>"
+                            }
+                        });
+                        languageEdit.show();
+                        if (languageEdit.object && languageEdit.object.style) {
+                            languageEdit.object.style["max-width"] = "1000px"
+                            languageEdit.object.style["min-height"] = "600px"
+                        }
+                    }
+                }),
                 new Action("tlm_utils.load_pack.open_folder", {
                     name: "menu.tlm_utils.load_pack.open_folder",
                     icon: "fa-folder-open",
@@ -161,8 +198,8 @@ function openLoadPackDialog(data) {
     });
     packEditDialog.show();
     if (packEditDialog.object && packEditDialog.object.style) {
-        packEditDialog.object.style["max-width"] = "1280px"
-        packEditDialog.object.style["min-height"] = "800px"
+        packEditDialog.object.style["max-width"] = "1000px"
+        packEditDialog.object.style["min-height"] = "600px"
     }
 }
 
