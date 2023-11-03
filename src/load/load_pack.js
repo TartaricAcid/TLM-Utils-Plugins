@@ -180,7 +180,12 @@ function openLoadPackDialog(data) {
                     }
                     if (child.hasModelListFile("chair")) {
                         child.selected = "chair";
+                        return;
                     }
+                    if (child.hasSoundInfoFile()) {
+                        child.selected = "sound";
+                    }
+                    child.selected = "maid";
                 }
             }
         },

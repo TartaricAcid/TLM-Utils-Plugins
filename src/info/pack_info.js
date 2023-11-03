@@ -12,6 +12,7 @@ export var TlmPackInfo = class {
         this.namespacePath = "";
         this.texturesPath = "";
         this.animationPath = "";
+        this.soundsPath = "";
         this.langPath = "";
         this.modelsPath = "";
     }

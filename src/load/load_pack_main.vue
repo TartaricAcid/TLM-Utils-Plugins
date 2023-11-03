@@ -6,10 +6,12 @@
         <div style="display:flex" v-else-if="!categoryIsEmpty">
             <div style="width: 70%">
                 <topTypeButtonVue :parent="this"/>
-                <modelListInfoVue :parent="this" v-if="isShowList"/>
+                <modelListInfoVue :parent="this" v-if="!isSoundPack && isShowList"/>
+                <soundPackInfoVue :parent="this" v-if="isSoundPack"></soundPackInfoVue>
             </div>
             <div style="width: 30%; padding-left: 10px;">
-                <modelListTableVue :parent="this" v-if="isShowList"/>
+                <modelListTableVue :parent="this" v-if="!isSoundPack && isShowList"/>
+                <soundPackTableVue :parent="this" v-if="isSoundPack"></soundPackTableVue>
             </div>
         </div>
     </div>
@@ -20,6 +22,8 @@ import newSubModelPackFormVue from "./new_sub_model_pack_form.vue";
 import topTypeButtonVue from "./top_type_button.vue";
 import modelListInfoVue from "./model_list_info.vue";
 import modelListTableVue from "./model_list_table.vue";
+import soundPackInfoVue from "./sound_pack_info.vue"
+import soundPackTableVue from "./sound_pack_table.vue"
 import {splitStringVersion, TlmPackInfo} from "../info/pack_info";
 import {isEmpty} from "../utils/string";
 import {getPackLanguage} from "../utils/language";
@@ -51,7 +55,9 @@ export default {
         newSubModelPackFormVue,
         modelListInfoVue,
         topTypeButtonVue,
-        modelListTableVue
+        modelListTableVue,
+        soundPackInfoVue,
+        soundPackTableVue
     },
     methods: {
         reset: function () {
@@ -135,6 +141,14 @@ export default {
             }
         },
         readInfo: function (type) {
+            if (type === "maid" || type === "chair") {
+                return this.readModelInfo(type)
+            }
+            if (type === "sound") {
+                return this.readSoundInfo(type)
+            }
+        },
+        readModelInfo: function (type) {
             let namespacePath = `${this.assetsPath}/${this.openCategory}`;
             let modelListFile = (type === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
             if (fs.existsSync(modelListFile)) {
@@ -160,6 +174,40 @@ export default {
                 info.langPath = `${namespacePath}/lang`;
                 info.modelsPath = `${namespacePath}/models/entity`;
                 info.texturesPath = `${namespacePath}/textures/entity`;
+                info.soundsPath = `${namespacePath}/sounds/maid`;
+                info.lang = getPackLanguage(info.langPath, "en_us");
+                info.local = getPackLanguage(info.langPath);
+
+                return info;
+            }
+        },
+        readSoundInfo: function (type) {
+            let namespacePath = `${this.assetsPath}/${this.openCategory}`;
+            let soundInfoFilePath = `${namespacePath}/maid_sound.json`;
+            if (fs.existsSync(soundInfoFilePath)) {
+                let info = new TlmPackInfo();
+                let text = fs.readFileSync(soundInfoFilePath, "utf8");
+                if (text.charCodeAt(0) === 0xFEFF) {
+                    text = text.substr(1);
+                }
+                info.data = JSON.parse(text);
+
+                let version = info.data.version;
+                if (isEmpty(version)) {
+                    info.version = [1, 0, 0];
+                    info.data.version = "1.0.0";
+                } else {
+                    info.version = splitStringVersion(version);
+                }
+
+                info.type = type;
+                info.namespace = this.openCategory;
+                info.namespacePath = namespacePath;
+                info.animationPath = `${namespacePath}/animation`;
+                info.langPath = `${namespacePath}/lang`;
+                info.modelsPath = `${namespacePath}/models/entity`;
+                info.texturesPath = `${namespacePath}/textures/entity`;
+                info.soundsPath = `${namespacePath}/sounds/maid`;
                 info.lang = getPackLanguage(info.langPath, "en_us");
                 info.local = getPackLanguage(info.langPath);
 
@@ -170,7 +218,12 @@ export default {
             let namespacePath = `${this.assetsPath}/${this.openCategory}`;
             let modelListFile = (type === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
             return fs.existsSync(modelListFile);
-        }
+        },
+        hasSoundInfoFile: function () {
+            let namespacePath = `${this.assetsPath}/${this.openCategory}`;
+            let soundInfoFilePath = `${namespacePath}/maid_sound.json`;
+            return fs.existsSync(soundInfoFilePath);
+        },
     },
     computed: {
         showInfo: function () {
@@ -181,6 +234,9 @@ export default {
         },
         categoryIsEmpty: function () {
             return isEmpty(this.openCategory);
+        },
+        isSoundPack: function () {
+            return this.selected === "sound";
         }
     }
 };
