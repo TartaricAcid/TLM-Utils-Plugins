@@ -140,6 +140,19 @@ export default {
                 }
             }
         },
+        selectedSound: function (index) {
+            this.reset();
+            this.selected = this.selected + " ";
+            this.selected = this.selected.trim();
+            this.selectedId = index;
+
+            if (this.showInfo && this.showInfo.data) {
+                let children = this.$children[1];
+                if (children) {
+                    children.selectedSound(index);
+                }
+            }
+        },
         readInfo: function (type) {
             if (type === "maid" || type === "chair") {
                 return this.readModelInfo(type)

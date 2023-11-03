@@ -2,6 +2,7 @@
 import {getTranslationKey, getTranslationResult, writeLanguageFile} from "../utils/language";
 import {join as pathJoin} from "path";
 import {isEmpty} from "../utils/string";
+import {mkdirs} from "../utils/filesystem";
 
 export default {
     props: {
@@ -14,7 +15,41 @@ export default {
         return {
             selectedIconPath: "",
             isEditSoundPackInfo: false,
+            isEditSound: false,
             soundPackInfo: {},
+            soundFilePaths: [],
+            soundType: [
+                ["idle", "mode"],
+                ["attack", "mode"],
+                ["range_attack", "mode"],
+                ["danmaku_attack", "mode"],
+                ["farm", "mode"],
+                ["feed", "mode"],
+                ["shears", "mode"],
+                ["milk", "mode"],
+                ["torch", "mode"],
+                ["feed_animal", "mode"],
+                ["extinguishing", "mode"],
+                ["snow", "mode"],
+                ["break", "mode"],
+                ["furnace", "mode"],
+                ["brewing", "mode"],
+                ["find_target", "ai"],
+                ["hurt", "ai"],
+                ["hurt_fire", "ai"],
+                ["hurt_player", "ai"],
+                ["tamed", "ai"],
+                ["item_get", "ai"],
+                ["death", "ai"],
+                ["cold", "environment"],
+                ["hot", "environment"],
+                ["rain", "environment"],
+                ["snow", "environment"],
+                ["morning", "environment"],
+                ["night", "environment"],
+                ["credit", "other"]
+            ],
+            tmpTestAudio: new Audio(),
             randomIconSuffix: 0,    // used to clean img cache
         }
     },
@@ -23,7 +58,9 @@ export default {
         reset: function () {
             this.selectedIconPath = "";
             this.isEditSoundPackInfo = false;
+            this.isEditSound = false;
             this.soundPackInfo = {};
+            this.soundFilePaths = [];
         },
         getIconPath: function (packInfo) {
             if (this.selectedIconPath) {
@@ -177,6 +214,30 @@ export default {
             this.parent.selected = this.parent.selected + " ";
             this.parent.selected = this.parent.selected.trim();
         },
+        selectedSound: function (index) {
+            let searchPath = `${this.parent.showInfo.soundsPath}/${this.soundType[index][1]}`
+            if (!fs.existsSync(searchPath)) {
+                mkdirs(searchPath)
+            }
+            let paths = fs.readdirSync(searchPath);
+            let fileNameCheck = this.soundType[index][0];
+            this.soundFilePaths = []
+            for (let name of paths) {
+                if (name.startsWith(fileNameCheck)) {
+                    let path = `${this.soundType[index][1]}/${name}`
+                    this.soundFilePaths.push(path)
+                }
+            }
+            this.isEditSoundPackInfo = false;
+            this.isEditSound = true;
+        },
+        playSound: function (index) {
+            let path = `${this.parent.showInfo.soundsPath}/${this.soundFilePaths[index]}`;
+            if (fs.existsSync(path)) {
+                this.tmpTestAudio.src = path;
+                this.tmpTestAudio.play();
+            }
+        }
     },
     computed: {
         isEditSoundPackInfoButtonActive: function () {
@@ -262,8 +323,8 @@ export default {
             </div>
         </div>
 
-        <!-- Model List Info Edit -->
-        <div class="sound-pack-edit" v-if="isEditSoundPackInfo">
+        <!-- Sound Pack Info Edit -->
+        <div class="sound-pack-edit" v-if="isEditSoundPackInfo && !isEditSound">
             <div class="sound-pack-edit-main">
                 <!-- Model List Name -->
                 <div>
@@ -361,6 +422,32 @@ export default {
                 </button>
             </div>
         </div>
+
+        <!-- Sound Edit -->
+        <div class="sound-pack-edit" v-if="!isEditSoundPackInfo && isEditSound">
+            <div class="sound-pack-edit-main">
+                <div style="margin-top: 10px; margin-bottom: 10px">
+                    <p class="sound-pack-edit-item-title">
+                        {{ tl("dialog.tlm_utils.load_pack.edit.sounds") }}</p>
+                    <p class="sound-pack-edit-item-desc" style="margin-bottom: 5px">
+                        {{ tl("dialog.tlm_utils.load_pack.edit.sounds.desc") }}</p>
+                    <div :key="index" style="display: flex" v-for="(soundPath, index) in soundFilePaths">
+                        <div :title="tl('dialog.tlm_utils.load_pack.edit.sounds.play')"
+                             class="sound-edit-item-button" @click="playSound(index)">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <input class="sound-edit-input" readonly type="text" v-model="soundFilePaths[index]">
+                        <div :title="tl('dialog.tlm_utils.load_pack.edit.sounds.delete')"
+                             class="sound-edit-item-button">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                    <button style="height: 25px; width: 98%; font-size: small; margin-top: 5px">
+                        {{ tl("dialog.tlm_utils.load_pack.edit.sounds.add") }}
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -423,7 +510,7 @@ export default {
 .sound-pack-edit-main {
     background-color: #21252b;
     width: 100%;
-    height: 330px;
+    height: 400px;
     overflow-y: auto;
     padding: 10px 20px
 }
@@ -456,6 +543,38 @@ export default {
     width: 100%;
     height: 30px;
     font-size: 20px;
+    background-color: #1c2026;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #181a1f;
+}
+
+.sound-edit-item-button {
+    margin: 3px 1px 1px;
+    width: 21px;
+    height: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3a3f4b;
+    font-size: small;
+    border-width: 1px;
+}
+
+.sound-edit-item-button:hover {
+    background-color: #3e90ff;
+    color: #1c2026;
+}
+
+.sound-edit-input {
+    border-radius: 1px;
+    margin-top: 3px;
+    margin-right: 3px;
+    margin-left: 3px;
+    padding: 2px;
+    width: 100%;
+    height: 20px;
+    font-size: 15px;
     background-color: #1c2026;
     border-style: solid;
     border-width: 1px;
