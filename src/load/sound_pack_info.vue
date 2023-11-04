@@ -19,25 +19,26 @@ export default {
             isEditSound: false,
             soundPackInfo: {},
             soundFilePaths: [],
+            mixSoundFilePaths: [],
             soundType: [
                 ["idle", "mode"],
                 ["attack", "mode"],
-                ["range_attack", "mode"],
-                ["danmaku_attack", "mode"],
-                ["farm", "mode"],
-                ["feed", "mode"],
-                ["shears", "mode"],
-                ["milk", "mode"],
-                ["torch", "mode"],
-                ["feed_animal", "mode"],
-                ["extinguishing", "mode"],
-                ["snow", "mode"],
-                ["break", "mode"],
-                ["furnace", "mode"],
-                ["brewing", "mode"],
+                ["range_attack", "mode", "attack"],
+                ["danmaku_attack", "mode", "attack"],
+                ["farm", "mode", "idle"],
+                ["feed", "mode", "idle"],
+                ["shears", "mode", "idle"],
+                ["milk", "mode", "idle"],
+                ["torch", "mode", "idle"],
+                ["feed_animal", "mode", "idle"],
+                ["extinguishing", "mode", "idle"],
+                ["snow", "mode", "idle"],
+                ["break", "mode", "idle"],
+                ["furnace", "mode", "idle"],
+                ["brewing", "mode", "idle"],
                 ["find_target", "ai"],
                 ["hurt", "ai"],
-                ["hurt_fire", "ai"],
+                ["hurt_fire", "ai", "hurt"],
                 ["hurt_player", "ai"],
                 ["tamed", "ai"],
                 ["item_get", "ai"],
@@ -62,6 +63,7 @@ export default {
             this.isEditSound = false;
             this.soundPackInfo = {};
             this.soundFilePaths = [];
+            this.mixSoundFilePaths = [];
         },
         getIconPath: function (packInfo) {
             if (this.selectedIconPath) {
@@ -222,11 +224,18 @@ export default {
             }
             let paths = fs.readdirSync(searchPath);
             let fileNameCheck = this.soundType[index][0];
+            let mixFileNameCheck = this.soundType[index][2];
             this.soundFilePaths = []
+            this.mixSoundFilePaths = []
             for (let name of paths) {
                 if (name.startsWith(fileNameCheck)) {
                     let path = `${this.soundType[index][1]}/${name}`
                     this.soundFilePaths.push(path)
+                    continue;
+                }
+                if (mixFileNameCheck && name.startsWith(mixFileNameCheck)) {
+                    let path = `${this.soundType[index][1]}/${name}`
+                    this.mixSoundFilePaths.push(path)
                 }
             }
             this.isEditSoundPackInfo = false;
@@ -234,6 +243,13 @@ export default {
         },
         playSound: function (index) {
             let path = `${this.parent.showInfo.soundsPath}/${this.soundFilePaths[index]}`;
+            if (fs.existsSync(path)) {
+                this.tmpTestAudio.src = path;
+                this.tmpTestAudio.play();
+            }
+        },
+        playMixSound: function (index) {
+            let path = `${this.parent.showInfo.soundsPath}/${this.mixSoundFilePaths[index]}`;
             if (fs.existsSync(path)) {
                 this.tmpTestAudio.src = path;
                 this.tmpTestAudio.play();
@@ -268,6 +284,24 @@ export default {
                 this.$forceUpdate();
             }
         },
+        deleteSounds: function (index) {
+            let soundPath = pathJoin(this.parent.showInfo.soundsPath, this.soundFilePaths[index]);
+            if (fs.existsSync(soundPath)) {
+                let result = electron.dialog.showMessageBoxSync(currentwindow, {
+                    title: tl("dialog.tlm_utils.load_pack.edit.sounds.delete"),
+                    message: tl("dialog.tlm_utils.load_pack.edit.sounds.delete.desc"),
+                    type: "warning",
+                    buttons: [tl("dialog.ok"), tl("dialog.cancel")],
+                });
+                if (result === 0) {
+                    console.log(soundPath)
+                    electron.shell.trashItem(soundPath).then(() => {
+                        this.soundFilePaths.splice(index, 1)
+                        this.$forceUpdate();
+                    });
+                }
+            }
+        }
     },
     computed: {
         isEditSoundPackInfoButtonActive: function () {
@@ -468,13 +502,27 @@ export default {
                         </div>
                         <input class="sound-edit-input" readonly type="text" v-model="soundFilePaths[index]">
                         <div :title="tl('dialog.tlm_utils.load_pack.edit.sounds.delete')"
-                             class="sound-edit-item-button">
+                             class="sound-edit-item-button" @click="deleteSounds(index)">
                             <i class="fas fa-trash-alt"></i>
                         </div>
                     </div>
-                    <button style="height: 25px; width: 98%; font-size: small; margin-top: 5px" @click="addSounds">
+                    <button style="height: 25px; width: 100%; font-size: small; margin-top: 5px" @click="addSounds">
                         {{ tl("dialog.tlm_utils.load_pack.edit.sounds.add") }}
                     </button>
+                </div>
+
+                <div style="margin-top: 10px; margin-bottom: 10px" v-if="mixSoundFilePaths.length">
+                    <p class="sound-pack-edit-item-title">
+                        {{ tl("dialog.tlm_utils.load_pack.edit.mix_sounds") }}</p>
+                    <p class="sound-pack-edit-item-desc" style="margin-bottom: 5px">
+                        {{ tl("dialog.tlm_utils.load_pack.edit.mix_sounds.desc") }}</p>
+                    <div :key="index" style="display: flex" v-for="(soundPath, index) in mixSoundFilePaths">
+                        <div :title="tl('dialog.tlm_utils.load_pack.edit.sounds.play')"
+                             class="sound-edit-item-button" @click="playMixSound(index)">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <input class="sound-edit-input" readonly type="text" v-model="mixSoundFilePaths[index]">
+                    </div>
                 </div>
             </div>
         </div>
