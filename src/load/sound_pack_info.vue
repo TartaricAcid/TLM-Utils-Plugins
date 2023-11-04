@@ -3,6 +3,7 @@ import {getTranslationKey, getTranslationResult, writeLanguageFile} from "../uti
 import {join as pathJoin} from "path";
 import {isEmpty} from "../utils/string";
 import {mkdirs} from "../utils/filesystem";
+import sha1 from "sha1";
 
 export default {
     props: {
@@ -237,7 +238,36 @@ export default {
                 this.tmpTestAudio.src = path;
                 this.tmpTestAudio.play();
             }
-        }
+        },
+        addSounds: function () {
+            let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+                properties: ["openFile", "multiSelections"],
+                title: tl("dialog.tlm_utils.load_pack.edit.sounds.add"),
+                filters: [{name: "Ogg", extensions: ["ogg"]}]
+            });
+            if (filePaths && filePaths.length > 0) {
+                let index = this.parent.selectedId;
+                let typeInfo = this.soundType[index];
+                let fileName = typeInfo[0];
+                let filePath = `${this.parent.showInfo.soundsPath}/${typeInfo[1]}`
+                if (!fs.existsSync(filePath)) {
+                    mkdirs(filePath)
+                }
+                let dirFiles = fs.readdirSync(filePath);
+                let i = 0;
+                filePaths.forEach(file => {
+                    i = i + 1;
+                    let tmpName = `${fileName}${i}.ogg`;
+                    while (dirFiles.includes(tmpName)) {
+                        tmpName = `${fileName}${i}.ogg`;
+                        i = i + 1;
+                    }
+                    fs.writeFileSync(pathJoin(filePath, tmpName), fs.readFileSync(file));
+                })
+                this.selectedSound(index);
+                this.$forceUpdate();
+            }
+        },
     },
     computed: {
         isEditSoundPackInfoButtonActive: function () {
@@ -442,7 +472,7 @@ export default {
                             <i class="fas fa-trash-alt"></i>
                         </div>
                     </div>
-                    <button style="height: 25px; width: 98%; font-size: small; margin-top: 5px">
+                    <button style="height: 25px; width: 98%; font-size: small; margin-top: 5px" @click="addSounds">
                         {{ tl("dialog.tlm_utils.load_pack.edit.sounds.add") }}
                     </button>
                 </div>
