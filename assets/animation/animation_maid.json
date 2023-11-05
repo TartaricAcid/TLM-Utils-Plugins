@@ -460,6 +460,30 @@
     "path": ""
   },
   {
+    "bone": "LeftHandLocator",
+    "name": "bedrock_left_hand_locator",
+    "color": "#E33F1C",
+    "parents": [],
+    "group": "position",
+    "path": ""
+  },
+  {
+    "bone": "RightHandLocator",
+    "name": "bedrock_right_hand_locator",
+    "color": "#E33F1C",
+    "parents": [],
+    "group": "position",
+    "path": ""
+  },
+  {
+    "bone": "BackpackLocator",
+    "name": "bedrock_backpack_locator",
+    "color": "#E33F1C",
+    "parents": [],
+    "group": "position",
+    "path": ""
+  },
+  {
     "bone": "backpackLevelEmpty",
     "name": "backpack_level_empty",
     "color": "#FDD692",

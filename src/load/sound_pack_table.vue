@@ -52,7 +52,8 @@ export default {
 <template>
     <div style="max-height: 650px; overflow-y: auto;">
         <div v-for="(value, index) in soundType">
-            <button style="width: 98%; margin-top: 2px; height: 30px" @click="parent.selectedSound(index)">
+            <button :class="{'selected':index===parent.selectedId}"
+                    style="width: 98%; margin-top: 2px; height: 30px" @click="parent.selectedSound(index)">
                 {{ tl(`button.tlm_utils.sound_pack.sound.${value[1]}.${value[0]}`) }}
             </button>
         </div>
@@ -60,5 +61,11 @@ export default {
 </template>
 
 <style>
-
+.selected, .selected:hover {
+    background-color: #21252b;
+    pointer-events: none;
+    border-left-color: #23d400;
+    border-left-style: solid;
+    border-left-width: 5px;
+}
 </style>

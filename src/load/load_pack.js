@@ -3,6 +3,7 @@ import {join as pathJoin} from "path";
 import loadPackMainVue from "./load_pack_main.vue";
 import languageEditVue from "./language_edit.vue";
 import {readLanguageFile} from "../utils/language";
+import {zipModelPackAll} from "../utils/zip";
 
 var CACHE_TLM_PACK = [];
 export var CACHE_TLM_PACK_ACTION = {
@@ -109,6 +110,34 @@ function openLoadPackDialog(data) {
                         if (languageEdit.object && languageEdit.object.style) {
                             languageEdit.object.style["max-width"] = "1000px"
                             languageEdit.object.style["min-height"] = "600px"
+                        }
+                    }
+                }),
+                new Action("tlm_utils.load_pack.zip", {
+                    name: "menu.tlm_utils.load_pack.zip",
+                    icon: "fa-file-zipper",
+                    click: function () {
+                        let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+                            title: tl("dialog.tlm_utils.load_pack.export.desc"),
+                            properties: ["openDirectory"]
+                        });
+                        if (filePaths && filePaths[0]) {
+                            let endIndex = assetsPath.length - "/assets".length;
+                            let outputFolder = assetsPath.substring(0, endIndex)
+                            let outputZipFile = pathJoin(filePaths[0], pathToName(outputFolder, true) + ".zip")
+                            if (fs.existsSync(outputZipFile)) {
+                                let result = electron.dialog.showMessageBoxSync(currentwindow, {
+                                    title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.same_file.title"),
+                                    message: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.same_file.desc"),
+                                    type: "warning",
+                                    buttons: [tl("dialog.ok"), tl("dialog.cancel")],
+                                });
+                                if (result === 0) {
+                                    zipModelPackAll(outputFolder, outputZipFile)
+                                }
+                            } else {
+                                zipModelPackAll(outputFolder, outputZipFile)
+                            }
                         }
                     }
                 }),
