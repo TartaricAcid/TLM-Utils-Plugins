@@ -199,7 +199,7 @@
                             </div>
                         </div>
 
-                        <div style="margin-top: 20px">
+                        <div style="margin-top: 20px" v-if="this.parent.selected==='maid'">
                             <p class="model-list-edit-item-title">
                                 {{ tl("dialog.tlm_utils.load_pack.edit.model.use_sound_pack_id") }}</p>
                             <p class="model-list-edit-item-desc">

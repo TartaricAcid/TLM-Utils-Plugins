@@ -155,7 +155,7 @@ export default {
             </button>
         </div>
 
-        <div style="height: 800px; overflow-y: auto;">
+        <div style="height: 600px; overflow-y: auto;">
             <div class="language-edit-element" v-for="(value,key) in this.languageMaps">
                 <p class="language-edit-element-key">{{ key }}</p>
                 <p class="language-edit-element-value">
