@@ -199,6 +199,18 @@
                             </div>
                         </div>
 
+                        <div style="margin-top: 20px">
+                            <p class="model-list-edit-item-title">
+                                {{ tl("dialog.tlm_utils.load_pack.edit.model.use_sound_pack_id") }}</p>
+                            <p class="model-list-edit-item-desc">
+                                {{ tl("dialog.tlm_utils.load_pack.edit.use_sound_pack_id.desc") }}</p>
+                            <select class="model-edit-sound-pack-id" v-model="modelInfo['use_sound_pack_id']">
+                                <option v-for="option in getSoundsPackId" :value="option">
+                                    <p style="margin-top: 40px;">{{ getSoundsPackIdDesc(option) }}</p>
+                                </option>
+                            </select>
+                        </div>
+
                         <!-- Model Path -->
                         <div style="margin-top: 20px">
                             <p class="model-list-edit-item-title">
@@ -641,6 +653,9 @@ export default {
             // Remove some data
             if (!this.modelInfo["is_gecko"]) {
                 delete this.modelInfo["is_gecko"];
+            }
+            if (!this.modelInfo["use_sound_pack_id"] || this.modelInfo["use_sound_pack_id"] === "EMPTY") {
+                delete this.modelInfo["use_sound_pack_id"];
             }
             if (this.modelInfo["render_item_scale"] === 1) {
                 delete this.modelInfo["render_item_scale"];
@@ -1232,6 +1247,12 @@ export default {
         },
         getBlurCodeIndex: function (e) {
             this.blurCodeIndex = e.srcElement.selectionStart;
+        },
+        getSoundsPackIdDesc: function (data) {
+            if (data === "EMPTY") {
+                return tl("dialog.tlm_utils.load_pack.edit.use_sound_pack_id.empty");
+            }
+            return data;
         }
     },
     computed: {
@@ -1344,6 +1365,11 @@ export default {
                     }
                 }
             }
+        },
+        getSoundsPackId: function () {
+            let namespace = Object.keys(this.parent.packEditDialog.sidebar.pages);
+            namespace.unshift("EMPTY")
+            return namespace;
         }
     }
 };
@@ -1539,6 +1565,19 @@ export default {
     padding: 5px;
     width: 100%;
     height: 30px;
+    font-size: 20px;
+    background-color: #1c2026;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #181a1f;
+}
+
+.model-edit-sound-pack-id {
+    border-radius: 1px;
+    margin-top: 5px;
+    padding-top: 0;
+    width: 100%;
+    height: 35px;
     font-size: 20px;
     background-color: #1c2026;
     border-style: solid;

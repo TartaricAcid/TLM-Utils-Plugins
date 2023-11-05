@@ -79,6 +79,9 @@ export default {
             this.addDefaultModelData(modelInfo, "show_hata");
             this.addDefaultModelData(modelInfo, "can_hold_vehicle");
             this.addDefaultModelData(modelInfo, "can_riding_broom");
+            if (!modelInfo.hasOwnProperty("use_sound_pack_id")) {
+                modelInfo["use_sound_pack_id"] = "EMPTY"
+            }
             if (!modelInfo.hasOwnProperty("easter_egg")) {
                 modelInfo["easter_egg"] = {
                     "encrypt": false,
