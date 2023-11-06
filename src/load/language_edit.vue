@@ -96,6 +96,7 @@ export default {
         saveLanguageButton: function () {
             let langPath = pathJoin(this.assetsPath, `${this.packEditDialog.sidebar.page}/lang/`);
             writeLanguageFile(this.language, langPath, this.currentLanguageMaps);
+            Blockbench.showQuickMessage(tl("dialog.tlm_utils.add_present.custom.button.save.success"), 3000);
         },
         clickLanguageButton: function (language) {
             if (this.language !== language) {

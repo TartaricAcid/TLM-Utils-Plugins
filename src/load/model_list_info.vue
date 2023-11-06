@@ -695,6 +695,7 @@ export default {
             }
             fs.writeFileSync(modelListFile, autoStringify(this.modelListInfo.data), "utf8");
             writeLanguageFile("en_us", this.modelListInfo.langPath, this.modelListInfo.lang);
+            Blockbench.showQuickMessage(tl("dialog.tlm_utils.add_present.custom.button.save.success"), 1000);
             this.clickModelCancel();
         },
         clickModelCancel: function () {
@@ -1121,6 +1122,7 @@ export default {
             this.isEditModelListInfo = false;
             this.selectedIconPath = "";
             this.randomIconSuffix = Math.random();
+            Blockbench.showQuickMessage(tl("dialog.tlm_utils.add_present.custom.button.save.success"), 1000);
         },
         clickCancel: function () {
             this.reset();

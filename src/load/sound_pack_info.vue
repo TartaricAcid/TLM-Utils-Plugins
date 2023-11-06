@@ -211,6 +211,7 @@ export default {
             this.isEditSoundPackInfo = false;
             this.selectedIconPath = "";
             this.randomIconSuffix = Math.random();
+            Blockbench.showQuickMessage(tl("dialog.tlm_utils.add_present.custom.button.save.success"), 1000);
         },
         clickCancel: function () {
             this.reset();
