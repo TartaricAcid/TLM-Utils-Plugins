@@ -60,7 +60,7 @@ export default {
     </div>
 </template>
 
-<style>
+<style scoped>
 .selected, .selected:hover {
     background-color: #21252b;
     pointer-events: none;

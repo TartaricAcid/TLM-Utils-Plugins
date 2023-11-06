@@ -195,7 +195,7 @@ export default {
     </div>
 </template>
 
-<style>
+<style scoped>
 .language-edit-element {
     background-color: #17191d;
     box-shadow: 0 0 10px #181a1f;

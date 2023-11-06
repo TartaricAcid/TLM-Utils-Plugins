@@ -222,23 +222,33 @@ export default {
             this.parent.selected = this.parent.selected + " ";
             this.parent.selected = this.parent.selected.trim();
         },
+        checkSoundName: function (fileName, fileNameCheck) {
+            let nameReg = /^\d*\.ogg$/;
+            if (fileName.startsWith(fileNameCheck)) {
+                let subName = fileName.substring(fileNameCheck.length);
+                console.log(subName)
+                return nameReg.test(subName);
+            }
+            return false;
+        },
         selectedSound: function (index) {
             let searchPath = `${this.parent.showInfo.soundsPath}/${this.soundType[index][1]}`
             if (!fs.existsSync(searchPath)) {
                 mkdirs(searchPath)
             }
             let paths = fs.readdirSync(searchPath);
+
             let fileNameCheck = this.soundType[index][0];
             let mixFileNameCheck = this.soundType[index][2];
             this.soundFilePaths = []
             this.mixSoundFilePaths = []
             for (let name of paths) {
-                if (name.startsWith(fileNameCheck)) {
+                if (this.checkSoundName(name, fileNameCheck)) {
                     let path = `${this.soundType[index][1]}/${name}`
                     this.soundFilePaths.push(path)
                     continue;
                 }
-                if (mixFileNameCheck && name.startsWith(mixFileNameCheck)) {
+                if (mixFileNameCheck && this.checkSoundName(name, mixFileNameCheck)) {
                     let path = `${this.soundType[index][1]}/${name}`
                     this.mixSoundFilePaths.push(path)
                 }
@@ -534,7 +544,7 @@ export default {
     </div>
 </template>
 
-<style>
+<style scoped>
 .sound-pack-info {
     background-color: #21252b;
     padding: 10px;
