@@ -182,7 +182,11 @@ export default {
             let namespacePath = `${this.parent.assetsPath}/${this.parent.openCategory}`;
             let soundInfoFile = `${namespacePath}/maid_sound.json`;
             if (this.selectedIconPath) {
-                fs.writeFileSync(`${namespacePath}/textures/${this.parent.selected}_icon.png`, fs.readFileSync(this.selectedIconPath));
+                let texturesPath = pathJoin(namespacePath, "textures");
+                if (!fs.existsSync(texturesPath)) {
+                    mkdirs(texturesPath);
+                }
+                fs.writeFileSync(pathJoin(texturesPath, "sound_icon.png"), fs.readFileSync(this.selectedIconPath));
             }
             this.soundPackInfo.data["icon"] = `${this.parent.openCategory}:textures/${this.parent.selected}_icon.png`;
             this.soundPackInfo.data["version"] = `${this.soundPackInfo.version[0]}.${this.soundPackInfo.version[1]}.${this.soundPackInfo.version[2]}`;
