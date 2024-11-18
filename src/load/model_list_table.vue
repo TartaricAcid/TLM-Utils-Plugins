@@ -176,7 +176,7 @@ export default {
         projectHasInfo: function () {
             return Project && Project["tlm_list_info"] && Project["tlm_model_info"];
         },
-        saveProject: function () {
+        saveProject: function (newModelInfo) {
             let codec = Project.format.codec;
             let model = this.getModelPath();
             if (codec.id === "bedrock_old") {
@@ -185,11 +185,29 @@ export default {
             codec.write(codec.compile(), model);
             let textures = Project.textures;
             if (textures.length > 0) {
-                this.saveTexture(textures[0]);
+                for (let i = 0; i < textures.length; i++) {
+                    if (i === 0) {
+                        this.saveTexture(textures[0]);
+                    } else {
+                        this.saveExtraTexture(textures[i], i, newModelInfo);
+                    }
+                }
             }
         },
         saveTexture: function (texture) {
             texture.path = this.getTexturePath();
+            let image;
+            if (texture.mode === "link") {
+                image = electron.nativeImage.createFromPath(texture.source.replace(/\?\d+$/, "")).toPNG();
+            } else {
+                image = electron.nativeImage.createFromDataURL(texture.source).toPNG();
+            }
+            fs.writeFile(texture.path, image, () => {
+                texture.fromPath(texture.path);
+            });
+        },
+        saveExtraTexture: function (texture, number, newModelInfo) {
+            texture.path = this.getExtraTexturePath(number, newModelInfo);
             let image;
             if (texture.mode === "link") {
                 image = electron.nativeImage.createFromPath(texture.source.replace(/\?\d+$/, "")).toPNG();
@@ -252,21 +270,34 @@ export default {
                 return pathJoin(info.texturesPath, this.newModelId + ".png");
             }
         },
+        getExtraTexturePath: function (number, newModelInfo) {
+            if (this.parent.showInfo && !isEmpty(this.newModelId)) {
+                let info = this.parent.showInfo;
+                let fileName = `${this.newModelId}_${number}.png`
+                if (!newModelInfo["extra_textures"]) {
+                    newModelInfo["extra_textures"] = []
+                }
+                let filePath = `${info.namespace}:textures/entity/${fileName}`
+                newModelInfo["extra_textures"].push(filePath)
+                return pathJoin(info.texturesPath, fileName);
+            }
+        },
         confirmNewModel: function () {
             if (this.checkNewModelId()) {
                 let info = this.parent.showInfo;
                 let modelList = info.data["model_list"];
-                modelList.push({
+                let newModelInfo = {
                     "model_id": `${info.namespace}:${this.newModelId}`,
                     "is_gecko": this.isGecko,
-                });
+                }
                 let modelListFile = (info.type === "maid") ? `${info.namespacePath}/maid_model.json` : `${info.namespacePath}/maid_chair.json`;
-                fs.writeFileSync(modelListFile, autoStringify(info.data));
                 if (this.hasProject && this.useProject) {
-                    this.saveProject();
+                    this.saveProject(newModelInfo);
                 } else {
                     this.copyPresentModel();
                 }
+                modelList.push(newModelInfo);
+                fs.writeFileSync(modelListFile, autoStringify(info.data));
                 this.parent.selectedModel(this.parent.showInfo.data["model_list"].length - 1);
                 this.closeNewModel();
             }
