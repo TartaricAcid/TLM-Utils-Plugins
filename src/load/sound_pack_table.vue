@@ -31,6 +31,8 @@ export default {
                 ["tamed", "ai"],
                 ["item_get", "ai"],
                 ["death", "ai"],
+                ["game_win", "ai"],
+                ["game_lost", "ai"],
                 ["cold", "environment"],
                 ["hot", "environment"],
                 ["rain", "environment"],

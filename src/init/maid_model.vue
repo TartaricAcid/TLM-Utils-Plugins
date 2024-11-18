@@ -35,7 +35,7 @@ export default {
         tl: tl,
         createEmptyWorkspace: function () {
             createDefaultDialog.hide();
-            newProject(Formats["bedrock_old"]);
+            newProject(Formats["bedrock"]);
         },
         openDefaultMaidModelDialog: function () {
             createDefaultDialog.hide();

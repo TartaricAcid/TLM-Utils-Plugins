@@ -11,23 +11,6 @@
                    type="text"
                    v-model="packId">
         </div>
-        <div style="margin-top: 20px;">
-            <div style="display: flex; align-items: center;">
-                <button @click="openIconPath"
-                        style="min-width: 50px; width: 130px; height: 130px; border-radius: 1px; margin: 0; padding: 0">
-                    <div style="padding: 5px" v-if="packIcon">
-                        <img :src="packIcon" alt="" height="120px" width="120px">
-                    </div>
-                    <div v-else>
-                        <i class="far fa-4x fa-images"></i>
-                    </div>
-                </button>
-                <div style="margin-left: 20px">
-                    <h5 style="margin: 0; padding: 0">{{ tl("dialog.tlm_utils.create_new_pack.pack_icon") }}</h5>
-                    <p style="color: #6a6a6d">{{ tl("dialog.tlm_utils.create_new_pack.pack_icon.desc") }}</p>
-                </div>
-            </div>
-        </div>
         <div style="margin-top: 20px">
             <div style="display: flex; align-items: center">
                 <input min="0"

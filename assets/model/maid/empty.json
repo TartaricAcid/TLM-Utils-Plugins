@@ -1,7 +1,12 @@
 {
-  "format_version": "1.10.0",
-  "geometry.model": {
-    "texturewidth": 32,
-    "textureheight": 32
-  }
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.model",
+				"texture_width": 32,
+				"texture_height": 32
+			}
+		}
+	]
 }

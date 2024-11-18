@@ -2,7 +2,6 @@ import polygonVue from "./polygon.vue";
 import pleatedSkirtVue from "./pleated_skirt.vue";
 import squareSkirtVue from "./square_skirt.vue";
 import pyramidVue from "./pyramid.vue";
-import customVue from "./custom.vue";
 
 export var addPresent = {
     is_tlm_add_menu: true,
@@ -24,8 +23,7 @@ export var addPresent = {
                     "polygon": tl("dialog.tlm_utils.add_present.polygon"),
                     "pleated_skirt": tl("dialog.tlm_utils.add_present.pleated_skirt"),
                     "square_skirt": tl("dialog.tlm_utils.add_present.square_skirt"),
-                    "pyramid": tl("dialog.tlm_utils.add_present.pyramid"),
-                    "custom": tl("dialog.tlm_utils.add_present.custom")
+                    "pyramid": tl("dialog.tlm_utils.add_present.pyramid")
                 },
                 page: "polygon",
                 onPageSwitch(page) {
@@ -49,7 +47,7 @@ export var addPresent = {
                         }
                     };
                 },
-                components: {polygonVue, pleatedSkirtVue, squareSkirtVue, pyramidVue, customVue},
+                components: {polygonVue, pleatedSkirtVue, squareSkirtVue, pyramidVue},
                 template: `
                     <div>
                         <polygonVue v-if="openCategory==='polygon'" :group='group' :isPreview="isPreview"
@@ -60,8 +58,6 @@ export var addPresent = {
                                         :dialog="dialog"/>
                         <pyramidVue v-if="openCategory==='pyramid'" :group='group' :isPreview="isPreview"
                                     :dialog="dialog"/>
-                        <customVue v-if="openCategory==='custom'" :group='group' :isPreview="isPreview"
-                                   :dialog="dialog"/>
                     </div>`
             }
         });

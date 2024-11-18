@@ -71,7 +71,7 @@ var sr2MaidModelDialog = new Dialog({
 
 var createPresetModelWorkspace = function (formData, model) {
     let copyModel = JSON.parse(JSON.stringify(model));
-    let bones = copyModel["geometry.model"]["bones"];
+    let bones = copyModel["minecraft:geometry"][0]["bones"];
     for (let i in formData) {
         for (let j = 0; j < bones.length; j++) {
             if (bones[j].name === i && !formData[i]) {
@@ -80,5 +80,5 @@ var createPresetModelWorkspace = function (formData, model) {
             }
         }
     }
-    Codecs["bedrock_old"].load(copyModel, {path: ""});
+    Codecs["bedrock"].load(copyModel, {path: ""});
 };
