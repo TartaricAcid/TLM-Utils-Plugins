@@ -316,6 +316,10 @@
                                     style="height: 25px; width: 92.75%; font-size: small; margin-top: 5px">
                                 {{ tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.add") }}
                             </button>
+                            <button @click="optimizationBedrockAnimation"
+                                    style="height: 25px; width: 92.75%; font-size: small; margin-top: 5px">
+                                {{ tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.optimization") }}
+                            </button>
                         </div>
                     </div>
                 </details>
@@ -542,6 +546,7 @@
 
 <script>
 import {getTranslationKey, getTranslationResult, writeLanguageFile} from "../utils/language";
+import bedrockAnimations from "../../assets/animation/bedrock_animation.json";
 import {isEmpty} from "../utils/string";
 import {join as pathJoin} from "path";
 import {mkdirs} from "../utils/filesystem";
@@ -974,6 +979,108 @@ export default {
                     fs.writeFileSync(path, fs.readFileSync(file));
                 }
             }
+        },
+        optimizationBedrockAnimation: function () {
+            // 首先获取所有的动画文件路径
+            let allAnimationFiles = []
+            for (let animation of this.modelInfo["animation"]) {
+                let res = animation.split(":", 2);
+                if (res.length > 1) {
+                    let path = pathJoin(this.modelListInfo.namespacePath, res[1]);
+                    allAnimationFiles.push(path);
+                }
+            }
+
+            // 读取，并存入这三个对象里
+            let defaultAnimations = {
+                "format_version": "1.8.0",
+                "animations": {}
+            };
+            let conditionAnimations = {
+                "format_version": "1.8.0",
+                "animations": {}
+            };
+            let tacAnimations = {
+                "format_version": "1.8.0",
+                "animations": {}
+            }
+
+            let defaultIndex = bedrockAnimations["default"]
+            let conditionIndex = bedrockAnimations["condition"]
+            let conditionReg = /^(.+?)[:#$](.*?)$/
+
+            for (let file of allAnimationFiles) {
+                if (!fs.existsSync(file)) {
+                    continue;
+                }
+                let text = fs.readFileSync(file, "utf8");
+                if (text.charCodeAt(0) === 0xFEFF) {
+                    text = text.substr(1);
+                }
+                let data = JSON.parse(text);
+                if (!data["animations"]) {
+                    continue;
+                }
+                for (let name in data["animations"]) {
+                    // 默认动画
+                    if (defaultIndex.includes(name)) {
+                        defaultAnimations["animations"][name] = data["animations"][name];
+                        continue;
+                    }
+
+                    // 条件动画
+                    let result = conditionReg.exec(name)
+                    if (result && conditionIndex.includes(result[1])) {
+                        conditionAnimations["animations"][name] = data["animations"][name];
+                        continue;
+                    }
+
+                    // tac 动画
+                    if (result && result[1] === "tac") {
+                        tacAnimations["animations"][name] = data["animations"][name];
+                    }
+                }
+            }
+
+            // 生成新动画文件名
+            let modelId = this.modelInfo["model_id"].split(":", 2);
+            if (modelId.length <= 1) {
+                return;
+            }
+            let mainFileName = `${modelId[1]}.main.animation.json`;
+            let conditionFileName = `${modelId[1]}.condition.animation.json`;
+            let tacFileName = `${modelId[1]}.tac.animation.json`;
+
+            // 删除旧动画，替换为新动画
+            for (let file of allAnimationFiles) {
+                // 不用删掉本来就要生成的文件，避免异步冲突
+                if (pathToName(file, true) !== mainFileName
+                    && pathToName(file, true) !== conditionFileName
+                    && pathToName(file, true) !== tacFileName) {
+                    electron.shell.trashItem(file).then(() => {
+                    });
+                }
+            }
+
+            // 新动画生成
+            this.modelInfo["animation"] = []
+            if (Object.keys(defaultAnimations["animations"]).length > 0) {
+                let path = pathJoin(this.modelListInfo.animationPath, mainFileName);
+                fs.writeFileSync(path, compileJSON(defaultAnimations))
+                this.modelInfo["animation"].push(`${this.modelListInfo["namespace"]}:animation/${mainFileName}`);
+            }
+            if (Object.keys(conditionAnimations["animations"]).length > 0) {
+                let path = pathJoin(this.modelListInfo.animationPath, conditionFileName);
+                fs.writeFileSync(path, compileJSON(conditionAnimations))
+                this.modelInfo["animation"].push(`${this.modelListInfo["namespace"]}:animation/${conditionFileName}`);
+            }
+            if (Object.keys(tacAnimations["animations"]).length > 0) {
+                let path = pathJoin(this.modelListInfo.animationPath, tacFileName);
+                fs.writeFileSync(path, compileJSON(tacAnimations))
+                this.modelInfo["animation"].push(`${this.modelListInfo["namespace"]}:animation/${tacFileName}`);
+            }
+
+            this.$forceUpdate();
         },
         selectedModel: function (index) {
             this.modelInfo = this.parent.showInfo.data["model_list"][index];
