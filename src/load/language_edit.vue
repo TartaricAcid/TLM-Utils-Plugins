@@ -121,7 +121,7 @@ export default {
         },
         addStyleCode: function (code, key) {
             let rawText = this.currentLanguageMaps[key] || "";
-            this.currentLanguageMaps[key] = rawText.slice(0, this.clickBlurIndex) + code + rawText.slice(this.clickBlurIndex)
+            this.currentLanguageMaps[key] = rawText.slice(0, this.clickBlurIndex) + code + rawText.slice(this.clickBlurIndex);
             this.$forceUpdate();
         },
         getColorCodeName: function (name) {
@@ -132,27 +132,31 @@ export default {
         }
     },
     computed: {}
-}
+};
 </script>
 
 <template>
     <div @click="clickKey=''">
         <div style="margin-bottom: 0; text-align: center">
-            <button style="width: 200px; margin-left: 5px" :class="{'language-button-selected': language==='en_us'}"
+            <button class="language-button" :class="{'language-button-selected': language==='en_us'}"
                     @click="clickLanguageButton('en_us')"
                     :disabled="language==='en_us'">{{ tl("dialog.tlm_utils.language_edit.language.en_us") }}
             </button>
-            <button style="width: 200px; margin-left: 5px" :class="{'language-button-selected': language==='zh_cn'}"
+            <button class="language-button" :class="{'language-button-selected': language==='zh_cn'}"
                     @click="clickLanguageButton('zh_cn')"
                     :disabled="language==='zh_cn'">{{ tl("dialog.tlm_utils.language_edit.language.zh_cn") }}
             </button>
-            <button style="width: 200px; margin-left: 5px" :class="{'language-button-selected': language==='ru_ru'}"
+            <button class="language-button" :class="{'language-button-selected': language==='ru_ru'}"
                     @click="clickLanguageButton('ru_ru')"
                     :disabled="language==='ru_ru'">{{ tl("dialog.tlm_utils.language_edit.language.ru_ru") }}
             </button>
-            <button style="width: 200px; margin-left: 5px" :class="{'language-button-selected': language==='ja_jp'}"
+            <button class="language-button" :class="{'language-button-selected': language==='ja_jp'}"
                     @click="clickLanguageButton('ja_jp')"
                     :disabled="language==='ja_jp'">{{ tl("dialog.tlm_utils.language_edit.language.ja_jp") }}
+            </button>
+            <button class="language-button" :class="{'language-button-selected': language==='ko_kr'}"
+                    @click="clickLanguageButton('ko_kr')"
+                    :disabled="language==='ko_kr'">{{ tl("dialog.tlm_utils.language_edit.language.ko_kr") }}
             </button>
         </div>
 
@@ -203,6 +207,11 @@ export default {
     margin-top: 10px;
     padding: 10px;
     border-radius: 5px;
+}
+
+.language-button {
+    width: 150px;
+    margin-left: 5px
 }
 
 .language-button-selected {
