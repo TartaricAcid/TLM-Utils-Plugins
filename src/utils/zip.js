@@ -1,11 +1,12 @@
 import {join as pathJoin} from "path";
+import {PLUGINS_FS} from "./filesystem.js";
 
 function zipModelPack(path, root, zipFile) {
     let relative = handleZipPath(path.substring(root.length));
     console.log(relative)
-    if (fs.statSync(path).isDirectory()) {
+    if (PLUGINS_FS.statSync(path).isDirectory()) {
         zipFile.folder(relative)
-        let files = fs.readdirSync(path);
+        let files = PLUGINS_FS.readdirSync(path);
         files.forEach(f => {
             let tmpPath = pathJoin(path, f)
             zipModelPack(tmpPath, root, zipFile)
@@ -13,7 +14,7 @@ function zipModelPack(path, root, zipFile) {
     } else {
         if (relative.endsWith(".json") || relative.endsWith(".png") || relative.endsWith(".lang")
             || relative.endsWith(".ogg") || relative.endsWith(".js") || relative.endsWith(".mcmeta")) {
-            zipFile.file(relative, fs.readFileSync(path), {binary: true})
+            zipFile.file(relative, PLUGINS_FS.readFileSync(path), {binary: true})
         }
     }
 }
@@ -38,7 +39,7 @@ export function zipModelPackAll(path, zipFilePath) {
         },
         platform: "UNIX"
     }).then(function (content) {
-        fs.writeFile(zipFilePath, content, cb => {
+        PLUGINS_FS.writeFile(zipFilePath, content, cb => {
             Blockbench.showQuickMessage(tl("dialog.tlm_utils.add_present.custom.button.save.success"), 3000)
         })
     });

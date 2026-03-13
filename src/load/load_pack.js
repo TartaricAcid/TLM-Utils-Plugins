@@ -4,6 +4,7 @@ import loadPackMainVue from "./load_pack_main.vue";
 import languageEditVue from "./language_edit.vue";
 import {readLanguageFile} from "../utils/language";
 import {zipModelPackAll} from "../utils/zip";
+import {PLUGINS_FS} from "../utils/filesystem";
 
 var CACHE_TLM_PACK = [];
 export var CACHE_TLM_PACK_ACTION = {
@@ -125,7 +126,7 @@ function openLoadPackDialog(data) {
                             let endIndex = assetsPath.length - "/assets".length;
                             let outputFolder = assetsPath.substring(0, endIndex)
                             let outputZipFile = pathJoin(filePaths[0], pathToName(outputFolder, true) + ".zip")
-                            if (fs.existsSync(outputZipFile)) {
+                            if (PLUGINS_FS.existsSync(outputZipFile)) {
                                 let result = electron.dialog.showMessageBoxSync(currentwindow, {
                                     title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.same_file.title"),
                                     message: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.same_file.desc"),
@@ -243,11 +244,11 @@ function getPackFolderData(path) {
     }
 
     let assetsPath = `${path}/assets`;
-    let assetsFolder = fs.readdirSync(assetsPath);
+    let assetsFolder = PLUGINS_FS.readdirSync(assetsPath);
     let namespaceMap = {};
 
     for (let subFolder of assetsFolder) {
-        let stats = fs.statSync(`${assetsPath}/${subFolder}`);
+        let stats = PLUGINS_FS.statSync(`${assetsPath}/${subFolder}`);
         if (stats.isDirectory()) {
             namespaceMap[subFolder] = subFolder;
         }
@@ -271,8 +272,8 @@ function getPackFolderData(path) {
 
 function checkPackMcmeta(path) {
     let mcmetaPath = `${path}/pack.mcmeta`;
-    if (fs.existsSync(mcmetaPath)) {
-        if (!fs.statSync(mcmetaPath).isFile()) {
+    if (PLUGINS_FS.existsSync(mcmetaPath)) {
+        if (!PLUGINS_FS.statSync(mcmetaPath).isFile()) {
             Blockbench.showMessageBox({
                 title: "message.tlm_utils.prompt",
                 message: "dialog.tlm_utils.load_pack.warn.pack_mcmeta_not_file",
@@ -295,8 +296,8 @@ function checkPackMcmeta(path) {
 
 function checkAssets(path) {
     let assetsPath = `${path}/assets`;
-    if (fs.existsSync(assetsPath)) {
-        if (!fs.statSync(assetsPath).isDirectory()) {
+    if (PLUGINS_FS.existsSync(assetsPath)) {
+        if (!PLUGINS_FS.statSync(assetsPath).isDirectory()) {
             Blockbench.showMessageBox({
                 title: "message.tlm_utils.prompt",
                 message: "dialog.tlm_utils.load_pack.warn.assets_not_folder",
@@ -326,7 +327,7 @@ export function initCacheTlmPackAction() {
     if (cacheTlmPacks) {
         for (let name of Object.keys(cacheTlmPacks)) {
             let path = cacheTlmPacks[name];
-            if (fs.existsSync(path)) {
+            if (PLUGINS_FS.existsSync(path)) {
                 addCacheTlmPackAction(name, path);
             } else {
                 delete cacheTlmPacks[name];

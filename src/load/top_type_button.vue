@@ -31,6 +31,7 @@
 
 <script>
 import {getPackLanguage} from "../utils/language";
+import {PLUGINS_FS} from "../utils/filesystem";
 
 export default {
     props: {
@@ -47,12 +48,12 @@ export default {
         hasModelListFile: function (type) {
             let namespacePath = `${this.parent.assetsPath}/${this.parent.openCategory}`;
             let modelListFile = (type === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
-            return fs.existsSync(modelListFile);
+            return PLUGINS_FS.existsSync(modelListFile);
         },
         hasSoundInfoFile: function () {
             let namespacePath = `${this.parent.assetsPath}/${this.parent.openCategory}`;
             let soundInfoFilePath = `${namespacePath}/maid_sound.json`;
-            return fs.existsSync(soundInfoFilePath);
+            return PLUGINS_FS.existsSync(soundInfoFilePath);
         },
         selectMaid: function () {
             if (this.parent.selected !== "maid") {
@@ -90,7 +91,7 @@ export default {
                     "pack_name": `{${packNameKey}}`,
                     "model_list": []
                 };
-                fs.writeFileSync(modelListFile, autoStringify(initData));
+                PLUGINS_FS.writeFileSync(modelListFile, autoStringify(initData));
                 let langPath = `${namespacePath}/lang`;
                 let langMap = getPackLanguage(langPath, "en_us");
                 langMap[packNameKey] = "";
@@ -120,7 +121,7 @@ export default {
                     "description": "",
                     "url": ""
                 };
-                fs.writeFileSync(modelListFile, autoStringify(initData));
+                PLUGINS_FS.writeFileSync(modelListFile, autoStringify(initData));
                 let langPath = `${namespacePath}/lang`;
                 let langMap = getPackLanguage(langPath, "en_us");
                 langMap[packNameKey] = "";

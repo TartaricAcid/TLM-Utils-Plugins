@@ -1,4 +1,5 @@
 import {join as pathJoin} from "path";
+import {PLUGINS_FS} from "../utils/filesystem.js";
 
 export function registerTextureEvent() {
     Blockbench.on("add_texture", changeTextureName);
@@ -40,7 +41,7 @@ function saveTexture(path, texture) {
             } else {
                 image = electron.nativeImage.createFromDataURL(texture.source).toPNG();
             }
-            fs.writeFile(texture.path, image, () => {
+            PLUGINS_FS.writeFile(texture.path, image, () => {
                 texture.fromPath(texture.path);
             });
         }

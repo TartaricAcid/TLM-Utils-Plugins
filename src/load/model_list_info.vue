@@ -549,7 +549,7 @@ import {getTranslationKey, getTranslationResult, writeLanguageFile} from "../uti
 import bedrockAnimations from "../../assets/animation/bedrock_animation.json";
 import {isEmpty} from "../utils/string";
 import {join as pathJoin} from "path";
-import {mkdirs} from "../utils/filesystem";
+import {mkdirs, PLUGINS_FS} from "../utils/filesystem";
 import sha1 from "sha1";
 import {
     CHAIR_ANIMATION_BONES,
@@ -698,7 +698,7 @@ export default {
             if (this.modelInfo["easter_egg"] && isEmpty(this.modelInfo["easter_egg"]["tag"])) {
                 delete this.modelInfo["easter_egg"];
             }
-            fs.writeFileSync(modelListFile, autoStringify(this.modelListInfo.data), "utf8");
+            PLUGINS_FS.writeFileSync(modelListFile, autoStringify(this.modelListInfo.data), "utf8");
             writeLanguageFile("en_us", this.modelListInfo.langPath, this.modelListInfo.lang);
             Blockbench.showQuickMessage(tl("dialog.tlm_utils.add_present.custom.button.save.success"), 1000);
             this.clickModelCancel();
@@ -717,7 +717,7 @@ export default {
                     loadModelFile(files[0]);
                     let texture = this.getTexturePath();
                     if (Project && Project.selected && texture) {
-                        if (fs.existsSync(texture)) {
+                        if (PLUGINS_FS.existsSync(texture)) {
                             Blockbench.read(texture, {readtype: "image"}, (files) => {
                                 new Texture().fromFile(files[0]).add();
                                 this.loadBedrockAnimation();
@@ -786,7 +786,7 @@ export default {
                         let res = a.split(":", 2);
                         if (res.length > 1) {
                             let path = pathJoin(this.modelListInfo.namespacePath, res[1]);
-                            if (fs.existsSync(path)) {
+                            if (PLUGINS_FS.existsSync(path)) {
                                 outBedrockAnimationPath.push(path);
                             }
                         }
@@ -803,11 +803,11 @@ export default {
         },
         analyzePresentAnimation: function () {
             let path = this.getModelPath();
-            if (!path || !fs.existsSync(path)) {
+            if (!path || !PLUGINS_FS.existsSync(path)) {
                 electron.dialog.showErrorBox("Error", "No File");
                 return;
             }
-            let data = autoParseJSON(fs.readFileSync(path, "utf-8"), false);
+            let data = autoParseJSON(PLUGINS_FS.readFileSync(path, "utf-8"), false);
             let version = data["format_version"];
             let refs = new Set();
             if (version === "1.10.0") {
@@ -896,7 +896,7 @@ export default {
                     newName = sha1(newName).substr(0, 20);
                 }
                 newName += ".js";
-                fs.writeFileSync(pathJoin(animationPath, newName), fs.readFileSync(file));
+                PLUGINS_FS.writeFileSync(pathJoin(animationPath, newName), PLUGINS_FS.readFileSync(file));
                 let animationRef = `${this.modelListInfo["namespace"]}:animation/${newName}`;
                 if (!this.modelInfo["animation"]) {
                     this.modelInfo["animation"] = []
@@ -923,7 +923,7 @@ export default {
                     newName = `${modelId.replace(":", ".")}.${newName}.json`;
                 }
                 let writeFilePath = pathJoin(animationPath, newName);
-                if (fs.existsSync(writeFilePath)) {
+                if (PLUGINS_FS.existsSync(writeFilePath)) {
                     let result = electron.dialog.showMessageBoxSync(currentwindow, {
                         title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.same_file.title"),
                         message: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.same_file.desc"),
@@ -931,7 +931,7 @@ export default {
                         buttons: [tl("dialog.ok"), tl("dialog.cancel")],
                     });
                     if (result === 0) {
-                        fs.writeFileSync(pathJoin(animationPath, newName), fs.readFileSync(file));
+                        PLUGINS_FS.writeFileSync(pathJoin(animationPath, newName), PLUGINS_FS.readFileSync(file));
                         let animationRef = `${this.modelListInfo["namespace"]}:animation/${newName}`;
                         if (!this.modelInfo["animation"]) {
                             this.modelInfo["animation"] = []
@@ -940,7 +940,7 @@ export default {
                         this.$forceUpdate();
                     }
                 } else {
-                    fs.writeFileSync(pathJoin(animationPath, newName), fs.readFileSync(file));
+                    PLUGINS_FS.writeFileSync(pathJoin(animationPath, newName), PLUGINS_FS.readFileSync(file));
                     let animationRef = `${this.modelListInfo["namespace"]}:animation/${newName}`;
                     if (!this.modelInfo["animation"]) {
                         this.modelInfo["animation"] = []
@@ -961,7 +961,7 @@ export default {
                 let res = this.modelInfo["animation"][index].split(":", 2);
                 if (res.length > 1) {
                     let path = pathJoin(this.modelListInfo.namespacePath, res[1]);
-                    fs.writeFileSync(path, fs.readFileSync(file));
+                    PLUGINS_FS.writeFileSync(path, PLUGINS_FS.readFileSync(file));
                 }
             }
         },
@@ -976,7 +976,7 @@ export default {
                 let res = this.modelInfo["animation"][index].split(":", 2);
                 if (res.length > 1) {
                     let path = pathJoin(this.modelListInfo.namespacePath, res[1]);
-                    fs.writeFileSync(path, fs.readFileSync(file));
+                    PLUGINS_FS.writeFileSync(path, PLUGINS_FS.readFileSync(file));
                 }
             }
         },
@@ -1010,10 +1010,10 @@ export default {
             let conditionReg = /^(.+?)[:#$](.*?)$/
 
             for (let file of allAnimationFiles) {
-                if (!fs.existsSync(file)) {
+                if (!PLUGINS_FS.existsSync(file)) {
                     continue;
                 }
-                let text = fs.readFileSync(file, "utf8");
+                let text = PLUGINS_FS.readFileSync(file, "utf8");
                 if (text.charCodeAt(0) === 0xFEFF) {
                     text = text.substr(1);
                 }
@@ -1066,17 +1066,17 @@ export default {
             this.modelInfo["animation"] = []
             if (Object.keys(defaultAnimations["animations"]).length > 0) {
                 let path = pathJoin(this.modelListInfo.animationPath, mainFileName);
-                fs.writeFileSync(path, compileJSON(defaultAnimations))
+                PLUGINS_FS.writeFileSync(path, compileJSON(defaultAnimations))
                 this.modelInfo["animation"].push(`${this.modelListInfo["namespace"]}:animation/${mainFileName}`);
             }
             if (Object.keys(conditionAnimations["animations"]).length > 0) {
                 let path = pathJoin(this.modelListInfo.animationPath, conditionFileName);
-                fs.writeFileSync(path, compileJSON(conditionAnimations))
+                PLUGINS_FS.writeFileSync(path, compileJSON(conditionAnimations))
                 this.modelInfo["animation"].push(`${this.modelListInfo["namespace"]}:animation/${conditionFileName}`);
             }
             if (Object.keys(tacAnimations["animations"]).length > 0) {
                 let path = pathJoin(this.modelListInfo.animationPath, tacFileName);
-                fs.writeFileSync(path, compileJSON(tacAnimations))
+                PLUGINS_FS.writeFileSync(path, compileJSON(tacAnimations))
                 this.modelInfo["animation"].push(`${this.modelListInfo["namespace"]}:animation/${tacFileName}`);
             }
 
@@ -1115,7 +1115,7 @@ export default {
             if (packInfo && packInfo.data && packInfo.data["icon"]) {
                 let icon = packInfo.data["icon"].replace(":", "/");
                 let iconPath = `${this.parent.assetsPath}/${icon}`;
-                if (fs.existsSync(iconPath)) {
+                if (PLUGINS_FS.existsSync(iconPath)) {
                     return `${iconPath}?${this.randomIconSuffix}`;
                 }
             }
@@ -1198,7 +1198,7 @@ export default {
             let namespacePath = `${this.parent.assetsPath}/${this.parent.openCategory}`;
             let modelListFile = (this.parent.selected === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
             if (this.selectedIconPath) {
-                fs.writeFileSync(`${namespacePath}/textures/${this.parent.selected}_icon.png`, fs.readFileSync(this.selectedIconPath));
+                PLUGINS_FS.writeFileSync(`${namespacePath}/textures/${this.parent.selected}_icon.png`, PLUGINS_FS.readFileSync(this.selectedIconPath));
             }
             this.modelListInfo.data["icon"] = `${this.parent.openCategory}:textures/${this.parent.selected}_icon.png`;
             this.modelListInfo.data["version"] = `${this.modelListInfo.version[0]}.${this.modelListInfo.version[1]}.${this.modelListInfo.version[2]}`;
@@ -1224,7 +1224,7 @@ export default {
                     delete this.modelListInfo.data["description"];
                 }
             }
-            fs.writeFileSync(modelListFile, autoStringify(this.modelListInfo.data));
+            PLUGINS_FS.writeFileSync(modelListFile, autoStringify(this.modelListInfo.data));
             writeLanguageFile("en_us", this.modelListInfo.langPath, this.modelListInfo.lang);
             this.isEditModelListInfo = false;
             this.selectedIconPath = "";
@@ -1251,11 +1251,11 @@ export default {
                 let selected = this.parent.selected;
                 let maidFile = pathJoin(namespacePath, "maid_model.json");
                 let chairFile = pathJoin(namespacePath, "maid_chair.json");
-                let hasMaidFile = fs.existsSync(maidFile);
-                let hasChairFile = fs.existsSync(chairFile);
+                let hasMaidFile = PLUGINS_FS.existsSync(maidFile);
+                let hasChairFile = PLUGINS_FS.existsSync(chairFile);
                 if (hasMaidFile && hasChairFile) {
                     let file = selected === "maid" ? maidFile : chairFile;
-                    let text = fs.readFileSync(file, "utf8");
+                    let text = PLUGINS_FS.readFileSync(file, "utf8");
                     if (text.charCodeAt(0) === 0xFEFF) {
                         text = text.substr(1);
                     }
@@ -1266,7 +1266,7 @@ export default {
                     // delete icon
                     if (data["icon"]) {
                         let iconPath = pathJoin(this.parent.assetsPath, data["icon"].replace(":", "/"));
-                        if (fs.existsSync(iconPath)) {
+                        if (PLUGINS_FS.existsSync(iconPath)) {
                             pathDelete.push(iconPath);
                         }
                     }
@@ -1282,26 +1282,26 @@ export default {
                             // delete all model
                             if (model["model"]) {
                                 let modelPath = pathJoin(this.parent.assetsPath, model["model"].replace(":", "/"));
-                                if (fs.existsSync(modelPath)) {
+                                if (PLUGINS_FS.existsSync(modelPath)) {
                                     pathDelete.push(modelPath);
                                 }
                             } else {
                                 let split = model["model_id"].split(":", 2);
                                 let modelPath = pathJoin(this.parent.assetsPath, split[0], "models", "entity", split[1] + ".json");
-                                if (fs.existsSync(modelPath)) {
+                                if (PLUGINS_FS.existsSync(modelPath)) {
                                     pathDelete.push(modelPath);
                                 }
                             }
                             // delete all texture
                             if (model["texture"]) {
                                 let texturePath = pathJoin(this.parent.assetsPath, model["texture"].replace(":", "/"));
-                                if (fs.existsSync(texturePath)) {
+                                if (PLUGINS_FS.existsSync(texturePath)) {
                                     pathDelete.push(texturePath);
                                 }
                             } else {
                                 let split = model["model_id"].split(":", 2);
                                 let texturePath = pathJoin(this.parent.assetsPath, split[0], "textures", "entity", split[1] + ".png");
-                                if (fs.existsSync(texturePath)) {
+                                if (PLUGINS_FS.existsSync(texturePath)) {
                                     pathDelete.push(texturePath);
                                 }
                             }

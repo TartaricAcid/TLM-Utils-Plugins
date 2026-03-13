@@ -116,6 +116,7 @@ import {isEmpty} from "../utils/string";
 import {getTranslationResult} from "../utils/language";
 import {join as pathJoin} from "path";
 import {presentModel} from "../model/preset";
+import {PLUGINS_FS} from "../utils/filesystem";
 
 export default {
     props: {
@@ -202,7 +203,7 @@ export default {
             } else {
                 image = electron.nativeImage.createFromDataURL(texture.source).toPNG();
             }
-            fs.writeFile(texture.path, image, () => {
+            PLUGINS_FS.writeFile(texture.path, image, () => {
                 texture.fromPath(texture.path);
             });
         },
@@ -214,7 +215,7 @@ export default {
             } else {
                 image = electron.nativeImage.createFromDataURL(texture.source).toPNG();
             }
-            fs.writeFile(texture.path, image, () => {
+            PLUGINS_FS.writeFile(texture.path, image, () => {
                 texture.fromPath(texture.path);
             });
         },
@@ -255,7 +256,7 @@ export default {
             }
             let modelPath = this.getModelPath();
             if (modelPath) {
-                fs.writeFileSync(modelPath, autoStringify(copyModel), "utf8");
+                PLUGINS_FS.writeFileSync(modelPath, autoStringify(copyModel), "utf8");
             }
         },
         getModelPath: function () {
@@ -297,7 +298,7 @@ export default {
                     this.copyPresentModel();
                 }
                 modelList.push(newModelInfo);
-                fs.writeFileSync(modelListFile, autoStringify(info.data));
+                PLUGINS_FS.writeFileSync(modelListFile, autoStringify(info.data));
                 this.parent.selectedModel(this.parent.showInfo.data["model_list"].length - 1);
                 this.closeNewModel();
             }
@@ -342,12 +343,12 @@ export default {
             modelList.splice(event.newIndex, 0, modelList.splice(event.oldIndex, 1)[0]);
 
             let modelListFile = (info.type === "maid") ? `${info.namespacePath}/maid_model.json` : `${info.namespacePath}/maid_chair.json`;
-            let previousData = autoParseJSON(fs.readFileSync(modelListFile, "utf8"));
+            let previousData = autoParseJSON(PLUGINS_FS.readFileSync(modelListFile, "utf8"));
             if (previousData["model_list"]) {
                 let sortList = previousData["model_list"];
                 sortList.splice(event.newIndex, 0, sortList.splice(event.oldIndex, 1)[0]);
             }
-            fs.writeFileSync(modelListFile, autoStringify(previousData));
+            PLUGINS_FS.writeFileSync(modelListFile, autoStringify(previousData));
         },
         getModelPathRes: function (modelInfo) {
             let modelId = modelInfo["model_id"];
@@ -401,7 +402,7 @@ export default {
 
                     modelList.splice(this.parent.selectedId, 1);
                     let modelListFile = (info.type === "maid") ? `${info.namespacePath}/maid_model.json` : `${info.namespacePath}/maid_chair.json`;
-                    fs.writeFileSync(modelListFile, autoStringify(info.data));
+                    PLUGINS_FS.writeFileSync(modelListFile, autoStringify(info.data));
 
                     // Determine if other models are in use
                     for (let modelInfo of modelList) {
@@ -414,11 +415,11 @@ export default {
                     }
 
                     let delModelPath = this.resToPath(delModelRes);
-                    if (shouldDelModel && fs.existsSync(delModelPath)) {
+                    if (shouldDelModel && PLUGINS_FS.existsSync(delModelPath)) {
                         electron.shell.trashItem(delModelPath);
                     }
                     let delTexturePath = this.resToPath(delTextureRes);
-                    if (shouldDelTexture && fs.existsSync(delTexturePath)) {
+                    if (shouldDelTexture && PLUGINS_FS.existsSync(delTexturePath)) {
                         electron.shell.trashItem(delTexturePath);
                     }
 

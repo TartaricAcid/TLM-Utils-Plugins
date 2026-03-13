@@ -2,7 +2,7 @@
 import {getTranslationKey, getTranslationResult, writeLanguageFile} from "../utils/language";
 import {join as pathJoin} from "path";
 import {isEmpty} from "../utils/string";
-import {mkdirs} from "../utils/filesystem";
+import {mkdirs, PLUGINS_FS} from "../utils/filesystem";
 import sha1 from "sha1";
 
 export default {
@@ -74,7 +74,7 @@ export default {
             if (packInfo && packInfo.data && packInfo.data["icon"]) {
                 let icon = packInfo.data["icon"].replace(":", "/");
                 let iconPath = `${this.parent.assetsPath}/${icon}`;
-                if (fs.existsSync(iconPath)) {
+                if (PLUGINS_FS.existsSync(iconPath)) {
                     return `${iconPath}?${this.randomIconSuffix}`;
                 }
             }
@@ -124,8 +124,8 @@ export default {
                 let namespacePath = pathJoin(this.parent.assetsPath, this.parent.openCategory);
                 let selected = this.parent.selected;
                 let soundFile = pathJoin(namespacePath, "maid_sound.json");
-                if (fs.existsSync(soundFile)) {
-                    let text = fs.readFileSync(soundFile, "utf8");
+                if (PLUGINS_FS.existsSync(soundFile)) {
+                    let text = PLUGINS_FS.readFileSync(soundFile, "utf8");
                     if (text.charCodeAt(0) === 0xFEFF) {
                         text = text.substr(1);
                     }
@@ -135,7 +135,7 @@ export default {
                     // delete icon
                     if (data["icon"]) {
                         let iconPath = pathJoin(this.parent.assetsPath, data["icon"].replace(":", "/"));
-                        if (fs.existsSync(iconPath)) {
+                        if (PLUGINS_FS.existsSync(iconPath)) {
                             pathDelete.push(iconPath);
                         }
                     }
@@ -185,10 +185,10 @@ export default {
             let soundInfoFile = `${namespacePath}/maid_sound.json`;
             if (this.selectedIconPath) {
                 let texturesPath = pathJoin(namespacePath, "textures");
-                if (!fs.existsSync(texturesPath)) {
+                if (!PLUGINS_FS.existsSync(texturesPath)) {
                     mkdirs(texturesPath);
                 }
-                fs.writeFileSync(pathJoin(texturesPath, "sound_icon.png"), fs.readFileSync(this.selectedIconPath));
+                PLUGINS_FS.writeFileSync(pathJoin(texturesPath, "sound_icon.png"), PLUGINS_FS.readFileSync(this.selectedIconPath));
             }
             this.soundPackInfo.data["icon"] = `${this.parent.openCategory}:textures/${this.parent.selected}_icon.png`;
             this.soundPackInfo.data["version"] = `${this.soundPackInfo.version[0]}.${this.soundPackInfo.version[1]}.${this.soundPackInfo.version[2]}`;
@@ -212,7 +212,7 @@ export default {
             if (isEmpty(this.soundPackInfo.data["url"])) {
                 delete this.soundPackInfo.data["url"];
             }
-            fs.writeFileSync(soundInfoFile, autoStringify(this.soundPackInfo.data));
+            PLUGINS_FS.writeFileSync(soundInfoFile, autoStringify(this.soundPackInfo.data));
             writeLanguageFile("en_us", this.soundPackInfo.langPath, this.soundPackInfo.lang);
             this.isEditSoundPackInfo = false;
             this.selectedIconPath = "";
@@ -235,10 +235,10 @@ export default {
         },
         selectedSound: function (index) {
             let searchPath = `${this.parent.showInfo.soundsPath}/${this.soundType[index][1]}`
-            if (!fs.existsSync(searchPath)) {
+            if (!PLUGINS_FS.existsSync(searchPath)) {
                 mkdirs(searchPath)
             }
-            let paths = fs.readdirSync(searchPath);
+            let paths = PLUGINS_FS.readdirSync(searchPath);
 
             let fileNameCheck = this.soundType[index][0];
             let mixFileNameCheck = this.soundType[index][2];
@@ -260,14 +260,14 @@ export default {
         },
         playSound: function (index) {
             let path = `${this.parent.showInfo.soundsPath}/${this.soundFilePaths[index]}`;
-            if (fs.existsSync(path)) {
+            if (PLUGINS_FS.existsSync(path)) {
                 this.tmpTestAudio.src = path;
                 this.tmpTestAudio.play();
             }
         },
         playMixSound: function (index) {
             let path = `${this.parent.showInfo.soundsPath}/${this.mixSoundFilePaths[index]}`;
-            if (fs.existsSync(path)) {
+            if (PLUGINS_FS.existsSync(path)) {
                 this.tmpTestAudio.src = path;
                 this.tmpTestAudio.play();
             }
@@ -283,10 +283,10 @@ export default {
                 let typeInfo = this.soundType[index];
                 let fileName = typeInfo[0];
                 let filePath = `${this.parent.showInfo.soundsPath}/${typeInfo[1]}`
-                if (!fs.existsSync(filePath)) {
+                if (!PLUGINS_FS.existsSync(filePath)) {
                     mkdirs(filePath)
                 }
-                let dirFiles = fs.readdirSync(filePath);
+                let dirFiles = PLUGINS_FS.readdirSync(filePath);
                 let i = 0;
                 filePaths.forEach(file => {
                     i = i + 1;
@@ -295,7 +295,7 @@ export default {
                         tmpName = `${fileName}${i}.ogg`;
                         i = i + 1;
                     }
-                    fs.writeFileSync(pathJoin(filePath, tmpName), fs.readFileSync(file));
+                    PLUGINS_FS.writeFileSync(pathJoin(filePath, tmpName), PLUGINS_FS.readFileSync(file));
                 })
                 this.selectedSound(index);
                 this.$forceUpdate();
@@ -303,7 +303,7 @@ export default {
         },
         deleteSounds: function (index) {
             let soundPath = pathJoin(this.parent.showInfo.soundsPath, this.soundFilePaths[index]);
-            if (fs.existsSync(soundPath)) {
+            if (PLUGINS_FS.existsSync(soundPath)) {
                 let result = electron.dialog.showMessageBoxSync(currentwindow, {
                     title: tl("dialog.tlm_utils.load_pack.edit.sounds.delete"),
                     message: tl("dialog.tlm_utils.load_pack.edit.sounds.delete.desc"),

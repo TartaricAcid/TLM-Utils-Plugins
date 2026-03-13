@@ -1,4 +1,5 @@
 import {isEmpty} from "./string";
+import {PLUGINS_FS} from "./filesystem.js";
 
 export function getPackLanguage(langPath, local) {
     if (!local) {
@@ -20,7 +21,7 @@ export function writeLanguageFile(local, langPath, langMap) {
     for (let k of Object.keys(langMap)) {
         output = output + `${k}=${langMap[k]}\n`;
     }
-    fs.writeFileSync(langFile, output);
+    PLUGINS_FS.writeFileSync(langFile, output);
 }
 
 export function getTranslationKey(keyRaw) {
@@ -44,8 +45,8 @@ export function getTranslationResult(keyRaw, langMap) {
 }
 
 export function readLanguageFile(langFile, langMap) {
-    if (fs.existsSync(langFile) && fs.statSync(langFile).isFile()) {
-        let allText = fs.readFileSync(langFile, "utf8");
+    if (PLUGINS_FS.existsSync(langFile) && PLUGINS_FS.statSync(langFile).isFile()) {
+        let allText = PLUGINS_FS.readFileSync(langFile, "utf8");
         if (allText.charCodeAt(0) === 0xFEFF) {
             allText = allText.substr(1);
         }

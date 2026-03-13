@@ -27,6 +27,7 @@ import soundPackTableVue from "./sound_pack_table.vue"
 import {splitStringVersion, TlmPackInfo} from "../info/pack_info";
 import {isEmpty} from "../utils/string";
 import {getPackLanguage} from "../utils/language";
+import {PLUGINS_FS} from "../utils/filesystem";
 
 export default {
     props: {
@@ -167,9 +168,9 @@ export default {
         readModelInfo: function (type) {
             let namespacePath = `${this.assetsPath}/${this.openCategory}`;
             let modelListFile = (type === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
-            if (fs.existsSync(modelListFile)) {
+            if (PLUGINS_FS.existsSync(modelListFile)) {
                 let info = new TlmPackInfo();
-                let text = fs.readFileSync(modelListFile, "utf8");
+                let text = PLUGINS_FS.readFileSync(modelListFile, "utf8");
                 if (text.charCodeAt(0) === 0xFEFF) {
                     text = text.substr(1);
                 }
@@ -200,9 +201,9 @@ export default {
         readSoundInfo: function (type) {
             let namespacePath = `${this.assetsPath}/${this.openCategory}`;
             let soundInfoFilePath = `${namespacePath}/maid_sound.json`;
-            if (fs.existsSync(soundInfoFilePath)) {
+            if (PLUGINS_FS.existsSync(soundInfoFilePath)) {
                 let info = new TlmPackInfo();
-                let text = fs.readFileSync(soundInfoFilePath, "utf8");
+                let text = PLUGINS_FS.readFileSync(soundInfoFilePath, "utf8");
                 if (text.charCodeAt(0) === 0xFEFF) {
                     text = text.substr(1);
                 }
@@ -233,12 +234,12 @@ export default {
         hasModelListFile: function (type) {
             let namespacePath = `${this.assetsPath}/${this.openCategory}`;
             let modelListFile = (type === "maid") ? `${namespacePath}/maid_model.json` : `${namespacePath}/maid_chair.json`;
-            return fs.existsSync(modelListFile);
+            return PLUGINS_FS.existsSync(modelListFile);
         },
         hasSoundInfoFile: function () {
             let namespacePath = `${this.assetsPath}/${this.openCategory}`;
             let soundInfoFilePath = `${namespacePath}/maid_sound.json`;
-            return fs.existsSync(soundInfoFilePath);
+            return PLUGINS_FS.existsSync(soundInfoFilePath);
         },
     },
     computed: {

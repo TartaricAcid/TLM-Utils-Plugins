@@ -46,7 +46,7 @@
 
 <script>
 import {isEmpty} from "../utils/string";
-import {mkdirs} from "../utils/filesystem";
+import {mkdirs, PLUGINS_FS} from "../utils/filesystem";
 import {clearNewPackDialogData, createNewPackDialog} from "./create_pack";
 import {cacheAndOpenLoadPackDialog} from "../load/load_pack";
 
@@ -111,7 +111,7 @@ export default {
                     if (path === undefined || path === null) {
                         return;
                     }
-                    if (!isEmpty(this.packIcon) && !fs.existsSync(this.packIcon)) {
+                    if (!isEmpty(this.packIcon) && !PLUGINS_FS.existsSync(this.packIcon)) {
                         this.packIcon = "";
                     }
                     let packVersion;
@@ -128,9 +128,9 @@ export default {
                     mkdirs(`${namespace}/lang`);
                     mkdirs(`${namespace}/models/entity`);
                     mkdirs(`${namespace}/textures/entity`);
-                    fs.writeFileSync(`${root}/pack.mcmeta`, "{\"pack\":{\"pack_format\":3,\"description\":\"Touhou Little Maid Model Pack\"}}");
+                    PLUGINS_FS.writeFileSync(`${root}/pack.mcmeta`, "{\"pack\":{\"pack_format\":3,\"description\":\"Touhou Little Maid Model Pack\"}}");
                     if (!isEmpty(this.packIcon)) {
-                        fs.writeFileSync(`${root}/pack.png`, fs.readFileSync(this.packIcon));
+                        PLUGINS_FS.writeFileSync(`${root}/pack.png`, PLUGINS_FS.readFileSync(this.packIcon));
                     }
                     createNewPackDialog.hide();
                     clearNewPackDialogData(this);
