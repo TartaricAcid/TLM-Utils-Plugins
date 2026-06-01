@@ -549,7 +549,7 @@ import {getTranslationKey, getTranslationResult, writeLanguageFile} from "../uti
 import bedrockAnimations from "../../assets/animation/bedrock_animation.json";
 import {isEmpty} from "../utils/string";
 import {join as pathJoin} from "path";
-import {mkdirs, PLUGINS_FS} from "../utils/filesystem";
+import {mkdirs, PLUGINS_DIALOG, PLUGINS_FS, PLUGINS_SHELL} from "../utils/native_module";
 import sha1 from "sha1";
 import {
     CHAIR_ANIMATION_BONES,
@@ -804,7 +804,7 @@ export default {
         analyzePresentAnimation: function () {
             let path = this.getModelPath();
             if (!path || !PLUGINS_FS.existsSync(path)) {
-                electron.dialog.showErrorBox("Error", "No File");
+                PLUGINS_DIALOG.showErrorBox("Error", "No File");
                 return;
             }
             let data = autoParseJSON(PLUGINS_FS.readFileSync(path, "utf-8"), false);
@@ -813,7 +813,7 @@ export default {
             if (version === "1.10.0") {
                 let geo = data["geometry.model"];
                 if (!geo) {
-                    electron.dialog.showErrorBox(tl("dialog.tlm_utils.analyze_present_animation.error"),
+                    PLUGINS_DIALOG.showErrorBox(tl("dialog.tlm_utils.analyze_present_animation.error"),
                         tl("dialog.tlm_utils.analyze_present_animation.no_geometry"));
                 }
                 let bones = geo["bones"];
@@ -828,7 +828,7 @@ export default {
             } else if (version === "1.12.0") {
                 let geoArr = data["minecraft:geometry"];
                 if (!geoArr || !Array.isArray(geoArr) || geoArr.length < 1) {
-                    electron.dialog.showErrorBox(tl("dialog.tlm_utils.analyze_present_animation.error"),
+                    PLUGINS_DIALOG.showErrorBox(tl("dialog.tlm_utils.analyze_present_animation.error"),
                         tl("dialog.tlm_utils.analyze_present_animation.no_geometry"));
                 }
                 let bones = geoArr[0]["bones"];
@@ -841,7 +841,7 @@ export default {
                     });
                 }
             } else {
-                electron.dialog.showErrorBox(tl("dialog.tlm_utils.analyze_present_animation.error"),
+                PLUGINS_DIALOG.showErrorBox(tl("dialog.tlm_utils.analyze_present_animation.error"),
                     tl("dialog.tlm_utils.analyze_present_animation.version_error"));
                 return;
             }
@@ -883,7 +883,7 @@ export default {
             }
         },
         addAnimation: function () {
-            let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+            let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
                 properties: ["openFile"],
                 title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.add.title"),
                 filters: [{name: "JavaScript", extensions: ["js"]}]
@@ -906,7 +906,7 @@ export default {
             }
         },
         addBedrockAnimation: function () {
-            let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+            let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
                 properties: ["openFile"],
                 title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.add.title"),
                 filters: [{name: "JSON", extensions: ["json"]}]
@@ -924,7 +924,7 @@ export default {
                 }
                 let writeFilePath = pathJoin(animationPath, newName);
                 if (PLUGINS_FS.existsSync(writeFilePath)) {
-                    let result = electron.dialog.showMessageBoxSync(currentwindow, {
+                    let result = PLUGINS_DIALOG.showMessageBoxSync(currentwindow, {
                         title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.same_file.title"),
                         message: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.same_file.desc"),
                         type: "warning",
@@ -951,7 +951,7 @@ export default {
             }
         },
         changeAnimation: function (index) {
-            let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+            let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
                 properties: ["openFile"],
                 title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.add.title"),
                 filters: [{name: "JavaScript", extensions: ["js"]}]
@@ -966,7 +966,7 @@ export default {
             }
         },
         changeBedrockAnimation: function (index) {
-            let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+            let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
                 properties: ["openFile"],
                 title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.add.title"),
                 filters: [{name: "JSON", extensions: ["json"]}]
@@ -1057,7 +1057,7 @@ export default {
                 if (pathToName(file, true) !== mainFileName
                     && pathToName(file, true) !== conditionFileName
                     && pathToName(file, true) !== tacFileName) {
-                    electron.shell.trashItem(file).then(() => {
+                    PLUGINS_SHELL.trashItem(file).then(() => {
                     });
                 }
             }
@@ -1169,7 +1169,7 @@ export default {
             }
         },
         openIconPath: function () {
-            let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+            let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
                 properties: ["openFile"],
                 title: tl("dialog.tlm_utils.create_new_pack.pack_icon.desc"),
                 filters: [{name: "PNG", extensions: ["png"]}]
@@ -1237,7 +1237,7 @@ export default {
             this.parent.selected = this.parent.selected.trim();
         },
         deleteModelList: function () {
-            let index = electron.dialog.showMessageBoxSync(currentwindow, {
+            let index = PLUGINS_DIALOG.showMessageBoxSync(currentwindow, {
                 title: tl("dialog.tlm_utils.load_pack.list.delete"),
                 message: tl("dialog.tlm_utils.load_pack.list.delete.desc"),
                 type: "warning",
@@ -1309,15 +1309,15 @@ export default {
                     }
 
                     for (let deleteFile of pathDelete) {
-                        electron.shell.trashItem(deleteFile).then(() => {
+                        PLUGINS_SHELL.trashItem(deleteFile).then(() => {
                         });
                     }
-                    electron.shell.trashItem(file).then(() => {
+                    PLUGINS_SHELL.trashItem(file).then(() => {
                         this.parent.selected = selected === "maid" ? "chair" : "maid";
                         this.parent.$children.forEach(value => value.$forceUpdate());
                     });
                 } else {
-                    electron.shell.trashItem(namespacePath).then(() => {
+                    PLUGINS_SHELL.trashItem(namespacePath).then(() => {
                         mkdirs(namespacePath);
                         mkdirs(`${namespacePath}/animation`);
                         mkdirs(`${namespacePath}/lang`);

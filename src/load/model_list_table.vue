@@ -116,7 +116,7 @@ import {isEmpty} from "../utils/string";
 import {getTranslationResult} from "../utils/language";
 import {join as pathJoin} from "path";
 import {presentModel} from "../model/preset";
-import {PLUGINS_FS} from "../utils/filesystem";
+import {PLUGINS_DIALOG, PLUGINS_FS, PLUGINS_NATIVE_IMAGE, PLUGINS_SHELL} from "../utils/native_module";
 
 export default {
     props: {
@@ -199,9 +199,9 @@ export default {
             texture.path = this.getTexturePath();
             let image;
             if (texture.mode === "link") {
-                image = electron.nativeImage.createFromPath(texture.source.replace(/\?\d+$/, "")).toPNG();
+                image = PLUGINS_NATIVE_IMAGE.createFromPath(texture.source.replace(/\?\d+$/, "")).toPNG();
             } else {
-                image = electron.nativeImage.createFromDataURL(texture.source).toPNG();
+                image = PLUGINS_NATIVE_IMAGE.createFromDataURL(texture.source).toPNG();
             }
             PLUGINS_FS.writeFile(texture.path, image, () => {
                 texture.fromPath(texture.path);
@@ -211,9 +211,9 @@ export default {
             texture.path = this.getExtraTexturePath(number, newModelInfo);
             let image;
             if (texture.mode === "link") {
-                image = electron.nativeImage.createFromPath(texture.source.replace(/\?\d+$/, "")).toPNG();
+                image = PLUGINS_NATIVE_IMAGE.createFromPath(texture.source.replace(/\?\d+$/, "")).toPNG();
             } else {
-                image = electron.nativeImage.createFromDataURL(texture.source).toPNG();
+                image = PLUGINS_NATIVE_IMAGE.createFromDataURL(texture.source).toPNG();
             }
             PLUGINS_FS.writeFile(texture.path, image, () => {
                 texture.fromPath(texture.path);
@@ -381,7 +381,7 @@ export default {
             }
         },
         deleteModel: function () {
-            let index = electron.dialog.showMessageBoxSync(currentwindow, {
+            let index = PLUGINS_DIALOG.showMessageBoxSync(currentwindow, {
                 title: tl("dialog.tlm_utils.load_pack.model.delete"),
                 message: tl("dialog.tlm_utils.load_pack.model.delete.desc"),
                 type: "warning",
@@ -416,11 +416,11 @@ export default {
 
                     let delModelPath = this.resToPath(delModelRes);
                     if (shouldDelModel && PLUGINS_FS.existsSync(delModelPath)) {
-                        electron.shell.trashItem(delModelPath);
+                        PLUGINS_SHELL.trashItem(delModelPath);
                     }
                     let delTexturePath = this.resToPath(delTextureRes);
                     if (shouldDelTexture && PLUGINS_FS.existsSync(delTexturePath)) {
-                        electron.shell.trashItem(delTexturePath);
+                        PLUGINS_SHELL.trashItem(delTexturePath);
                     }
 
                     this.parent.reset();

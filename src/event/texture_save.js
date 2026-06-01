@@ -1,5 +1,5 @@
 import {join as pathJoin} from "path";
-import {PLUGINS_FS} from "../utils/filesystem.js";
+import {PLUGINS_DIALOG, PLUGINS_FS, PLUGINS_NATIVE_IMAGE} from "../utils/native_module.js";
 
 export function registerTextureEvent() {
     Blockbench.on("add_texture", changeTextureName);
@@ -24,7 +24,7 @@ function changeTextureName() {
 
 function saveTexture(path, texture) {
     if (path && texture.path !== path) {
-        let index = electron.dialog.showMessageBoxSync(currentwindow, {
+        let index = PLUGINS_DIALOG.showMessageBoxSync(currentwindow, {
             title: tl("dialog.tlm_utils.texture_save.title"),
             message: tl("dialog.tlm_utils.texture_save.desc"),
             type: "warning",
@@ -37,9 +37,9 @@ function saveTexture(path, texture) {
             texture.path = path;
             let image;
             if (texture.mode === "link") {
-                image = electron.nativeImage.createFromPath(texture.source.replace(/\?\d+$/, "")).toPNG();
+                image = PLUGINS_NATIVE_IMAGE.createFromPath(texture.source.replace(/\?\d+$/, "")).toPNG();
             } else {
-                image = electron.nativeImage.createFromDataURL(texture.source).toPNG();
+                image = PLUGINS_NATIVE_IMAGE.createFromDataURL(texture.source).toPNG();
             }
             PLUGINS_FS.writeFile(texture.path, image, () => {
                 texture.fromPath(texture.path);

@@ -4,7 +4,7 @@ import loadPackMainVue from "./load_pack_main.vue";
 import languageEditVue from "./language_edit.vue";
 import {readLanguageFile} from "../utils/language";
 import {zipModelPackAll} from "../utils/zip";
-import {PLUGINS_FS} from "../utils/filesystem";
+import {PLUGINS_DIALOG, PLUGINS_FS, PLUGINS_SHELL} from "../utils/native_module";
 
 var CACHE_TLM_PACK = [];
 export var CACHE_TLM_PACK_ACTION = {
@@ -31,7 +31,7 @@ export var loadPackAction = new Action("tlm_utils.load_pack", {
     name: "menu.tlm_utils.load_pack",
     icon: "unarchive",
     click: function () {
-        let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+        let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
             title: tl("dialog.tlm_utils.load_pack.title"),
             properties: ["openDirectory"]
         });
@@ -118,7 +118,7 @@ function openLoadPackDialog(data) {
                     name: "menu.tlm_utils.load_pack.zip",
                     icon: "fa-file-zipper",
                     click: function () {
-                        let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+                        let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
                             title: tl("dialog.tlm_utils.load_pack.export.desc"),
                             properties: ["openDirectory"]
                         });
@@ -127,7 +127,7 @@ function openLoadPackDialog(data) {
                             let outputFolder = assetsPath.substring(0, endIndex)
                             let outputZipFile = pathJoin(filePaths[0], pathToName(outputFolder, true) + ".zip")
                             if (PLUGINS_FS.existsSync(outputZipFile)) {
-                                let result = electron.dialog.showMessageBoxSync(currentwindow, {
+                                let result = PLUGINS_DIALOG.showMessageBoxSync(currentwindow, {
                                     title: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.same_file.title"),
                                     message: tl("dialog.tlm_utils.load_pack.edit.model.custom_animation.same_file.desc"),
                                     type: "warning",
@@ -150,7 +150,7 @@ function openLoadPackDialog(data) {
                             return;
                         }
                         let openPath = pathJoin(assetsPath, packEditDialog.sidebar.page);
-                        electron.shell.openPath(openPath).then(result => {
+                        PLUGINS_SHELL.openPath(openPath).then(result => {
                         });
                     }
                 }),
@@ -170,7 +170,7 @@ function openLoadPackDialog(data) {
                         if (isEmpty(packEditDialog.sidebar.page)) {
                             return;
                         }
-                        let index = electron.dialog.showMessageBoxSync(currentwindow, {
+                        let index = PLUGINS_DIALOG.showMessageBoxSync(currentwindow, {
                             title: tl("menu.tlm_utils.load_pack.delete"),
                             message: tl("dialog.tlm_utils.load_pack.delete.desc"),
                             detail: tl("dialog.tlm_utils.load_pack.delete.tip"),
@@ -184,7 +184,7 @@ function openLoadPackDialog(data) {
                         let pages = packEditDialog.sidebar.pages;
                         if (index === 0 && page in pages) {
                             let delPath = pathJoin(assetsPath, page);
-                            electron.shell.trashItem(delPath).then(() => {
+                            PLUGINS_SHELL.trashItem(delPath).then(() => {
                                 delete pages[page];
                                 let pageKeys = Object.keys(pages);
                                 if (pages && pageKeys.length > 0) {

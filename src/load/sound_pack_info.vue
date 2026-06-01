@@ -2,7 +2,7 @@
 import {getTranslationKey, getTranslationResult, writeLanguageFile} from "../utils/language";
 import {join as pathJoin} from "path";
 import {isEmpty} from "../utils/string";
-import {mkdirs, PLUGINS_FS} from "../utils/filesystem";
+import {mkdirs, PLUGINS_DIALOG, PLUGINS_FS, PLUGINS_SHELL} from "../utils/native_module";
 import sha1 from "sha1";
 
 export default {
@@ -111,7 +111,7 @@ export default {
             }
         },
         deleteSoundPack: function () {
-            let index = electron.dialog.showMessageBoxSync(currentwindow, {
+            let index = PLUGINS_DIALOG.showMessageBoxSync(currentwindow, {
                 title: tl("dialog.tlm_utils.load_pack.sound_pack.delete"),
                 message: tl("dialog.tlm_utils.load_pack.sound_pack.delete.desc"),
                 type: "warning",
@@ -143,10 +143,10 @@ export default {
                     pathDelete.push(soundSourcePath);
 
                     for (let deleteFile of pathDelete) {
-                        electron.shell.trashItem(deleteFile).then(() => {
+                        PLUGINS_SHELL.trashItem(deleteFile).then(() => {
                         });
                     }
-                    electron.shell.trashItem(soundFile).then(() => {
+                    PLUGINS_SHELL.trashItem(soundFile).then(() => {
                         this.parent.selected = selected === "maid";
                         this.parent.$children.forEach(value => value.$forceUpdate());
                     });
@@ -154,7 +154,7 @@ export default {
             }
         },
         openIconPath: function () {
-            let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+            let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
                 properties: ["openFile"],
                 title: tl("dialog.tlm_utils.create_new_pack.pack_icon.desc"),
                 filters: [{name: "PNG", extensions: ["png"]}]
@@ -273,7 +273,7 @@ export default {
             }
         },
         addSounds: function () {
-            let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+            let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
                 properties: ["openFile", "multiSelections"],
                 title: tl("dialog.tlm_utils.load_pack.edit.sounds.add"),
                 filters: [{name: "Ogg", extensions: ["ogg"]}]
@@ -304,7 +304,7 @@ export default {
         deleteSounds: function (index) {
             let soundPath = pathJoin(this.parent.showInfo.soundsPath, this.soundFilePaths[index]);
             if (PLUGINS_FS.existsSync(soundPath)) {
-                let result = electron.dialog.showMessageBoxSync(currentwindow, {
+                let result = PLUGINS_DIALOG.showMessageBoxSync(currentwindow, {
                     title: tl("dialog.tlm_utils.load_pack.edit.sounds.delete"),
                     message: tl("dialog.tlm_utils.load_pack.edit.sounds.delete.desc"),
                     type: "warning",
@@ -312,7 +312,7 @@ export default {
                 });
                 if (result === 0) {
                     console.log(soundPath)
-                    electron.shell.trashItem(soundPath).then(() => {
+                    PLUGINS_SHELL.trashItem(soundPath).then(() => {
                         this.soundFilePaths.splice(index, 1)
                         this.$forceUpdate();
                     });

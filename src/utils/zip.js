@@ -1,5 +1,5 @@
 import {join as pathJoin} from "path";
-import {PLUGINS_FS} from "./filesystem.js";
+import {PLUGINS_FS} from "./native_module.js";
 
 function zipModelPack(path, root, zipFile) {
     let relative = handleZipPath(path.substring(root.length));

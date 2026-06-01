@@ -27,7 +27,7 @@ import soundPackTableVue from "./sound_pack_table.vue"
 import {splitStringVersion, TlmPackInfo} from "../info/pack_info";
 import {isEmpty} from "../utils/string";
 import {getPackLanguage} from "../utils/language";
-import {PLUGINS_FS} from "../utils/filesystem";
+import {PLUGINS_FS} from "../utils/native_module";
 
 export default {
     props: {

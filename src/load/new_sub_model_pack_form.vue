@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import {mkdirs} from "../utils/filesystem";
+import {mkdirs} from "../utils/native_module";
 
 export default {
     props: {

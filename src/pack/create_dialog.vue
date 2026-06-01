@@ -46,7 +46,7 @@
 
 <script>
 import {isEmpty} from "../utils/string";
-import {mkdirs, PLUGINS_FS} from "../utils/filesystem";
+import {mkdirs, PLUGINS_DIALOG, PLUGINS_FS} from "../utils/native_module";
 import {clearNewPackDialogData, createNewPackDialog} from "./create_pack";
 import {cacheAndOpenLoadPackDialog} from "../load/load_pack";
 
@@ -102,7 +102,7 @@ export default {
                 return;
             }
             if (this.canSubmit) {
-                let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+                let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
                     properties: ["openDirectory"],
                     title: tl("dialog.tlm_utils.create_new_pack.directory")
                 });
@@ -141,7 +141,7 @@ export default {
             }
         },
         openIconPath: function () {
-            let filePaths = electron.dialog.showOpenDialogSync(currentwindow, {
+            let filePaths = PLUGINS_DIALOG.showOpenDialogSync(currentwindow, {
                 properties: ["openFile"],
                 title: tl("dialog.tlm_utils.create_new_pack.pack_icon.desc"),
                 filters: [{name: "PNG", extensions: ["png"]}]

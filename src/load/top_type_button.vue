@@ -31,7 +31,7 @@
 
 <script>
 import {getPackLanguage} from "../utils/language";
-import {PLUGINS_FS} from "../utils/filesystem";
+import {PLUGINS_DIALOG, PLUGINS_FS} from "../utils/native_module";
 
 export default {
     props: {
@@ -74,7 +74,7 @@ export default {
             }
         },
         newModelList: function (type) {
-            let index = electron.dialog.showMessageBoxSync(currentwindow, {
+            let index = PLUGINS_DIALOG.showMessageBoxSync(currentwindow, {
                 title: tl("dialog.tlm_utils.load_pack.new_list"),
                 message: tl("dialog.tlm_utils.load_pack.new_list.desc"),
                 type: "warning",
@@ -102,7 +102,7 @@ export default {
             }
         },
         newSoundPack: function () {
-            let index = electron.dialog.showMessageBoxSync(currentwindow, {
+            let index = PLUGINS_DIALOG.showMessageBoxSync(currentwindow, {
                 title: tl("dialog.tlm_utils.load_pack.new_sound_pack"),
                 message: tl("dialog.tlm_utils.load_pack.new_sound_pack.desc"),
                 type: "warning",

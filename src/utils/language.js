@@ -1,5 +1,5 @@
 import {isEmpty} from "./string";
-import {PLUGINS_FS} from "./filesystem.js";
+import {PLUGINS_FS} from "./native_module.js";
 
 export function getPackLanguage(langPath, local) {
     if (!local) {
